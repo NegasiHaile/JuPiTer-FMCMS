@@ -20,8 +20,8 @@ const employeeSchema = new mongoose.Schema({
     role:{
         type: String,
         required: true,
-        default: "unknown"
-    }
+        default: "unassigned"
+    },
     email:{
         type: String,
         required: true,
@@ -30,7 +30,7 @@ const employeeSchema = new mongoose.Schema({
     password:{
         type: String,
         required: true
-    }
+    },
     image:{
         type: String,
         default: "a link of avator"
