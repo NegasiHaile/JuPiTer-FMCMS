@@ -10,9 +10,10 @@ const bcrypt = require('bcrypt')
 const employeeCntrl = {
     register: async (req, res) =>{
        try {
-          res.json({msg: 'Employee controller tested from the TRY one!'})
+        //   res.json({msg: 'Employee controller tested from the TRY one!'})
+        const {}
        } catch (error) {
-           return res.status(500).json({msg: error.message})
+           return res.status(500).json({msg: error.message});
        }
     }
 }
