@@ -16,7 +16,7 @@ app.use(fileUpload({
 
 //Routes
 // app.use('/register', './routes/superAdminRouter')
-app.use('/register', require('./routes/superAdminRouter'));
+app.use('/register', require('./routes/employeeRouter'));
 
 // Connect to mongodb
 const URI = process.env.MONGODB_URL
