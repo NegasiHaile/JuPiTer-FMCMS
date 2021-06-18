@@ -15,8 +15,7 @@ app.use(fileUpload({
 }));
 
 //Routes
-// app.use('/register', './routes/superAdminRouter')
-app.use('/register', require('./routes/employeeRouter'));
+app.use('/user', require('./routes/userRouter'));
 
 // Connect to mongodb
 const URI = process.env.MONGODB_URL
@@ -33,7 +32,7 @@ mongoose.connect(URI, {
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () =>{
-    console.log('Server is running on port:', PORT)
+    console.log('Server is running on port', PORT)
 })
 
 
