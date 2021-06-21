@@ -49,10 +49,12 @@ const userSchema = new mongoose.Schema({
             type: String
         }
     },
+
     userAccount:{
         email:{
             type: String,
             required: true,
+            // unique : true,
             trim: true
         },
         password:{
@@ -63,9 +65,16 @@ const userSchema = new mongoose.Schema({
             type: String,
             required: true
         },
+        satus: {
+            type: String,
+            required: true,
+            default: "ON"
+        }
     },
+    
     registrationDate:{
-        type: String
+        type: Date,
+        default: Date.now
     }
 },{
     timestamps: true

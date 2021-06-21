@@ -5,7 +5,6 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
 
-
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -16,6 +15,8 @@ app.use(fileUpload({
 
 //Routes
 app.use('/user', require('./routes/userRouter'));
+
+app.use('/pos-m', require('./routes/machineRouter'))
 
 // Connect to mongodb
 const URI = process.env.MONGODB_URL
@@ -28,7 +29,6 @@ mongoose.connect(URI, {
     if(err) throw err;
     console.log('Connected to MongoDB')
 })
-
 
 const PORT = process.env.PORT || 5000
 app.listen(PORT, () =>{
