@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 
-const machineSchema = new mongoose.schema({
+const machineSchema = new mongoose.Schema({
     serialNumber:{
-        Type: String,
+        type: String,
         require: true,
         trim: true
     },
@@ -11,11 +11,8 @@ const machineSchema = new mongoose.schema({
         type: String,
     },
 
-    registrationDate:{
-        type: Date,
-        default: Date.now
-    }
-
+},{
+    timestamps: true
 })
 
 module.exports = mongoose.model('Machines', machineSchema)

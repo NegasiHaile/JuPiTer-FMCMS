@@ -72,10 +72,10 @@ const userSchema = new mongoose.Schema({
         }
     },
     
-    registrationDate:{
-        type: Date,
-        default: Date.now
-    }
+    // registrationDate:{
+    //     type: Date,
+    //     default: Date.now
+    // }
 },{
     timestamps: true
 })
