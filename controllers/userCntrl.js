@@ -7,62 +7,49 @@ const userCntrl = {
         try {
             // res.json({msg: 'user controller tested!'})
             const {
-                userDetail:{
                     fullName,
                     tradeName,
                     gender,
                     photo_TL,
-                    branch},
-                userAddress:{
+                    branch,
                     city,
                     subCity,
                     kebele,
                     woreda,
-                    },
-                userContact:{
                     phoneNumber,
                     fax,
-                    pobox
-                    },
-                userAccount:{
+                    pobox,
                     email,
                     password,
                     type_role
-                    },} = req.body;
-            const pswrd = ({userAccount:{password}})
-            const eml = ({userAccount:{email}})
-            const user = await Users.findOne({'userAccount.email': eml.userAccount.email})
+                    } = req.body;
+            // const pswrd = ({userAccount:{password}})
+            // const eml = ({userAccount:{email}})
+            const user = await Users.findOne({email})
             
             if(user) return res.status(400).json({msg: "There is a user with this email!"})
             
-            if((pswrd.userAccount.password).length < 6) return res.status(400).json({msg: "Password must be at least 6 character long."})
+            if(password.length < 6) return res.status(400).json({msg: "Password must be at least 6 character long."})
 
             //Password Encryption
-            const passwordHash = await bcrypt.hash((pswrd.userAccount.password), 10)
+            const passwordHash = await bcrypt.hash(password, 10)
             
             const newUser = new Users({
-                userDetail:{
                     fullName,
                     tradeName,
                     gender,
                     photo_TL,
-                    branch},
-                userAddress:{
+                    branch,
                     city,
                     subCity,
                     kebele,
                     woreda,
-                    },
-                userContact:{
                     phoneNumber,
                     fax,
-                    pobox
-                    },
-                userAccount:{
+                    pobox,
                     email,
                     password: passwordHash,
                     type_role
-                    }
             })
 
             await newUser.save()
@@ -95,7 +82,23 @@ const userCntrl = {
 
     editUser: async (req, res) =>{
         try {
-            res.json({msg: "User edited!"})
+            await Users.findOneAndUpdate({_id: req.params.id},({
+                    fullName,
+                    tradeName,
+                    gender,
+                    photo_TL,
+                    branch,
+                    city,
+                    subCity,
+                    kebele,
+                    woreda,
+                    phoneNumber,
+                    fax,
+                    pobox,
+                    email,
+                    type_role
+            } = req.body))
+            res.json({msg: "User datail edited successfuly!"})
         } catch (error) {
             res.status(500).json({meg: error.message})
         }
@@ -107,7 +110,7 @@ const userCntrl = {
             // Then only the admin can delete catagory
             
             await Users.findByIdAndDelete(req.params.id)
-            res.json({msg: "Users Deleted!"})
+            res.json({msg: "Users has been deleted successfuly!"})
         }catch (err) {
             return res.status(500).json({msg: err.message})
         }
@@ -115,8 +118,14 @@ const userCntrl = {
 
     getUsers: async (req, res) =>{
         try {
-
-            res.json({msg: await Users.find()})
+            if(req.params.type_role == "employee"){
+                var clsfusers = await Users.find({
+                    "$or": [{"type_role": "branch-admin"}, {"type_role": "technician"}] })
+                    }
+            else{
+                var clsfusers = await Users.find({"type_role": req.params.type_role})
+                }
+            res.json({msg: clsfusers})
         } catch (error) {
             res.status(500).json({msg: error.message})
         }
@@ -125,11 +134,11 @@ const userCntrl = {
     login: async (req, res) => {
         try {
             const {email, password} = req.body;
-            const user = await Users.findOne({'userAccount.email': email})
+            const user = await Users.findOne({email})
             
             if(!user) return res.status(400).json({msg: "User does not exist."})
 
-            const isMatch = await bcrypt.compare(password, user.userAccount.password)
+            const isMatch = await bcrypt.compare(password, user.password)
             if(!isMatch) return res.status(400).json({msg: "Incorrect password."})
 
             // If login success , create access token and refresh token
@@ -158,19 +167,48 @@ const userCntrl = {
         }
     },
 
+    changePassword: async (req, res) =>{
+        try {
+
+            const {oldPassword, newPassword} = req.body;
+            const user = await Users.findById(req.params.id)
+
+            const isMatch = await bcrypt.compare(oldPassword, user.password)
+
+            
+            if(!isMatch) return res.status(400).json({msg: "Old password is nut correct!"})
+
+            if(newPassword.length < 6)  return res.status(400).json({msg: "New password must be at least 6 character!"})
+
+            await Users.findOneAndUpdate({_id: req.params.id},({
+                    password: await bcrypt.hash(newPassword, 10)
+            }))
+
+            res.json({msg: "Your password has been changed successfuly!"})
+        } catch (error) {
+            res.status(500).json({msg: error.message})
+        }
+    },
+
     blockAccount: async (req, res) =>{
         try {
-            
+            await Users.findOneAndUpdate({_id: req.params.id},({
+                    status: "OFF"
+            }))
+            res.json({msg: "User account has been blocked successfuly!"})
         } catch (error) {
-            
+            res.status(500).json({meg: error.message})
         }
     },
 
     activareAccount: async (req, res) =>{
         try {
-            
+            await Users.findOneAndUpdate({_id: req.params.id},({
+                    status: "ON"
+            }))
+            res.json({msg: "User account has been activated successfuly!"})
         } catch (error) {
-            
+            res.status(500).json({meg: error.message})
         }
     },
 

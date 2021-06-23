@@ -4,7 +4,6 @@ const mongoose = require('mongoose');
 const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const cookieParser = require('cookie-parser');
-
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
@@ -14,9 +13,12 @@ app.use(fileUpload({
 }));
 
 //Routes
-app.use('/user', require('./routes/userRouter'));
+app.use('/users', require('./routes/userRouter'));
 
-app.use('/pos-m', require('./routes/machineRouter'))
+app.use('/machines', require('./routes/machineRouter'));
+
+// app.use('/sales', require('./routes/salesRouter'));
+// app.use('/maintenance', require('./routes/maintenanceRouter'));
 
 // Connect to mongodb
 const URI = process.env.MONGODB_URL

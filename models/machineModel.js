@@ -1,16 +1,37 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
 
 const machineSchema = new mongoose.Schema({
     serialNumber:{
         type: String,
-        require: true,
+        required: true,
         trim: true
+    },
+
+    machineModel:{
+        type: String,
     },
 
     brand:{
         type: String,
     },
 
+    price:{
+        type: Number,
+    },
+    branch:{
+        type: String,
+        required: true
+    },
+
+    salesStatus:{
+        type: String,
+        default: "Unsold"
+    },
+
+    problemStatus:{
+        type: String,
+        required: true
+    }
 },{
     timestamps: true
 })

@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    userDetail:{
         fullName:{
             type: String,
             required: true
@@ -19,9 +18,7 @@ const userSchema = new mongoose.Schema({
             type: String,
             required: true
             },
-    },
 
-    userAddress:{
         city:{
             type: String,
         },
@@ -33,10 +30,8 @@ const userSchema = new mongoose.Schema({
         },
         woreda:{
             type: String,
-        }
-    },
+        },
 
-    userContact:{
         phoneNumber:{
             type: String,
             required: true,
@@ -47,10 +42,7 @@ const userSchema = new mongoose.Schema({
         },
         pobox:{
             type: String
-        }
-    },
-
-    userAccount:{
+        },
         email:{
             type: String,
             required: true,
@@ -58,19 +50,16 @@ const userSchema = new mongoose.Schema({
             trim: true
         },
         password:{
-            type: String,
-            required: true
+            type: String
         },
         type_role:{
             type: String,
             required: true
         },
-        satus: {
+        status: {
             type: String,
-            required: true,
             default: "ON"
         }
-    },
     
     // registrationDate:{
     //     type: Date,
