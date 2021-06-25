@@ -1,17 +1,21 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-        fullName:{
+        fName:{
             type: String,
             required: true
             },
-        tradeName:{
-            type: String
+        mName:{
+            type: String,
+            required: true
+            },
+        lName:{
+            type: String,
             },    
         gender:{
             type: String
             },
-        photo_TL:{
+        photo:{
             type: String
             },
         branch:{
@@ -20,52 +24,41 @@ const userSchema = new mongoose.Schema({
             },
 
         city:{
-            type: String,
-        },
+            type: String
+            },
         subCity:{
-            type: String,
-        },
+            type: String
+            },
         kebele:{
-            type: String,
-        },
+            type: String
+            },
         woreda:{
-            type: String,
-        },
-
+            type: String
+            },
         phoneNumber:{
             type: String,
             required: true,
             trim: true
-        },
-        fax:{
-            type: String
-        },
-        pobox:{
-            type: String
-        },
+            },
         email:{
             type: String,
             required: true,
-            // unique : true,
+            unique : true,
             trim: true
-        },
+            },
         password:{
             type: String
-        },
+            },
         type_role:{
             type: String,
             required: true
-        },
-        status: {
+            },
+        accountStatus: {
             type: String,
-            default: "ON"
-        }
-    
-    // registrationDate:{
-    //     type: Date,
-    //     default: Date.now
-    // }
-},{
+            default: "Pending"
+            },
+            },
+            {
     timestamps: true
 })
 

@@ -1,4 +1,5 @@
 const Machines = require('../models/machineModel');
+const Sales = require("../models/salesModel");
 
 const machineCntrl = {
     register: async (req, res) =>{
@@ -45,28 +46,41 @@ const machineCntrl = {
             return res.status(500).json({msg: err.message})
         }
     },
-} 
 
-const distributMachine = async(req, res) =>{
+    distributMachine: async(req, res) =>{
         try {
-            await Machines.findOneAndUpdate({_id: req.params.id}, {
-                salesStatus = "sold"
-            }= req.body)
-            registerSales()
+            await Machines.findOneAndUpdate({_id: req.params.id}, ({
+                salesStatus: "sold"
+            }))
+            // registerSales()
+            const newSales = new Sales({
+                clientId: req.body.clientId,
+                machineId: req.params.id,
+                salesType: req.body.salesType
+            })
+
+            await newSales.save();
 
             res.json({msg: "Machine has been distributed successfully!"})
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
-    }
+    },
+}
 
-const registerSales = async(req, res) =>{
-        try {
-            res.json({msg: "Sales has been registered successfully!"})
-        } catch (err) {
-            return res.status(500).json({msg: err.message})
-        }
-    }
+// const registerSales = async(req, res) =>{
+//         try {
+//             const newSales = new Sales({
+//                 clientId,
+//                 machineId: req.params.id,
+//                 salesType
+//             } = req.body)
 
-
+//             await newSales.save();
+//             res.json({msg: "Sales has been registered successfully!"})
+//         } catch (err) {
+//             return res.status(500).json({msg: err.message})
+//         }
+//     }
+    
 module.exports = machineCntrl;

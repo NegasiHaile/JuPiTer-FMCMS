@@ -7,24 +7,21 @@ const userCntrl = {
         try {
             // res.json({msg: 'user controller tested!'})
             const {
-                    fullName,
-                    tradeName,
-                    gender,
-                    photo_TL,
+                    fName,
+                    mName,
+                    lName,
+                    photo,
                     branch,
                     city,
                     subCity,
                     kebele,
                     woreda,
                     phoneNumber,
-                    fax,
-                    pobox,
                     email,
                     password,
                     type_role
                     } = req.body;
-            // const pswrd = ({userAccount:{password}})
-            // const eml = ({userAccount:{email}})
+           
             const user = await Users.findOne({email})
             
             if(user) return res.status(400).json({msg: "There is a user with this email!"})
@@ -35,21 +32,19 @@ const userCntrl = {
             const passwordHash = await bcrypt.hash(password, 10)
             
             const newUser = new Users({
-                    fullName,
-                    tradeName,
-                    gender,
-                    photo_TL,
+                    fName,
+                    mName,
+                    lName,
+                    photo,
                     branch,
                     city,
                     subCity,
                     kebele,
                     woreda,
                     phoneNumber,
-                    fax,
-                    pobox,
                     email,
                     password: passwordHash,
-                    type_role
+                    type_role,
             })
 
             await newUser.save()

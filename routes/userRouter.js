@@ -4,19 +4,19 @@ const auth = require('../middleware/auth')
 
 router.post('/register', userCntrl.register)
 
-router.get('/:type_role',  userCntrl.getUsers)
+router.get('/:type_role',  userCntrl.getUsers) // fetcch users based on their type /Employee(branch-admin and technictias), clients and supper-admins separetly.
 
-router.route('/action/:id')
+router.route('/action/:id') // take an action on users based on thier type
     .delete( userCntrl.deleteUser)
     .put(userCntrl.editUser)
+
+router.get('/infor',  userCntrl.getUser) // get a user information(deatil)
 
 router.post('/login', userCntrl.login)
 
 router.get('/logout', userCntrl.logout)
 
 router.get('/refresh_token', userCntrl.refreshToken)
-
-router.get('/infor',  userCntrl.getUser)
 
 router.post('/changepassword/:id',  userCntrl.changePassword)
 

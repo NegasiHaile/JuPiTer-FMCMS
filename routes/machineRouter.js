@@ -9,5 +9,6 @@ router.get('', machineCntrl.getMachines)
 router.route('/:id')
     .put(machineCntrl.editMachine)
     .delete(machineCntrl.deleteMachine)
+    .post(machineCntrl.distributMachine)
 
 module.exports = router;
