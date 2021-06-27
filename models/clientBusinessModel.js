@@ -3,13 +3,14 @@ const mongoose = require('mongoose');
 const ObjectID = mongoose.Schema.Types.ObjectID;
 
 const clientBusinessSchema = new mongoose.Schema({
-    // detail
+    // business detail
     ownerID:{
         type: ObjectID,
         required: true
     },
     TIN:{
         type: String,
+        unique: true,
         required: true
     },
     businessName:{

@@ -4,7 +4,7 @@ const clientBusinessCntrl = {
     register: async (req, res) =>{
         try {
             const {
-                ownerID,TIN, businessName, companyName, city, subCity, kebele, woreda, buildingName, officeNumber, telephone, eamil, fax, machine
+                ownerID,TIN, businessName, companyName, TL_Image, city, subCity, kebele, woreda, buildingName, officeNumber, telephone, eamil, fax
             } = req.body;
 
             const business = await clientBusinesses.findOne({ TIN })
@@ -14,7 +14,7 @@ const clientBusinessCntrl = {
             const newBusiness = new clientBusinesses({
                 ownerID, TIN, businessName, companyName,
                 TL_Image: "mmmm", 
-                city, subCity, kebele, woreda, buildingName, officeNumber, telephone, eamil, fax, machine
+                city, subCity, kebele, woreda, buildingName, officeNumber, telephone, eamil, fax
             });
 
             await newBusiness.save();
@@ -35,7 +35,10 @@ const clientBusinessCntrl = {
     deleteBusiness: async (req, res) =>{
         // delete a business only if it is not assigned a machine yet
         try {
-            res.json({msg: "This method works successfuly!"})
+            const bsnss = await clientBusinesses.findById(req.params.busineId)
+            if(bsnss.machine != "Unassigned") return res.json("This business have assigned a machine, so you can't delete it!")
+            await clientBusinesses.findByIdAndDelete(req.params.busineId)
+            res.json({msg: "Business detail has been deleted succesfully!"})
         } catch (error) {
             res.status(500).json({msg: error.message})
         }
@@ -43,7 +46,10 @@ const clientBusinessCntrl = {
     eidtBusinesDetail: async(req, res) =>{
         // edit detail if if the owner have not submit valid credintals
         try {
-            res.json({msg: "This method works successfuly!"})
+            await clientBusinesses.findOneAndUpdate({ _id: req.params.busineId }, ({
+                ownerID,TIN, businessName, companyName, TL_Image, city, subCity, kebele, woreda, buildingName, officeNumber, telephone, eamil, fax
+            } = req.body))
+            res.json({ msg: "Business datail has been edited successfuly!" })
         } catch (error) {
             res.status(500).json({msg: error.message})
         }
@@ -51,7 +57,7 @@ const clientBusinessCntrl = {
     getMyBusineses: async (req, res) =>{
         // this fetchs all the businesses of an owner
         try {
-            res.json({msg: "This method works successfuly!"})
+            res.json({msg: await clientBusinesses.find({"ownerID": req.params.ownerId})})
         } catch (error) {
             res.status(500).json({msg: error.message})
         }
@@ -59,19 +65,11 @@ const clientBusinessCntrl = {
     getBusinessDetail: async (req, res) =>{
         // fetch the detail of a single business
         try {
-            res.json({msg: "This method works successfuly!"})
+            res.json({msg: await clientBusinesses.findById(req.params.busineId)})
         } catch (error) {
             res.status(500).json({msg: error.message})
         }
     },
-    assigneMachien: async (req, res) =>{
-        // this updates status in amchine collection &  machine in business collection
-        try {
-            res.json({msg: "This method works successfuly!"})
-        } catch (error) {
-            res.status(500).json({msg: error.message})
-        }
-    }
 }
 
 module.exports = clientBusinessCntrl;

@@ -16,8 +16,8 @@ app.use(cors());
 
 //Routes
 app.use('/users', require('./routes/userRouter'));
-app.use('/businesses', require('./routes/clientBusinessRouter'));
 app.use('/machines', require('./routes/machineRouter'));
+app.use('/businesses', require('./routes/clientBusinessRouter'));
 app.use('/sales', require('./routes/salesRouter'));
 
 
