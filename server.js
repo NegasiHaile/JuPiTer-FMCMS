@@ -15,10 +15,10 @@ app.use(cors());
 
 
 //Routes
+app.use('/branchs', require('./routes/branchRouter'));
 app.use('/users', require('./routes/userRouter'));
 app.use('/machines', require('./routes/machineRouter'));
 app.use('/businesses', require('./routes/clientBusinessRouter'));
-app.use('/sales', require('./routes/salesRouter'));
 
 
 // Connect to mongodb
