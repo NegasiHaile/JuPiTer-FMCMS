@@ -29,7 +29,7 @@ const machineCntrl = {
     editMachine: async(req, res) =>{
         try {
             await Machines.findOneAndUpdate({_id: req.params.id}, {
-                serialNumber,machineModel,brand,price,branch,salesStatus
+                serialNumber,machineModel,brand,price,branch,problemStatus
             }= req.body)
             res.json({msg: "Machine has been edited successfully!"})
         } catch (err) {
@@ -39,6 +39,7 @@ const machineCntrl = {
 
     deleteMachine: async(req, res) =>{
         try {
+            // sold(distributed) machine haven't to delete
             await Machines.findByIdAndDelete(req.params.id)
             res.json({msg: "Machine has been deleted successfully!"})
         } catch (err) {
