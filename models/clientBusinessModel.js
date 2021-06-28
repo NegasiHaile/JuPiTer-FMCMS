@@ -63,12 +63,12 @@ const clientBusinessSchema = new mongoose.Schema({
     },
     // Technician assignment
     sw_Tech: {
-        type: String, // vales:- assigned / unassigned
-        default: "Unassigned"
+        type: ObjectID, // values:- unassigned / sw-technician id
+        default: null
     },
     hw_Tech: {
-        type: String, // vales:- assigned / unassigned
-        default: "Unassigned"
+        type: ObjectID, // vales:- unassigned / hw-technician id
+        default: null
     }
 }, { timestamps: true })
 

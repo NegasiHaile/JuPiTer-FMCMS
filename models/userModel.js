@@ -20,8 +20,8 @@ const userSchema = new mongoose.Schema({
         type: String
     },
     branch: {
-        type: String,
-        required: true
+        type: String
+        //, required: true
     },
 
     city: {
