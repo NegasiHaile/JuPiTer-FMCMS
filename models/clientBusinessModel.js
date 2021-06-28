@@ -60,6 +60,15 @@ const clientBusinessSchema = new mongoose.Schema({
     },
     machineAssignDate: {
         type: Date, // date of the machine assigned to this machine
+    },
+    // Technician assignment
+    sw_Tech: {
+        type: String, // vales:- assigned / unassigned
+        default: "Unassigned"
+    },
+    hw_Tech: {
+        type: String, // vales:- assigned / unassigned
+        default: "Unassigned"
     }
 }, { timestamps: true })
 

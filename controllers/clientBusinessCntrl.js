@@ -54,7 +54,7 @@ const clientBusinessCntrl = {
             res.status(500).json({msg: error.message})
         }
     },
-    getMyBusineses: async (req, res) =>{
+    getBusinesesPerOwner: async (req, res) =>{
         // this fetchs all the businesses of an owner
         try {
             res.json({msg: await clientBusinesses.find({"ownerID": req.params.ownerId})})
@@ -66,6 +66,28 @@ const clientBusinessCntrl = {
         // fetch the detail of a single business
         try {
             res.json({msg: await clientBusinesses.findById(req.params.busineId)})
+        } catch (error) {
+            res.status(500).json({msg: error.message})
+        }
+    },
+    assignSoftwareTech: async (req, res) =>{
+        // fetch the detail of a single business
+        try {
+            await clientBusinesses.findOneAndUpdate({ _id: req.params.busineId }, ({
+                sw_Tech
+            } = req.body))
+            res.json({msg: "Business has been assigned a software technician!"})
+        } catch (error) {
+            res.status(500).json({msg: error.message})
+        }
+    },
+    assignHardwareTech: async (req, res) =>{
+        // fetch the detail of a single business
+        try {
+            await clientBusinesses.findOneAndUpdate({ _id: req.params.busineId }, ({
+                hw_Tech
+            } = req.body))
+            res.json({msg: "Business has been assigned a hardware technician!"})
         } catch (error) {
             res.status(500).json({msg: error.message})
         }
