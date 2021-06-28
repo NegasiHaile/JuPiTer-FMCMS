@@ -1,5 +1,4 @@
 const Machines = require('../models/machineModel');
-const Sales = require("../models/salesModel");
 
 const machineCntrl = {
     register: async (req, res) =>{
@@ -50,16 +49,10 @@ const machineCntrl = {
     distributMachine: async(req, res) =>{
         try {
             await Machines.findOneAndUpdate({_id: req.params.id}, ({
-                salesStatus: "sold"
+                salesStatus: "sold",
+                distributedTo: req.body.businessId,
+                distributedDate: Date.now()
             }))
-            // registerSales()
-            const newSales = new Sales({
-                clientId: req.body.clientId,
-                machineId: req.params.id,
-                salesType: req.body.salesType
-            })
-
-            await newSales.save();
 
             res.json({msg: "Machine has been distributed successfully!"})
         } catch (err) {
@@ -68,19 +61,5 @@ const machineCntrl = {
     },
 }
 
-// const registerSales = async(req, res) =>{
-//         try {
-//             const newSales = new Sales({
-//                 clientId,
-//                 machineId: req.params.id,
-//                 salesType
-//             } = req.body)
-
-//             await newSales.save();
-//             res.json({msg: "Sales has been registered successfully!"})
-//         } catch (err) {
-//             return res.status(500).json({msg: err.message})
-//         }
-//     }
     
 module.exports = machineCntrl;
