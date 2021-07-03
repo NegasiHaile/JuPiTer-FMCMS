@@ -55,11 +55,8 @@ const clientBusinessSchema = new mongoose.Schema({
         },
     // Machine assignment
     machine: {
-        type: String, // vales:- assigned / unassigned
-        default: "Unassigned"
-    },
-    machineAssignDate: {
-        type: Date, // date of the machine assigned to this machine
+        type: String,
+        default: "unssigned" // requested, Assigned, unssigned
     },
     // Technician assignment
     sw_Tech: {
@@ -69,6 +66,10 @@ const clientBusinessSchema = new mongoose.Schema({
     hw_Tech: {
         type: ObjectID, // vales:- unassigned / hw-technician id
         default: null
+    },
+    credintals: {
+        type: String,
+        default: "Pending"
     }
 }, { timestamps: true })
 

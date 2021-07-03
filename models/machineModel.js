@@ -30,19 +30,7 @@ const machineSchema = new mongoose.Schema({
     },
     salesStatus:{
         type: String,
-        default: "Unsold"
-    },
-    distributedTo:{
-        type: ObjectID,
-        default: null
-    },
-    distributedDate:{
-        type: Date,
-        default: null
-    },
-    returnedDate:{
-        type: Date,
-        default: null
+        default: "Unsold" // values, unsold, sold, returned
     },
 
 },{
