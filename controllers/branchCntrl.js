@@ -44,14 +44,6 @@ const branchsCntrl = {
             res.status(500).json({msg: error.message})
         }
     },
-
-    branchDashboard: async (req, res) =>{
-        // getEmployeePerBranch
-        // getclientsPerBranch
-        // getMachinesPerBranch
-        // salesPerbranch
-    },
-    // Branch dashboard 
     getEmployeePerBranch: async (req, res) =>{
         try {
             // retrive employee of single branch
@@ -60,13 +52,13 @@ const branchsCntrl = {
             res.status(500).json({msg: error.message})
         }
     },
-    // getbusinessesPerBranch: async (req, res) =>{
-    //     try {
-    //         res.json(await Businesses.find({"branch": req.params.branchId}))
-    //     } catch (error) {
-    //         res.status(500).json({msg: error.message})
-    //     }
-    // },
+    getbusinessesPerBranch: async (req, res) =>{
+        try {
+            res.json(await Businesses.find({"branch": req.params.branchId}))
+        } catch (error) {
+            res.status(500).json({msg: error.message})
+        }
+    },
     getMachinesPerBranch: async (req, res) =>{
         try {
             res.json(await Machines.find({"branch": req.params.branchId}))
