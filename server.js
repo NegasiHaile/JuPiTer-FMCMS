@@ -2,16 +2,16 @@ require('dotenv').config();
 const mongoose = require('mongoose');
 const express = require('express');
 const path = require('path');
-var cookieParser = require('cookie-parser');
-var http = require('http');
 const cors = require('cors');
+const cookieParser = require('cookie-parser')
+var http = require('http');
 
 const app = express();
-app.use(express.json());
+app.use(express.json())
+app.use(cookieParser())
+app.use(cors())
 app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(cors());
 
 
 //Routes
