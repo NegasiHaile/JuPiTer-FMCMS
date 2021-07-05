@@ -12,6 +12,6 @@ router.route('action/:id')  // if it's not distributed yet
     .put(machineCntrl.editMachine)
     .delete(machineCntrl.deleteMachine)
 
-router.post('/distribute', machineCntrl.distributMachine)
+router.post('/distribute/:machineId', machineCntrl.distributMachine)
 
 module.exports = router;

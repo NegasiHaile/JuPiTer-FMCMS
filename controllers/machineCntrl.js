@@ -59,25 +59,50 @@ const machineCntrl = {
 
     distributMachine: async(req, res) =>{
         try {
-            const newSales = new Sales({
-                machineId, businessId
-            }= req.body)
+            const {machineId, businessId, status} = req.body
+
             
-            // const machine = await Sales.findOne({"machineId": machineId})
             const busibess = await clientBusinesses.findOne({_id: businessId})
 
             if(busibess.credentials === "Pending") return res.json({msg: "The credentials of this document is not accepted yet!"})
             
-            await newSales.save()
+            const request = await Sales.findOne({"machineId": req.params.machineId})
 
-            await Machines.findOneAndUpdate({_id: machineId}, ({
-                salesStatus: "sold",
-            }))
+            if(request && request.status == 0){
 
-            await clientBusinesses.findOneAndUpdate({_id: businessId}, ({
-                machine: "Assigned",
-            }))
-            res.json({msg: "Machine has been distributed successfully!"})
+                await Sales.findOneAndUpdate({_id: request.id}, ({
+                    status: 1,
+                }))
+                
+                await Machines.findOneAndUpdate({_id: req.params.machineId}, ({
+                    salesStatus: "sold",
+                }))
+
+                await clientBusinesses.findOneAndUpdate({_id: businessId}, ({
+                    machine: "Assigned",
+                }))
+                res.json({msg: "Machine has been distributed successfully!"})
+            }
+
+            else{
+                const newSales = new Sales({
+                    machineId: req.params.machineId, businessId, status: 1
+                    })
+
+                await newSales.save()
+
+                await Machines.findOneAndUpdate({_id: machineId}, ({
+                    salesStatus: "sold",
+                    }))
+
+                await clientBusinesses.findOneAndUpdate({_id: businessId}, ({
+                    machine: "Assigned",
+                    }))
+
+                res.json({msg: "Machine has been distributed successfully!"})
+            }
+
+            
         } catch (err) {
             return res.status(500).json({msg: err.message})
         }
