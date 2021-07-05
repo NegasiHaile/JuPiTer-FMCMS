@@ -13,6 +13,7 @@ router.route('/action/:branchId')
 router.get('/employees/:branchId', branchsCntrl.getEmployeePerBranch)
 router.get('/machines/:branchId', branchsCntrl.getMachinesPerBranch)
 router.get('/businesses/:branchId', branchsCntrl.getbusinessesPerBranch)
+
 router.get('/sales/:branchId', branchsCntrl.salesPerbranch)
 
 module.exports = router;
