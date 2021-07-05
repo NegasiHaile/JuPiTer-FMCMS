@@ -15,10 +15,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 //Routes
-app.use('/branchs', require('./routes/branchRouter'));
 app.use('/users', require('./routes/userRouter'));
+app.use('/users', require('./routes/authorizationRouter'));
+app.use('/branchs', require('./routes/branchRouter'));
 app.use('/machines', require('./routes/machineRouter'));
 app.use('/businesses', require('./routes/clientBusinessRouter'));
+const server = http.createServer(app)
 
 
 // Connect to mongodb
@@ -34,6 +36,6 @@ mongoose.connect(URI, {
 })
 
 const PORT = process.env.PORT || 5000
-app.listen(PORT, () =>{
+server.listen(PORT, () => {
     console.log('Server is running on port', PORT)
 })
