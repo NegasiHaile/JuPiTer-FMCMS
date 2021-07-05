@@ -25,7 +25,7 @@ const machineSchema = new mongoose.Schema({
         required: true
     },
     problemStatus:{
-        type: String,
+        type: String, // fine, with problem, in maintenance
         required: true
     },
     salesStatus:{

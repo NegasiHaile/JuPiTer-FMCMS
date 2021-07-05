@@ -4,12 +4,14 @@ const auth = require('../middleware/auth')
 
 router.post('/register', machineCntrl.register)
 
-router.get('', machineCntrl.getMachines)
+router.get('/list', machineCntrl.getMachines)
 
-router.route('action/:id')
+router.get('/detail/:id', machineCntrl.getMachineDetail)
+
+router.route('action/:id')  // if it's not distributed yet
     .put(machineCntrl.editMachine)
-    .delete(machineCntrl.deleteMachine) // if it's not assigned yet
+    .delete(machineCntrl.deleteMachine)
 
-router.post('/distribute/:id', machineCntrl.distributMachine)
+router.post('/distribute', machineCntrl.distributMachine)
 
 module.exports = router;
