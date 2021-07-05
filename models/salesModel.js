@@ -11,7 +11,7 @@ const salesSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: String,
+        type: Number,
     }
 },{
     timestamps: true
