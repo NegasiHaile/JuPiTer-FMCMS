@@ -122,11 +122,11 @@ const clientBusinessCntrl = {
             await newrequest.save()
 
             await Machines.findOneAndUpdate({_id: req.params.machineId}, ({
-                salesStatus: "Requested",
+                salesStatus: "requested",
             }))
 
             await clientBusinesses.findOneAndUpdate({_id: businessId}, ({
-                machine: "InRequest",
+                machine: "inRequest",
             }))
             res.json({msg: "Machine has been requested successfully!"})
         } catch (err) {
