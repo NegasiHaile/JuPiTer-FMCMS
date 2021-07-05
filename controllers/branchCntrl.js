@@ -26,6 +26,14 @@ const branchsCntrl = {
             res.status(500).json({msg: error.message})
         }
     },
+    getBranchDetail: async (req, res) => {
+        try {
+            const branch = await Branchs.findById({_id: rea.params.branchId})
+            res.json(branch)
+        } catch (error) {
+            res.status(500).json({msg: error.message})
+        }
+    },
     editBranchDetail: async (req, res) =>{
         try {
             await Branchs.findOneAndUpdate({_id: req.params.branchId}, {
@@ -61,14 +69,15 @@ const branchsCntrl = {
     },
     getMachinesPerBranch: async (req, res) =>{
         try {
-            res.json(await Machines.find({"branch": req.params.branchId}))
+            res.json({msg: await Machines.find({"branch": req.params.branchId})})
         } catch (error) {
             res.status(500).json({msg: error.message})
         }
     },
     salesPerbranch: async (req, res) =>{
         try {
-            // SELECT * FROM machines WHERE branch = 'req.params.id' AND machineStatus = 'sold'
+            // SELECT * FROM machines WHERE branch = 'req.params.id' AND machineStatus = 'sold' 
+            res.json({msg: await Machines.find({"branch": req.params.branchId, "salesStatus": "sold"})})
         } catch (error) {
             res.status(500).json({msg: error.message})
         }
