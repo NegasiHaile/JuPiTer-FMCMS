@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const ObjectID = mongoose.Schema.Types.ObjectID
 
 const userSchema = new mongoose.Schema({
     fName: {
@@ -57,7 +58,7 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: String,
+        type: ObjectID,
         default: "ON"
     },
 }, { timestamps: true });
