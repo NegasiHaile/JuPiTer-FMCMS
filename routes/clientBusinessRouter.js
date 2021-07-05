@@ -6,10 +6,11 @@ router.post('/register', clientBusinessCntrl.register)
 
 router.get('/list', clientBusinessCntrl.getAllBusinesses)
 
-router.get('/owner/:ownerId', clientBusinessCntrl.getBusinesesPerOwner)
+router.get('/detail/:busineId', clientBusinessCntrl.getBusinessDetail)
+
+router.get('/businesesPerowner/:ownerId', clientBusinessCntrl.getBusinesesPerOwner)
 
 router.route('/action/:busineId')
-    .get(clientBusinessCntrl.getBusinessDetail)
     .put(clientBusinessCntrl.eidtBusinesDetail)
     .delete(clientBusinessCntrl.deleteBusiness)
 

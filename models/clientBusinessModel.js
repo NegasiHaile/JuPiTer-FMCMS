@@ -53,6 +53,11 @@ const clientBusinessSchema = new mongoose.Schema({
     fax: {
         type: String
         },
+    // under which branch is this request
+    branch:{
+        type: ObjectID,
+        require: true
+    },
     // Machine assignment
     machine: {
         type: String,
@@ -67,7 +72,7 @@ const clientBusinessSchema = new mongoose.Schema({
         type: ObjectID, // vales:- unassigned / hw-technician id
         default: null
     },
-    credintals: {
+    credentials: {
         type: String,
         default: "Pending"
     }

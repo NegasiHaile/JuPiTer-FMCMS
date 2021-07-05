@@ -54,6 +54,20 @@ const clientBusinessCntrl = {
             res.status(500).json({msg: error.message})
         }
     },
+    acceptCredentials: async(req, res) => {
+        try {
+            
+        } catch (error) {
+            
+        }
+    },
+    rejectCredentials: async(req, res) => {
+        try {
+            
+        } catch (error) {
+            
+        }
+    },
     getBusinesesPerOwner: async (req, res) =>{
         // this fetchs all the businesses of an owner
         try {
