@@ -11,9 +11,10 @@ const salesSchema = new mongoose.Schema({
         required: true
     },
     status: {
-        type: ,
-        required: true
+        type: String,
     }
 },{
     timestamps: true
 })
+
+module.exports = mongoose.model('Sales', salesSchema)
