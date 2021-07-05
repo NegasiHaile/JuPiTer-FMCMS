@@ -79,7 +79,7 @@ const machineCntrl = {
                 }))
 
                 await clientBusinesses.findOneAndUpdate({_id: businessId}, ({
-                    machine: "Assigned",
+                    machine: "assigned",
                 }))
                 res.json({msg: "Machine has been distributed successfully!"})
             }
@@ -96,7 +96,7 @@ const machineCntrl = {
                     }))
 
                 await clientBusinesses.findOneAndUpdate({_id: businessId}, ({
-                    machine: "Assigned",
+                    machine: "assigned",
                     }))
 
                 res.json({msg: "Machine has been distributed successfully!"})
@@ -105,6 +105,30 @@ const machineCntrl = {
             
         } catch (err) {
             return res.status(500).json({msg: err.message})
+        }
+    },
+
+    allMachinesInRequest: async(req, res) => {
+        try {
+            res.json(await Machines.find({"salesStatus": "requested"}))
+        } catch (error) {
+            res.status(500).json({msg: error.message})
+        }
+    },
+
+    allSoldMachines: async(req, res) => {
+        try {
+            res.json(await Machines.find({"salesStatus": "sold"}))
+        } catch (error) {
+            res.status(500).json({msg: error.message})
+        }
+    },
+
+    allUnsoldMachines: async(req, res) => {
+        try {
+            res.json(await Machines.find({"salesStatus": "unsold"}))
+        } catch (error) {
+            res.status(500).json({msg: error.message})
         }
     },
 }

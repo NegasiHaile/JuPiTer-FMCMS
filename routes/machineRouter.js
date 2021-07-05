@@ -14,4 +14,7 @@ router.route('action/:id')  // if it's not distributed yet
 
 router.post('/distribute/:machineId', machineCntrl.distributMachine)
 
+router.get('/inRequest', machineCntrl.allMachinesInRequest)
+router.get('/sold', machineCntrl.allSoldMachines)
+router.get('/unsold', machineCntrl.allUnsoldMachines)
 module.exports = router;
