@@ -17,4 +17,6 @@ router.route('/action/:busineId')
 router.put('/sw-technician/:busineId', clientBusinessCntrl.assignSoftwareTech)
 router.put('/hw-technician/:busineId', clientBusinessCntrl.assignHardwareTech)
 
+router.post('/request-machine/:machineId', clientBusinessCntrl.requestMachine)
+
 module.exports = router;

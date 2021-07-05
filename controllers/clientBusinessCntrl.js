@@ -1,4 +1,6 @@
-const clientBusinesses = require('../models/clientBusinessModel')
+const clientBusinesses = require('../models/clientBusinessModel');
+const Machines = require('../models/machineModel');
+const Sales = require('../models/salesModel');
 
 const clientBusinessCntrl = {
     register: async (req, res) =>{
@@ -104,6 +106,31 @@ const clientBusinessCntrl = {
             res.json({msg: "Business has been assigned a hardware technician!"})
         } catch (error) {
             res.status(500).json({msg: error.message})
+        }
+    },
+    requestMachine: async(req, res) =>{
+        try {
+            const {machineId, businessId, status} = req.body
+            const newrequest = new Sales({
+                machineId: req.params.machineId, businessId, status: 0
+            })
+            
+            const busibess = await clientBusinesses.findOne({_id: businessId})
+
+            if(busibess.credentials === "Pending") return res.json({msg: "The credentials of this document is not accepted yet!"})
+            
+            await newrequest.save()
+
+            await Machines.findOneAndUpdate({_id: req.params.machineId}, ({
+                salesStatus: "Requested",
+            }))
+
+            await clientBusinesses.findOneAndUpdate({_id: businessId}, ({
+                machine: "InRequest",
+            }))
+            res.json({msg: "Machine has been requested successfully!"})
+        } catch (err) {
+            return res.status(500).json({msg: err.message})
         }
     },
 }
