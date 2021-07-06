@@ -61,13 +61,13 @@ const userCntrl = {
             sendMailToUser(mailDetail)
 
             // Then create jsonwebtoken to authentication
-            const accesstoken = createAccessToken({ id: newUser._id })
-            const refreshtoken = createRefreshToken({ id: newUser._id })
+            // const accesstoken = createAccessToken({ id: newUser._id })
+            // const refreshtoken = createRefreshToken({ id: newUser._id })
 
-            res.cookie('refreshtoken', refreshtoken, {
-                httpOnly: true,
-                path: '/user/refresh_token',
-            })
+            // res.cookie('refreshtoken', refreshtoken, {
+            //     httpOnly: true,
+            //     path: '/user/refresh_token',
+            // })
 
             res.json({ msg: "User Successfuly registered, and we have sent a passord for this user to the email!" })
         } catch (err) {
@@ -145,6 +145,7 @@ const userCntrl = {
             if (!isMatch) return res.status(400).json({ msg: "Incorrect password." })
             
             if (user.status !== "ON") return res.status(400).json({ msg: "This account is deactivated, please contact the owner of this site!" })
+            
             // If login success , create access token and refresh token
             const accesstoken = createAccessToken({id: user._id})
             const refreshtoken = createRefreshToken({id: user._id})

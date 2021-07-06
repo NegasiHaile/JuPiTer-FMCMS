@@ -54,11 +54,11 @@ const userSchema = new mongoose.Schema({
         required: true
     },
     role: {
-        type: String,
+        type: ObjectID,
         required: true
     },
     status: {
-        type: ObjectID,
+        type: String,
         default: "ON"
     },
 }, { timestamps: true });
