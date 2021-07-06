@@ -2,20 +2,19 @@ const router = require('express').Router();
 const clientBusinessCntrl = require('../controllers/clientBusinessCntrl');
 
 
-router.post('/register', clientBusinessCntrl.register)
+router.post('/register-business', clientBusinessCntrl.register)
 
-router.get('/list', clientBusinessCntrl.getAllBusinesses)
+router.get('/get-all-businesses', clientBusinessCntrl.getAllBusinesses)
 
-router.get('/detail/:busineId', clientBusinessCntrl.getBusinessDetail)
+router.get('/get-business-detail/:busineId', clientBusinessCntrl.getBusinessDetail)
 
-router.get('/businesesPerowner/:ownerId', clientBusinessCntrl.getBusinesesPerOwner)
+router.get('/get-businesesPerowner/:ownerId', clientBusinessCntrl.getBusinesesPerOwner)
 
-router.route('/action/:busineId')
-    .put(clientBusinessCntrl.eidtBusinesDetail)
-    .delete(clientBusinessCntrl.deleteBusiness)
+router.put('/edit-business/:busineId', clientBusinessCntrl.eidtBusinesDetail)
+router.delete('/delete-business/:busineId', clientBusinessCntrl.deleteBusiness)
 
-router.put('/sw-technician/:busineId', clientBusinessCntrl.assignSoftwareTech)
-router.put('/hw-technician/:busineId', clientBusinessCntrl.assignHardwareTech)
+router.put('/assign-sw-technician/:busineId', clientBusinessCntrl.assignSoftwareTech)
+router.put('/assign-hw-technician/:busineId', clientBusinessCntrl.assignHardwareTech)
 
 router.post('/request-machine/:machineId', clientBusinessCntrl.requestMachine)
 

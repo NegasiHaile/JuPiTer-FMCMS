@@ -2,19 +2,20 @@ const router = require('express').Router()
 const machineCntrl = require('../controllers/machineCntrl')
 const auth = require('../middleware/auth')
 
-router.post('/register', machineCntrl.register)
+router.post('/register-machine', machineCntrl.register)
 
-router.get('/list', machineCntrl.getMachines)
+router.get('/machines-list', machineCntrl.getMachines)
 
-router.get('/detail/:id', machineCntrl.getMachineDetail)
+router.get('/machine-detail/:id', machineCntrl.getMachineDetail)
 
-router.route('action/:id')  // if it's not distributed yet
-    .put(machineCntrl.editMachine)
-    .delete(machineCntrl.deleteMachine)
+router.put('/edit-machine/:id', machineCntrl.editMachine) // if it's not distributed yet
 
-router.post('/distribute/:machineId', machineCntrl.distributMachine)
+router.delete('/delete-machine/:id', machineCntrl.deleteMachine) // if it's not distributed yet
 
-router.get('/inRequest', machineCntrl.allMachinesInRequest)
-router.get('/sold', machineCntrl.allSoldMachines)
-router.get('/unsold', machineCntrl.allUnsoldMachines)
+
+router.post('/distribute-machine/:machineId', machineCntrl.distributMachine)
+
+router.get('/get-machines-inRequest', machineCntrl.allMachinesInRequest)
+router.get('/get-machines-sold', machineCntrl.allSoldMachines)
+router.get('/get-machines-unsold', machineCntrl.allUnsoldMachines)
 module.exports = router;

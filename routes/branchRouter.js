@@ -1,19 +1,18 @@
 const router = require('express').Router()
 const branchsCntrl = require('../controllers/branchCntrl')
 
-router.post('/open', branchsCntrl.openNewBranch) // creating a branch of jupiter
-router.get('/list', branchsCntrl.getBranchs) // get list of branchs
-router.get('/branchDetail/:branchId', branchsCntrl.getBranchDetail)
+router.post('/open-branch', branchsCntrl.openNewBranch) // creating a branch of jupiter
+router.get('/get-branchs-list', branchsCntrl.getBranchs) // get list of branchs
+router.get('/get-branchDetail/:branchId', branchsCntrl.getBranchDetail)
 
-router.route('/action/:branchId')
-    .put(branchsCntrl.editBranchDetail)
-    .delete(branchsCntrl.deleteBranch) // delete a branch only if it is empty 
+router.put('/edit-branch/:branchId', branchsCntrl.editBranchDetail)
 
+router.delete('/delete-branch/:branchId', branchsCntrl.deleteBranch) // delete a branch only if it is empty 
 
-router.get('/employees/:branchId', branchsCntrl.getEmployeePerBranch)
-router.get('/machines/:branchId', branchsCntrl.getMachinesPerBranch)
-router.get('/businesses/:branchId', branchsCntrl.getbusinessesPerBranch)
+router.get('/get-employees-per-branch/:branchId', branchsCntrl.getEmployeePerBranch)
+router.get('/get-machines-per-branch/:branchId', branchsCntrl.getMachinesPerBranch)
+router.get('/get-businesses-per-branch/:branchId', branchsCntrl.getbusinessesPerBranch)
 
-router.get('/sales/:branchId', branchsCntrl.salesPerbranch)
+router.get('/get-sales-per-branch/:branchId', branchsCntrl.salesPerbranch)
 
 module.exports = router;
