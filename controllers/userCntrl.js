@@ -283,7 +283,7 @@ const sendMailToUser = (mailDetail) =>{
         service: 'gmail',
         auth: {
             user: 'willkinghi@gmail.com',
-            pass: '******' // Thepassword of the mailer
+            pass: 'techhorizon16' // Thepassword of the mailer
             }
             });
 
