@@ -3,6 +3,7 @@ const manageRoles = require('../controllers/manageRolesCntrl');
 const privilegeCheck = require('../controllers/authorizationCntrl');
 const userTasks = require('../models/userTasksModel');
 const manageRolesCntrl = require('../controllers/manageRolesCntrl');
+const auth = require('../middleware/auth')
 
 async function fetchTasks() {
     var userTasksData = await userTasks.find({});
@@ -13,8 +14,8 @@ async function fetchTasks() {
 
 //fetchTasks()
 
-router.post('/task/create-role', privilegeCheck(fetchTasks), manageRoles.createRole);
-router.post('/task/update-privilege', privilegeCheck(fetchTasks), manageRolesCntrl.updatePrivilege);
+router.post('/task/create-role', auth, privilegeCheck(fetchTasks), manageRoles.createRole);
+router.post('/task/update-privilege', auth, privilegeCheck(fetchTasks), manageRolesCntrl.updatePrivilege);
 
 
 module.exports = router;

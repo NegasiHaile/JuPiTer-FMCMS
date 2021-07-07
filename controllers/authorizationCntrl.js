@@ -7,7 +7,7 @@ function privilegeCheck(fetchedTasksData) {
         const routeUrl = req.originalUrl;
         const operationName = routeUrl.substring(routeUrl.lastIndexOf('/') + 1);
         const privilegesData = await userPrivileges.find({});
-        const roleID = mongoose.Types.ObjectId('60df1e3878ff9871852370f8');
+        const roleID = await mongoose.Types.ObjectId(req.user.roleID);
         var taskID;
 
         for (let task of tasks) {
@@ -29,12 +29,7 @@ function privilegeCheck(fetchedTasksData) {
             }
             return res.send('This operation is not allowed for you');
         }
-
         return res.send('The task doesnt exist at all');
-
-
-
-
     }
 }
 
