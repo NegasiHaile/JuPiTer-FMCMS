@@ -283,13 +283,8 @@ const sendMailToUser = (mailDetail) => {
         auth: {
             user: 'willkinghi@gmail.com',
             pass: 'techhorizon16' // Thepassword of the mailer
-<<<<<<< HEAD
-            }
-            });
-=======
         }
     });
->>>>>>> Dan
 
     console.log(mailDetail)
     var mailOptions = {
