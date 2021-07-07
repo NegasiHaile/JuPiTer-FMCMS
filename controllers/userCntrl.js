@@ -25,7 +25,7 @@ const userCntrl = {
             } = req.body;
 
             const newpassword = generatePassword();
-            
+
             const user = await Users.findOne({ email })
 
             if (user) return res.status(400).json({ msg: "There is a user with this email!" })
@@ -75,7 +75,7 @@ const userCntrl = {
         }
     },
 
-    getLogedInUser: async(req,  res) => {
+    getLogedInUser: async(req, res) => {
         try {
             const user = await Users.findById(req.user.id).select('-password')
             if (!user) return res.status(400).json({ msg: "User does not exist." })
@@ -143,13 +143,12 @@ const userCntrl = {
 
             const isMatch = await bcrypt.compare(password, user.password)
             if (!isMatch) return res.status(400).json({ msg: "Incorrect password." })
-            
-            if (user.status !== "ON") return res.status(400).json({ msg: "This account is deactivated, please contact the owner of this site!" })
-            
-            // If login success , create access token and refresh token
-            const accesstoken = createAccessToken({id: user._id})
-            const refreshtoken = createRefreshToken({id: user._id})
 
+            if (user.status !== "ON") return res.status(400).json({ msg: "This account is deactivated, please contact the owner of this site!" })
+
+            // If login success , create access token and refresh token
+            const accesstoken = createAccessToken({ id: user._id, roleID: user.roleID })
+            const refreshtoken = createRefreshToken({ id: user._id, roleID: user.roleID })
             res.cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
                 path: '/users/refresh_token',
@@ -181,7 +180,7 @@ const userCntrl = {
             const isMatch = await bcrypt.compare(oldPassword, user.password)
 
 
-            if (!isMatch) return res.status(400).json({ msg: "Old password is nut correct!" })
+            if (!isMatch) return res.status(400).json({ msg: "Old password is not correct!" })
 
             if (newPassword.length < 6) return res.status(400).json({ msg: "New password must be at least 6 character!" })
 
@@ -195,18 +194,18 @@ const userCntrl = {
         }
     },
 
-    forgotPassword: async (req, res) => {
+    forgotPassword: async(req, res) => {
         try {
-            const {email} = req.body;
+            const { email } = req.body;
             const user = await Users.findOne({ email })
-            if(!user) return res.status(400).json({msg: "There is no account with eamil, please insert your email carefully!"})
+            if (!user) return res.status(400).json({ msg: "There is no account with eamil, please insert your email carefully!" })
 
             const newPassword = generatePassword();
 
             await Users.findOneAndUpdate({ _id: user.id }, ({
                 password: await bcrypt.hash(newPassword, 10)
             }))
-            
+
             const mailDetail = {
                 emailToMail: email,
                 passwordToMail: newPassword,
@@ -215,7 +214,7 @@ const userCntrl = {
             }
             sendMailToUser(mailDetail)
 
-            res.json({msg: "We have sent new password this email!"})
+            res.json({ msg: "We have sent new password this email!" })
         } catch (error) {
             res.status(500).json({ meg: error.message })
         }
@@ -246,17 +245,17 @@ const userCntrl = {
     refreshToken: (req, res) => {
         try {
             const rf_token = req.cookies.refreshtoken;
-            if(!rf_token) return res.status(400).json({msg: "Please Login!"})
+            if (!rf_token) return res.status(400).json({ msg: "Please Login!" })
 
-            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) =>{
-                if(err) return res.status(400).json({msg: "Please reLogin!"})
+            jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
+                if (err) return res.status(400).json({ msg: "Please reLogin!" })
 
-                const accesstoken = createAccessToken({id: user.id})
+                const accesstoken = createAccessToken({ id: user.id, roleID: user.roleID })
 
-                res.json({accesstoken})
+                res.json({ accesstoken })
             })
         } catch (err) {
-            return res.status(500).json({msg: err.message})
+            return res.status(500).json({ msg: err.message })
         }
     },
 }
@@ -268,42 +267,41 @@ const createRefreshToken = (user) => {
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
 }
 
-const generatePassword = () =>{
+const generatePassword = () => {
     const generatedpassword = generator.generate({
-	length: 8,
-	numbers: true,
-    symbols: false,
-    uppercase: true
-});
-return generatedpassword;
+        length: 8,
+        numbers: true,
+        symbols: false,
+        uppercase: true
+    });
+    return generatedpassword;
 }
 
-const sendMailToUser = (mailDetail) =>{
+const sendMailToUser = (mailDetail) => {
     var transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
             user: 'willkinghi@gmail.com',
-            pass: '******' // Thepassword of the mailer
-            }
-            });
+            pass: 'techhorizon16' // Thepassword of the mailer
+        }
+    });
 
-        console.log(mailDetail)
+    console.log(mailDetail)
     var mailOptions = {
         from: 'willkinghi@gmail.com',
         to: mailDetail.emailToMail,
         subject: mailDetail.subject,
-        text: mailDetail.text + mailDetail.passwordToMail 
-        };
-    transporter.sendMail(mailOptions, function(error, info){
+        text: mailDetail.text + mailDetail.passwordToMail
+    };
+    transporter.sendMail(mailOptions, function(error, info) {
         if (error) {
             console.log(error);
-            }
-        else {
+        } else {
             console.log('Email sent to: ' + mailDetail.emailToMail + info.response);
             res.json({ msg: "User password is sent to his email!!" })
-            }
-        });
-
         }
+    });
+
+}
 
 module.exports = userCntrl;

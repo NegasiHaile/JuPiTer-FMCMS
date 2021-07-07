@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
     },
     branch: {
         type: String
-        //, required: true
+            //, required: true
     },
 
     city: {
@@ -53,7 +53,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    role: {
+    roleID: {
         type: ObjectID,
         required: true
     },
