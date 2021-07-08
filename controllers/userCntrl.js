@@ -132,12 +132,12 @@ const userCntrl = {
 
     getUsers: async(req, res) => {
         try {
-            if (req.params.role == "employee") {
+            if (req.params.role == "employee") { // fech branch-admin and technician
                 var usersInCategory = await Users.find({
-                    "$or": [{ "role": "branch-admin" }, { "role": "technician" }]
+                    "$or": [{ "roleID": "60df1e5178ff9871852370f9" }, { "roleID": "60e004d012f47733a9b2c04c" }]
                 }).select('-password')
             } else {
-                var usersInCategory = await Users.find({ "role": req.params.role }).select('-password')
+                var usersInCategory = await Users.find({ "roleID": req.params.role }).select('-password')
             }
             res.json({ msg: usersInCategory })
         } catch (error) {
