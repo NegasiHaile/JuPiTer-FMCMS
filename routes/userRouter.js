@@ -26,14 +26,17 @@ const storage = multer.diskStorage({
 // const upload = multer({ storage: storage });
 // router.post('/register', upload.single('file'), userCntrl.register)
 router.post('/register-user', userCntrl.register)
+
+router.get('/user-detail/:id', userCntrl.getuserDetail)
+
 // fetcch users based on their type Employee, clients and supper-admins separetly.
 router.get('/get-users-inType/:role', userCntrl.getUsers)
 
 // take an action on users based on thier type
 
-router.delete('/delete-user', userCntrl.deleteUser)
+router.delete('/delete-user/:id', userCntrl.deleteUser)
 
-router.put('/edit-user', userCntrl.editUser)
+router.put('/edit-user/:id', userCntrl.editUser)
 
 router.get('/user-profile', auth, userCntrl.getLogedInUser)
 
