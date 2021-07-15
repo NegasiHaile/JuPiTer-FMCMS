@@ -4,23 +4,18 @@ const express = require('express');
 const path = require('path');
 const cors = require('cors');
 const cookieParser = require('cookie-parser')
-var http = require('http');
 
 const app = express();
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors())
-app.use(express.urlencoded({ extended: false }));
-app.use(express.static(path.join(__dirname, 'public')));
 
 
 //Routes
-app.use('/users', require('./routes/userRouter'));
-app.use('/users', require('./routes/authorizationRouter'));
-app.use('/branchs', require('./routes/branchRouter'));
-app.use('/machines', require('./routes/machineRouter'));
-app.use('/businesses', require('./routes/clientBusinessRouter'));
-const server = http.createServer(app)
+app.use('/user', require('./routes/userRouter'));
+app.use('/branch', require('./routes/branchRouter'));
+app.use('/machine', require('./routes/machineRouter'));
+app.use('/business', require('./routes/clientBusinessRouter'));
 
 
 // Connect to mongodb
@@ -36,6 +31,6 @@ mongoose.connect(URI, {
 })
 
 const PORT = process.env.PORT || 5000
-server.listen(PORT, () => {
+app.listen(PORT, () => {
     console.log('Server is running on port', PORT)
 })

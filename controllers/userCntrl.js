@@ -21,7 +21,7 @@ const userCntrl = {
                 woreda,
                 phoneNumber,
                 email,
-                role
+                roleID
             } = req.body;
 
             const newpassword = generatePassword();
@@ -47,7 +47,7 @@ const userCntrl = {
                 phoneNumber,
                 email,
                 password: passwordHash,
-                role
+                roleID
             })
 
             await newUser.save()
@@ -86,17 +86,6 @@ const userCntrl = {
         }
     },
 
-    getLogedInUser: async(req, res) => {
-        try {
-            const user = await Users.findById(req.user.id).select('-password')
-            if (!user) return res.status(400).json({ msg: "User does not exist." })
-
-            res.json(user)
-        } catch (err) {
-            return res.status(500).json({ msg: err.message })
-        }
-    },
-
     editUser: async(req, res) => {
         try {
             await Users.findOneAndUpdate({ _id: req.params.id }, ({
@@ -113,7 +102,7 @@ const userCntrl = {
                 phoneNumber,
                 email,
                 password,
-                role
+                roleID
             } = req.body))
             res.json({ msg: "User datail edited successfuly!" })
         } catch (error) {
@@ -158,16 +147,27 @@ const userCntrl = {
             if (user.status !== "ON") return res.status(400).json({ msg: "This account is deactivated, please contact the owner of this site!" })
 
             // If login success , create access token and refresh token
-            const accesstoken = createAccessToken({ id: user._id, roleID: user.roleID })
-            const refreshtoken = createRefreshToken({ id: user._id, roleID: user.roleID })
+            const accesstoken = createAccessToken({ id: user._id })
+            const refreshtoken = createRefreshToken({ id: user._id})
             res.cookie('refreshtoken', refreshtoken, {
                 httpOnly: true,
-                path: '/users/refresh_token',
+                path: '/user/refresh_token',
                 // maxAge: 7*24*60*60*1000 // 7d
             })
 
             res.json({ accesstoken })
 
+        } catch (err) {
+            return res.status(500).json({ msg: err.message })
+        }
+    },
+
+    getLogedInUser: async(req, res) => {
+        try {
+            const user = await Users.findById(req.user.id).select('-password')
+            if (!user) return res.status(400).json({ msg: "User does not exist." })
+
+            res.json(user)
         } catch (err) {
             return res.status(500).json({ msg: err.message })
         }
@@ -261,7 +261,7 @@ const userCntrl = {
             jwt.verify(rf_token, process.env.REFRESH_TOKEN_SECRET, (err, user) => {
                 if (err) return res.status(400).json({ msg: "Please reLogin!" })
 
-                const accesstoken = createAccessToken({ id: user.id, roleID: user.roleID })
+                const accesstoken = createAccessToken({ id: user.id })
 
                 res.json({ accesstoken })
             })
@@ -272,7 +272,7 @@ const userCntrl = {
 }
 
 const createAccessToken = (user) => {
-    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '1d' })
+    return jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, { expiresIn: '10m' })
 }
 const createRefreshToken = (user) => {
     return jwt.sign(user, process.env.REFRESH_TOKEN_SECRET, { expiresIn: '7d' })
@@ -283,7 +283,7 @@ const generatePassword = () => {
         length: 8,
         numbers: true,
         symbols: false,
-        uppercase: true
+        uppercase: false
     });
     return generatedpassword;
 }
@@ -293,7 +293,7 @@ const sendMailToUser = (mailDetail) => {
         service: 'gmail',
         auth: {
             user: 'willkinghi@gmail.com',
-            pass: 'techhorizon16' // Thepassword of the mailer
+            pass: 'iam>thatiwas' // Thepassword of the mailer
         }
     });
 
