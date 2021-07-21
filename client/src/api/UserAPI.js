@@ -1,12 +1,11 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import axios from 'axios'
 
 function UserAPI(token) {
-    const [isLogged, setIsLogged] = useState()
+    const [isLogged, setIsLogged] = useState(false)
     const [User, setUser] = useState()
 
-    useEffect(() =>{
-        if(token){
+    if(token){
             const getUser = async () =>{
                 try {
                     const res = await axios.get('/user/profile', {
@@ -26,7 +25,6 @@ function UserAPI(token) {
             getUser()
             
         }
-    },[token])
 
 
     return {

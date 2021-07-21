@@ -1,2 +1,0 @@
-
-import clientLayout from './Layout'

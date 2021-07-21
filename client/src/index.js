@@ -12,16 +12,16 @@ import { icons } from './assets/icons'
 import { Provider } from 'react-redux'
 import store from './store'
 
-import {DataProvider} from './GlobalState'
+import { DataProvider } from './GlobalState'
 
 React.icons = icons
 
 ReactDOM.render(
-  <Provider store={store}>
-    <DataProvider>
+  <DataProvider>
+    <Provider store={store}>
       <App/>
-    </DataProvider>
-  </Provider>,
+    </Provider>
+  </DataProvider>,
   document.getElementById('root')
 );
 

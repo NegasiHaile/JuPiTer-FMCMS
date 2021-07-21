@@ -1,5 +1,11 @@
 import React from 'react'
-import {BranchAdminSidbar, BranchAdminHeader, BranchAdminContent, PrivateFooter} from './Index'
+import BranchAdminSidbar from "./Sidebar";
+
+import BranchAdminHeader from "./Header";
+
+import BranchAdminContent from "./Contents";
+
+import PrivateFooter from "../../Components/Footer/PrivateFooter";
 
 const BranchAdminLayout = () => {
 
