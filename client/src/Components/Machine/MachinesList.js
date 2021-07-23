@@ -1,11 +1,316 @@
-import React from 'react'
+import React, { useState, useContext } from "react";
+import axios from "axios";
+import { GlobalState } from "../../GlobalState";
+import {
+  CButton,
+  CCard,
+  CCardHeader,
+  CCardBody,
+  CModal,
+  CModalHeader,
+  CModalTitle,
+  CModalBody,
+  CModalFooter,
+  CLabel,
+  CForm,
+  CRow,
+  CCol,
+  CFormGroup,
+  CInput,
+  CDataTable,
+  CLink,
+  CTooltip,
+} from "@coreui/react";
+import CIcon from "@coreui/icons-react";
+import Swal from "sweetalert2";
 
-function MachinesList() {
-    return (
-        <div>
-            <h2>Maachines list</h2>
-        </div>
-    )
-}
+const branchDetail = {
+  branchName: "",
+  city: "",
+  subCity: "",
+  kebele: "",
+  woreda: "",
+  buildingName: "",
+  officeNumber: "",
+  telephone: "",
+  email: "",
+};
 
-export default MachinesList
+const MachinesList = () => {
+  const state = useContext(GlobalState);
+  const [token] = state.token;
+  const [branch, setBranch] = useState(branchDetail);
+  const [branchs] = state.branchAPI.branchs;
+  const [callback, setCallback] = state.branchAPI.callback;
+  const [activeBranch, setActiveBranch] = useState("none");
+  const [showModal, setShowModal] = useState(false);
+
+  const [machines] = state.MachineAPI.machines;
+  // console.log(Branchs);
+
+  const onChangeInput = (e) => {
+    const { name, value } = e.target;
+    setBranch({ ...branch, [name]: value });
+  };
+  const onSubmitOpenBranch = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/branch/open_new", { ...branch });
+      Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "success",
+        text: res.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: false,
+        // timer: 1500,
+      });
+      setShowModal(!showModal);
+      setCallback(!callback);
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "error",
+        text: error.response.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: false,
+        // timer: 1500,
+      });
+    }
+  };
+  const editBranchDetail = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.put(
+        `/branch/edit/${activeBranch}`,
+        { ...branch },
+        {
+          headers: { Authorization: token },
+        }
+      );
+      Swal.fire({
+        position: "top-center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "success",
+        text: res.data.msg,
+        showConfirmButton: false,
+        // timer: 1500,
+      });
+      setShowModal(!showModal);
+      setCallback(!callback);
+    } catch (error) {
+      Swal.fire({
+        position: "top-center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "error",
+        text: error.response.data.msg,
+        showConfirmButton: false,
+        // timer: 1500,
+      });
+    }
+  };
+  const deleteBranch = async (_id, branchName) => {
+    // e.preventDefault();
+    try {
+      Swal.fire({
+        title: "Delete?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#1E263C",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const res = await axios.delete(`/branch/delete/${_id}`, {
+            headers: { Authorization: token },
+          });
+          Swal.fire("Deleted!", res.data.msg, "success");
+          setCallback(!callback);
+        }
+      });
+    } catch (error) {
+      alert(error.response.data.msg);
+    }
+  };
+  const machineTablefields = ["serialNumber", "brand"];
+  return (
+    <>
+      <CCard className=" shadow-sm">
+        <CCardHeader className="d-flex justify-content-between">
+          <CLabel>Jupiter Branhcs</CLabel>
+          <CButton size="sm" variant="outline" color="success">
+            <CIcon name="cil-plus" /> Open branch
+          </CButton>
+        </CCardHeader>
+        <CCardBody>
+          <CDataTable
+            items={machines}
+            fields={machineTablefields}
+            tableFilter
+            itemsPerPageSelect
+            itemsPerPage={5}
+            hover
+            cleaner
+            sorter
+            pagination
+            scopedSlots={{}}
+          />
+        </CCardBody>
+
+        <CModal
+          size="lg"
+          static
+          show={showModal}
+          onClose={() => setShowModal(!showModal)}
+        >
+          <CModalHeader closeButton>
+            <CModalTitle>Open-New-Branch</CModalTitle>
+          </CModalHeader>
+          <CForm onSubmit={onSubmitOpenBranch}>
+            <CModalBody>
+              <CRow>
+                <CCol xs="12">
+                  <CFormGroup>
+                    Branch Name
+                    <CInput
+                      id="branchName"
+                      name="branchName"
+                      placeholder="Enter branch unique name."
+                      value={branch.branchName}
+                      onChange={onChangeInput}
+                      required
+                    />
+                  </CFormGroup>
+                </CCol>
+
+                <CCol xs="12" md="4">
+                  <CFormGroup>
+                    Address City
+                    <CInput
+                      id="city"
+                      name="city"
+                      placeholder="enter the branch city"
+                      value={branch.city}
+                      onChange={onChangeInput}
+                      required
+                    />
+                  </CFormGroup>
+                </CCol>
+                <CCol xs="12" md="4">
+                  <CFormGroup>
+                    Sub city
+                    <CInput
+                      id="subCity"
+                      name="subCity"
+                      placeholder="Enter sub city."
+                      value={branch.subCity}
+                      onChange={onChangeInput}
+                      required
+                    />
+                  </CFormGroup>
+                </CCol>
+
+                <CCol xs="12" md="4">
+                  <CFormGroup>
+                    Kebele
+                    <CInput
+                      id="kebele"
+                      name="kebele"
+                      placeholder="Enter kebele."
+                      value={branch.kebele}
+                      onChange={onChangeInput}
+                    />
+                  </CFormGroup>
+                </CCol>
+                <CCol xs="12" md="4">
+                  <CFormGroup>
+                    Woreda
+                    <CInput
+                      id="woreda"
+                      name="woreda"
+                      placeholder="Enter woreda."
+                      value={branch.woreda}
+                      onChange={onChangeInput}
+                    />
+                  </CFormGroup>
+                </CCol>
+                <CCol xs="12" md="4">
+                  <CFormGroup>
+                    Building Name
+                    <CInput
+                      id="buildingName"
+                      name="buildingName"
+                      placeholder="Enter building name."
+                      value={branch.buildingName}
+                      onChange={onChangeInput}
+                    />
+                  </CFormGroup>
+                </CCol>
+                <CCol xs="12" md="4">
+                  <CFormGroup>
+                    Office Number
+                    <CInput
+                      id="officeNumber"
+                      name="officeNumber"
+                      placeholder="Enter office number"
+                      value={branch.officeNumber}
+                      onChange={onChangeInput}
+                    />
+                  </CFormGroup>
+                </CCol>
+                <CCol xs="12" md="6">
+                  <CFormGroup>
+                    Telephone
+                    <CInput
+                      id="telephone"
+                      name="telephone"
+                      placeholder="Enter branch telephone"
+                      value={branch.telephone}
+                      onChange={onChangeInput}
+                      required
+                    />
+                  </CFormGroup>
+                </CCol>
+                <CCol xs="12" md="6">
+                  <CFormGroup>
+                    Email
+                    <CInput
+                      type="email"
+                      id="email"
+                      name="email"
+                      placeholder="Enter branch email"
+                      value={branch.email}
+                      onChange={onChangeInput}
+                    />
+                  </CFormGroup>
+                </CCol>
+              </CRow>
+            </CModalBody>
+            <CModalFooter>
+              {activeBranch === "none" ? (
+                <CButton type="submit" size="sm" color="success">
+                  <CIcon name="cil-save" /> Open Branch
+                </CButton>
+              ) : (
+                <CButton size="sm" color="dark" onClick={editBranchDetail}>
+                  <CIcon name="cil-pencil" /> Save Changes
+                </CButton>
+              )}
+              <CButton
+                size="sm"
+                color="danger"
+                onClick={() => setShowModal(!showModal)}
+              >
+                <CIcon name="cil-x" /> Close
+              </CButton>
+            </CModalFooter>
+          </CForm>
+        </CModal>
+      </CCard>
+    </>
+  );
+};
+
+export default MachinesList;

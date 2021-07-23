@@ -1,4 +1,4 @@
-import React, { lazy } from "react";
+import { lazy } from "react";
 
 // Auth
 const ChangePassword = lazy(() =>
@@ -7,12 +7,14 @@ const ChangePassword = lazy(() =>
 
 // Jupiter branchs
 const OpenNewBranch = lazy(() => import("../../Components/Branch/BranchList"));
+const BranchDetail = lazy(() => import("../../Components/Branch/BranchDetail"));
 
 // Dashboards
 const BranchAdminDashBoard = lazy(() =>
   import("../../Components/Dashboard/Dashboard.js")
 );
 
+// Employee frontend routing
 const RgisterEmployee = lazy(() =>
   import("../../Components/Employee/RegisterEmployee")
 );
@@ -23,6 +25,17 @@ const EmployeesList = lazy(() =>
 // Client routes
 const RegisterClient = lazy(() =>
   import("../../Components/Client/RegisterClient")
+);
+
+// Client business frontend routing
+const BusinessRegistration = lazy(() =>
+  import("../../Components/Business/BusinessRegistration")
+);
+const BusinessesList = lazy(() =>
+  import("../../Components/Business/BusinessesList")
+);
+const BusinessDetail = lazy(() =>
+  import("../../Components/Business/BusinessDetail")
 );
 
 // Importing of machine related pages
@@ -55,6 +68,12 @@ const routes = [
     name: "Open-New-Branch",
     component: OpenNewBranch,
   },
+  {
+    path: "/Branch/Detail",
+    exact: true,
+    name: "Branch-Detail",
+    component: BranchDetail,
+  },
   // Employee
   {
     path: "/Employee/Register",
@@ -74,6 +93,25 @@ const routes = [
     exact: true,
     name: "Register-Client",
     component: RegisterClient,
+  },
+  // Client bussiness
+  {
+    path: "/business/register",
+    exact: true,
+    name: "Register-Business",
+    component: BusinessRegistration,
+  },
+  {
+    path: "/business/list",
+    exact: true,
+    name: "Business-List",
+    component: BusinessesList,
+  },
+  {
+    path: "/business/detail",
+    exact: true,
+    name: "Register-Business",
+    component: BusinessDetail,
   },
   // Machine
   {

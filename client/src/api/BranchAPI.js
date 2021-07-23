@@ -5,12 +5,12 @@ function BranchAPI() {
   const [callback, setCallback] = useState(false);
 
   useEffect(() => {
-    const getCategories = async () => {
+    const getBranchs = async () => {
       const res = await axios.get("/branch/list");
       setBranchs(res.data);
     };
 
-    getCategories();
+    getBranchs();
   }, [callback]);
   return {
     branchs: [branchs, setBranchs],

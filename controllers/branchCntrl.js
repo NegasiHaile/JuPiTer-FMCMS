@@ -24,14 +24,12 @@ const branchsCntrl = {
       const branch = await Branchs.findOne({ branchName: branchName });
 
       if (branch)
-        return res
-          .status(400)
-          .json({
-            msg: "There is a branch with this name, please use unique one!",
-          });
+        return res.status(400).json({
+          msg: "There is a branch with this name, please use unique one!",
+        });
 
       await newBranch.save();
-      res.json("Branch has been opened successfully!");
+      res.json({ msg: "Branch has been opened successfully!" });
     } catch (error) {
       res.status(500).json({ msg: error.message });
     }

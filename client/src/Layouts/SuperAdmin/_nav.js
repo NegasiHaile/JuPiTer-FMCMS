@@ -129,8 +129,8 @@ const _nav = [
       },
       {
         _tag: "CSidebarNavItem",
-        name: "Business",
-        to: "/businesses/list",
+        name: "Business-List",
+        to: "/business/list",
       },
     ],
   },

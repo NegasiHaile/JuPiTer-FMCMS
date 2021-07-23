@@ -129,7 +129,7 @@ const userCntrl = {
 
   getUsers: async (req, res) => {
     try {
-      if (req.params.role == "employee") {
+      if (req.params.role === "employees") {
         // fech branch-admin and technician
         var usersInCategory = await Users.find({
           $or: [
@@ -142,7 +142,7 @@ const userCntrl = {
           roleID: req.params.role,
         }).select("-password");
       }
-      res.json({ msg: usersInCategory });
+      res.json(usersInCategory);
     } catch (error) {
       res.status(500).json({ msg: error.message });
     }
@@ -159,11 +159,9 @@ const userCntrl = {
       if (!isMatch) return res.status(400).json({ msg: "Incorrect password." });
 
       if (user.status !== "ON")
-        return res
-          .status(400)
-          .json({
-            msg: "This account is deactivated, please contact the owner of this site!",
-          });
+        return res.status(400).json({
+          msg: "This account is deactivated, please contact the owner of this site!",
+        });
 
       // If login success , create access token and refresh token
       const accesstoken = createAccessToken({ id: user._id });
@@ -233,11 +231,9 @@ const userCntrl = {
       const { email } = req.body;
       const user = await Users.findOne({ email });
       if (!user)
-        return res
-          .status(400)
-          .json({
-            msg: "There is no account with eamil, please insert your email carefully!",
-          });
+        return res.status(400).json({
+          msg: "There is no account with eamil, please insert your email carefully!",
+        });
 
       const newPassword = generatePassword();
 
