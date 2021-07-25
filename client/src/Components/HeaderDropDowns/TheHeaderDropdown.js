@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { GlobalState } from "../../GlobalState";
 import axios from "axios";
 import {
   CBadge,
@@ -13,6 +14,9 @@ import CIcon from "@coreui/icons-react";
 // import routes from "../../routes";
 
 const TheHeaderDropdown = () => {
+  const state = useContext(GlobalState);
+  const [user] = state.UserAPI.User;
+
   const logoutUser = async () => {
     await axios.get("/user/logout");
 
@@ -52,7 +56,7 @@ const TheHeaderDropdown = () => {
         <CDropdownItem header tag="div" color="light" className="text-center">
           <strong>Settings</strong>
         </CDropdownItem>
-        <CDropdownItem>
+        <CDropdownItem to={`/user/profile/${user._id}`}>
           <CIcon name="cil-user" className="mfe-2" />
           Profile
         </CDropdownItem>

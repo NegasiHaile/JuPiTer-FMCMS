@@ -123,7 +123,7 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Backup System",
+    name: "System Backup",
     to: "/Employee/List",
     icon: "cil-shield-alt",
   },

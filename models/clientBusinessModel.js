@@ -16,6 +16,7 @@ const clientBusinessSchema = new mongoose.Schema(
     },
     businessName: {
       type: String,
+      unique: true,
       required: true,
     },
     companyName: {

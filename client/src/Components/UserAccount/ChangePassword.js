@@ -1,5 +1,7 @@
 import React, { useContext, useState } from "react";
+import { GlobalState } from "../../GlobalState";
 import axios from "axios";
+import Swal from "sweetalert2";
 import {
   CButton,
   CCard,
@@ -15,15 +17,14 @@ import {
   CRow,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-
-import { GlobalState } from "../../GlobalState";
 const ChangePassword = () => {
-  const id = "60f51308b15a3928ac5cfdd2";
   const state = useContext(GlobalState);
+  const [user] = state.UserAPI.User;
   const [token] = state.token;
   const [Password, setPassword] = useState({
     oldPassword: "",
     newPassword: "",
+    retypeNewPassword: "",
   });
 
   const onChangeInput = (e) => {
@@ -34,18 +35,47 @@ const ChangePassword = () => {
   const onSubmitChangePassword = async (e) => {
     e.preventDefault();
     try {
-      await axios.post(
-        `/user/change_password/${id}`,
-        {
-          ...Password,
-        },
-        { headers: { Authorization: token } }
-      );
-      alert(Password.oldPassword);
+      if (Password.newPassword === Password.retypeNewPassword) {
+        const res = await axios.post(
+          `/user/change_password/${user._id}`,
+          {
+            ...Password,
+          },
+          { headers: { Authorization: token } }
+        );
+        Swal.fire({
+          position: "center",
+          background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+          icon: "success",
+          text: res.data.msg,
+          confirmButtonColor: "#1E263C",
+          showConfirmButton: false,
+          // timer: 1500,
+        });
+      } else {
+        Swal.fire({
+          position: "center",
+          background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+          icon: "error",
+          text: "New password not mutch please retype your password!",
+          confirmButtonColor: "#1E263C",
+          showConfirmButton: false,
+          // timer: 1500,
+        });
+      }
     } catch (error) {
-      alert(error.response.data.msg);
+      Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "error",
+        text: error.response.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: false,
+        // timer: 1500,
+      });
     }
   };
+
   return (
     <CRow className="d-flex justify-content-center">
       <CCol xs="12" md="9" lg="7" xl="6">
@@ -97,6 +127,9 @@ const ChangePassword = () => {
                   type="password"
                   placeholder="Repeat new password"
                   autoComplete="new-password"
+                  name="retypeNewPassword"
+                  onChange={onChangeInput}
+                  value={Password.retypeNewPassword}
                   required
                 />
               </CInputGroup>

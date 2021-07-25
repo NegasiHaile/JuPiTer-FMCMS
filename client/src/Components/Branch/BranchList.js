@@ -205,7 +205,10 @@ const BranchList = () => {
 
                   <span className="text-muted">|</span>
 
-                  <CLink className="text-primary" to={`/Branch/Detail`}>
+                  <CLink
+                    className="text-primary"
+                    to={`/Branch/Detail/${branch._id}`}
+                  >
                     <CTooltip
                       content={`See detail of - ${branch.branchName}- branch.`}
                     >

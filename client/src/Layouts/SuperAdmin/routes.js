@@ -1,8 +1,9 @@
 import { lazy } from "react";
 
-// Auth
+// User Account
+const UserProfile = lazy(() => import("../../Components/UserAccount/Profile"));
 const ChangePassword = lazy(() =>
-  import("../../Components/UserAccount/ChangePassword.js")
+  import("../../Components/UserAccount/ChangePassword")
 );
 
 // Jupiter branchs
@@ -11,7 +12,7 @@ const BranchDetail = lazy(() => import("../../Components/Branch/BranchDetail"));
 
 // Dashboards
 const BranchAdminDashBoard = lazy(() =>
-  import("../../Components/Dashboard/Dashboard.js")
+  import("../../Components/Dashboard/Dashboard")
 );
 
 // Employee frontend routing
@@ -69,7 +70,7 @@ const routes = [
     component: OpenNewBranch,
   },
   {
-    path: "/Branch/Detail",
+    path: "/Branch/Detail/:id",
     exact: true,
     name: "Branch-Detail",
     component: BranchDetail,
@@ -140,7 +141,13 @@ const routes = [
     component: MaintenanceAnnual,
   },
 
-  // Auth
+  // User Accont
+  {
+    path: "/user/profile/:id",
+    exact: true,
+    name: "Open-New-Branch",
+    component: UserProfile,
+  },
   {
     path: "/change_password",
     exact: true,

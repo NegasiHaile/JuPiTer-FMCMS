@@ -86,8 +86,8 @@ const RegisterEmployee = (props) => {
             Employee Registration
             <small> Form</small>
           </CLabel>
-          <CButton to="/Employee/List" size="sm" variant="outline" color="info">
-            <CIcon name="cil-list-numbered" /> See List
+          <CButton to="/Employee/List" size="sm" variant="outline" color="dark">
+            <CIcon name="cil-list-numbered" /> Employee List
           </CButton>
         </CCardHeader>
         <CCardBody>
