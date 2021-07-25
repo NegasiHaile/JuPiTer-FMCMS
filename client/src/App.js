@@ -10,7 +10,7 @@ const loading = (
 );
 
 // Users
-
+const ClientLayout = lazy(() => import("./Layouts/Client/Layout.js"));
 const BranchAdminLayout = lazy(() => import("./Layouts/BranchAdmin/Layout"));
 const SuperAdminLayout = lazy(() => import("./Layouts/SuperAdmin/Layout"));
 
@@ -21,13 +21,13 @@ const Page500 = lazy(() => import("./Components/Utils/page500/Page500"));
 
 function App() {
   const state = useContext(GlobalState);
-  const [isLogged] = state.userAPI.isLogged;
-  const [user] = state.userAPI.User;
-  console.log({ isLogged: isLogged, user: user });
+  const [isLogged] = state.UserAPI.isLogged;
+  const [user] = state.UserAPI.User;
+  console.log({ user: user, isLogged: isLogged });
 
   // user athorization
   let userLayout;
-  if (isLogged && user === "60df1e5178ff9871852370f9") {
+  if (isLogged && user.roleID === "60df1e5178ff9871852370f9") {
     userLayout = (
       <Route
         path="/"
@@ -35,7 +35,7 @@ function App() {
         render={(props) => <BranchAdminLayout {...props} />}
       />
     ); // Branch Admin Layout
-  } else if (isLogged && user === "60df1e3878ff9871852370f8") {
+  } else if (isLogged && user.roleID === "60df1e3878ff9871852370f8") {
     userLayout = (
       <Route
         path="/"
@@ -43,12 +43,12 @@ function App() {
         render={(props) => <SuperAdminLayout {...props} />}
       />
     ); // super admin Layout
-  } else if (isLogged && user === "60df1e6978ff9871852370fa") {
+  } else if (isLogged && user.roleID === "60df1e6978ff9871852370fa") {
     userLayout = (
       <Route
         path="/"
         name="Client"
-        render={(props) => <BranchAdminLayout {...props} />}
+        render={(props) => <ClientLayout {...props} />}
       />
     ); // client Layout
   } else {

@@ -16,6 +16,7 @@ import {
   CRow,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
+import Swal from "sweetalert2";
 
 const userAttributes = {
   fName: "",
@@ -30,14 +31,15 @@ const userAttributes = {
   woreda: "",
   phoneNumber: "",
   email: "",
-  roleID: null,
+  roleID: "",
 };
-const RegisterEmployee = () => {
+const RegisterEmployee = (props) => {
   const state = useContext(GlobalState);
   const [branchs] = state.branchAPI.branchs;
-  const [user, setUser] = useState({
-    userAttributes,
-  });
+  const [callback, setCallback] = state.UsersAPI.callback;
+  const [user, setUser] = useState(userAttributes);
+
+  console.log(props.location.state);
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -47,15 +49,28 @@ const RegisterEmployee = () => {
   const onSubmitRegisterUser = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/user/register", { ...user });
-      alert(
-        "User Successfuly registered, And a password has been sent to the " +
-          user.email +
-          " email!"
-      );
-      console.log(user);
+      const res = await axios.post("/user/register", { ...user });
+      setCallback(!callback);
+      Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "success",
+        text: res.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: false,
+        // timer: 1500,
+      });
+      // console.log(user);
     } catch (error) {
-      alert(error.response.data.msg);
+      Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "error",
+        text: error.response.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: false,
+        // timer: 1500,
+      });
     }
   };
 
@@ -125,8 +140,8 @@ const RegisterEmployee = () => {
                     value={user.gender}
                     required
                   >
-                    <option disabled></option>
-                    <option value="Mlae">Male</option>
+                    <option value="">Select gender</option>
+                    <option value="Male">Male</option>
                     <option value="Female">Fmale</option>
                   </CSelect>
                 </CFormGroup>
@@ -213,7 +228,7 @@ const RegisterEmployee = () => {
                     value={user.roleID}
                     required
                   >
-                    <option value={null}>Select employe task</option>
+                    <option value="">Select employe task</option>
                     <option value="60e004d012f47733a9b2c04c">Technician</option>
                     <option value="60df1e5178ff9871852370f9">
                       Branch Admin
@@ -235,11 +250,9 @@ const RegisterEmployee = () => {
                     value={user.branch}
                     required
                   >
-                    <option disabled value="">
-                      Select employee branch
-                    </option>
+                    <option value="">Select employee branch</option>
                     {branchs.map((branch) => (
-                      <option value={branch._id} key={branch._id}>
+                      <option value={branch.branchName} key={branch._id}>
                         {branch.branchName}
                       </option>
                     ))}

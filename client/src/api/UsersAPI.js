@@ -6,7 +6,7 @@ function UsersAPI() {
 
   useEffect(() => {
     const getUsersInType = async () => {
-      const res = await axios.get("/user/list_inType/employees");
+      const res = await axios.get("/user/list_inType");
       setUsers(res.data);
     };
 

@@ -62,9 +62,6 @@ const BranchAdminHeader = () => {
         <CHeaderNavItem className="px-3">
           <CHeaderNavLink to="/machines/list">Machines</CHeaderNavLink>
         </CHeaderNavItem>
-        <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/client/register">Clients</CHeaderNavLink>
-        </CHeaderNavItem>
       </CHeaderNav>
 
       <CHeaderNav className="px-3">

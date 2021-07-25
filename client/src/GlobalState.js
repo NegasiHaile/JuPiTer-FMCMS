@@ -3,6 +3,7 @@ import UserAPI from "./api/UserAPI";
 import UsersAPI from "./api/UsersAPI";
 import BranchAPI from "./api/BranchAPI";
 import MachineAPI from "./api/MachineAPI";
+import BusinessAPI from "./api/BusinessAPI";
 // import MachineAPI from "./api/MachineAPI";
 
 import axios from "axios";
@@ -28,10 +29,11 @@ export const DataProvider = ({ children }) => {
 
   const state = {
     token: [token, setToken],
-    userAPI: UserAPI(token),
+    UserAPI: UserAPI(token),
     UsersAPI: UsersAPI(),
     branchAPI: BranchAPI(),
     MachineAPI: MachineAPI(),
+    BusinessAPI: BusinessAPI(),
     // categoriesAPI: MachineAPI(),
   };
 

@@ -21,32 +21,6 @@ const _nav = [
     icon: "cil-bank",
   },
   {
-    _tag: "CSidebarNavTitle",
-    _children: ["Employee's-Managment"],
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Add Employee",
-    to: "/Employee/Register",
-    icon: "cil-user-plus",
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Get Employees",
-    to: "/Employee/List",
-    icon: "cil-group",
-  },
-  {
-    _tag: "CSidebarNavTitle",
-    _children: ["Machine's-Managment"],
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "All Machines",
-    to: "/machines/list",
-    icon: "cil-print",
-  },
-  {
     _tag: "CSidebarNavDropdown",
     name: "Maintenance",
     route: "/maintenance",
@@ -66,35 +40,7 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavDropdown",
-    name: "Sales",
-    route: "/sales",
-    icon: "cil-money",
-    _children: [
-      {
-        _tag: "CSidebarNavItem",
-        name: "General Sales",
-        to: "/sales/alerts",
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Branch Sales",
-        to: "/notifications/badges",
-      },
-    ],
-  },
-  {
-    _tag: "CSidebarNavTitle",
-    _children: ["Client's-Managment"],
-  },
-  {
-    _tag: "CSidebarNavItem",
-    name: "Allow Client",
-    to: "/client/register",
-    icon: "cil-contact",
-  },
-  {
-    _tag: "CSidebarNavDropdown",
-    name: "Client Business",
+    name: "My Businesses",
     route: "/Business",
     icon: "cil-building",
     _children: [

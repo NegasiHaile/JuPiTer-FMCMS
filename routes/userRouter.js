@@ -7,7 +7,8 @@ router.post("/register", userCntrl.register);
 router.get("/detail/:id", auth, userCntrl.getuserDetail);
 
 // fetcch users based on their type Employee, clients and supper-admins separetly.
-router.get("/list_inType/:role", userCntrl.getUsers);
+// router.get("/list_inType/:role", userCntrl.getUsers);
+router.get("/list_inType", userCntrl.getUsers);
 
 // take an action on users based on thier type
 

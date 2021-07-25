@@ -23,7 +23,7 @@ const userSchema = new mongoose.Schema(
     },
     branch: {
       type: String,
-      required: true,
+      // required: true,
     },
 
     city: {

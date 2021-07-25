@@ -25,7 +25,7 @@ const machineCntrl = {
       await newMachine.save();
       res.json({ msg: "Machine has been successfuly registered" });
     } catch (error) {
-      res.status(500).json({ msg: error.message });
+      return res.status(500).json({ msg: error.message });
     }
   },
 
@@ -75,22 +75,22 @@ const machineCntrl = {
       const busibess = await clientBusinesses.findOne({ _id: businessId });
 
       if (busibess.credentials === "Pending")
-        return res.json({
+        return res.status(400).json({
           msg: "The credentials of this document is not accepted yet!",
         });
 
-      const request = await Sales.findOne({ machineId: req.params.machineId });
+      const request = await Sales.findOne({ machineId: machineId });
 
       if (request && request.status == 0) {
         await Sales.findOneAndUpdate(
-          { _id: request.id },
+          { _id: machineId },
           {
             status: 1,
           }
         );
 
         await Machines.findOneAndUpdate(
-          { _id: req.params.machineId },
+          { _id: machineId },
           {
             salesStatus: "sold",
           }
@@ -105,7 +105,7 @@ const machineCntrl = {
         res.json({ msg: "Machine has been distributed successfully!" });
       } else {
         const newSales = new Sales({
-          machineId: req.params.machineId,
+          machineId: machineId,
           businessId,
           status: 1,
         });

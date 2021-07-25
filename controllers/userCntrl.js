@@ -108,13 +108,12 @@ const userCntrl = {
           woreda,
           phoneNumber,
           email,
-          password,
           roleID,
         } = req.body)
       );
       res.json({ msg: "User datail edited successfuly!" });
     } catch (error) {
-      res.status(500).json({ meg: error.message });
+      res.status(500).json({ meg: error.msg });
     }
   },
 
@@ -129,20 +128,20 @@ const userCntrl = {
 
   getUsers: async (req, res) => {
     try {
-      if (req.params.role === "employees") {
-        // fech branch-admin and technician
-        var usersInCategory = await Users.find({
-          $or: [
-            { roleID: "60df1e5178ff9871852370f9" },
-            { roleID: "60e004d012f47733a9b2c04c" },
-          ],
-        }).select("-password");
-      } else {
-        var usersInCategory = await Users.find({
-          roleID: req.params.role,
-        }).select("-password");
-      }
-      res.json(usersInCategory);
+      // if (req.params.role === "employees") {
+      //   // fech branch-admin and technician
+      //   var usersInCategory = await Users.find({
+      //     $or: [
+      //       { roleID: "60df1e5178ff9871852370f9" },
+      //       { roleID: "60e004d012f47733a9b2c04c" },
+      //     ],
+      //   }).select("-password");
+      // } else {
+      //   var usersInCategory = await Users.find({
+      //     roleID: req.params.role,
+      //   }).select("-password");
+      // }
+      res.json(await Users.find());
     } catch (error) {
       res.status(500).json({ msg: error.message });
     }
@@ -180,10 +179,10 @@ const userCntrl = {
 
   getLogedInUser: async (req, res) => {
     try {
-      const user = await Users.findById(req.user.id).select("-password");
-      if (!user) return res.status(400).json({ msg: "User does not exist." });
+      // const user = await Users.findById(req.user.id).select("-password");
+      // if (!user) return res.status(400).json({ msg: "User does not exist." });
 
-      res.json(user);
+      res.json(await Users.findById(req.user.id).select("-password"));
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

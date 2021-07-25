@@ -151,8 +151,7 @@ const BranchList = () => {
           <CLabel>Jupiter Branhcs</CLabel>
           <CButton
             size="sm"
-            variant="outline"
-            color="success"
+            color="secondary"
             onClick={() => {
               setBranch({ branch, ...branchDetail });
               setActiveBranch("none");
@@ -221,7 +220,6 @@ const BranchList = () => {
 
         <CModal
           size="lg"
-          static
           show={showModal}
           onClose={() => setShowModal(!showModal)}
         >

@@ -13,6 +13,7 @@ import {
   CModalFooter,
   CLabel,
   CForm,
+  CSelect,
   CRow,
   CCol,
   CFormGroup,
@@ -24,38 +25,39 @@ import {
 import CIcon from "@coreui/icons-react";
 import Swal from "sweetalert2";
 
-const branchDetail = {
-  branchName: "",
-  city: "",
-  subCity: "",
-  kebele: "",
-  woreda: "",
-  buildingName: "",
-  officeNumber: "",
-  telephone: "",
-  email: "",
+const machineDetail = {
+  serialNumber: "",
+  machineModel: "",
+  brand: "",
+  price: "",
+  branch: "60e004d012f47733a9b2c04c",
+  problemStatus: "",
+  // for distributing
+  businessId: "",
 };
 
 const MachinesList = () => {
   const state = useContext(GlobalState);
   const [token] = state.token;
-  const [branch, setBranch] = useState(branchDetail);
-  const [branchs] = state.branchAPI.branchs;
-  const [callback, setCallback] = state.branchAPI.callback;
-  const [activeBranch, setActiveBranch] = useState("none");
-  const [showModal, setShowModal] = useState(false);
-
+  const [machine, setMachine] = useState(machineDetail);
   const [machines] = state.MachineAPI.machines;
-  // console.log(Branchs);
+  const [callback, setCallback] = state.MachineAPI.callback;
+  const [activemachine, setActivemachine] = useState("none");
+  const [showModal, setShowModal] = useState(false);
+  const [machineStatus, setMachineStatus] = useState("fine");
+  const [distributingMachineId, setDistributingMachineId] = useState("none");
+  const [showMachineDistributeModal, setShowMachineDistributeModal] =
+    useState(false);
+  const [businesses] = state.BusinessAPI.businesses;
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
-    setBranch({ ...branch, [name]: value });
+    setMachine({ ...machine, [name]: value });
   };
-  const onSubmitOpenBranch = async (e) => {
+  const onSubmitRegisterMachine = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/branch/open_new", { ...branch });
+      const res = await axios.post("/machine/register", { ...machine });
       Swal.fire({
         position: "center",
         background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
@@ -79,12 +81,12 @@ const MachinesList = () => {
       });
     }
   };
-  const editBranchDetail = async (e) => {
+  const editmachineDetail = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.put(
-        `/branch/edit/${activeBranch}`,
-        { ...branch },
+        `/machine/edit/${activemachine}`,
+        { ...machine },
         {
           headers: { Authorization: token },
         }
@@ -110,7 +112,7 @@ const MachinesList = () => {
       });
     }
   };
-  const deleteBranch = async (_id, branchName) => {
+  const deletemachine = async (_id, serialNumber) => {
     // e.preventDefault();
     try {
       Swal.fire({
@@ -123,7 +125,7 @@ const MachinesList = () => {
         confirmButtonText: "Yes, delete it!",
       }).then(async (result) => {
         if (result.isConfirmed) {
-          const res = await axios.delete(`/branch/delete/${_id}`, {
+          const res = await axios.delete(`/machine/delete/${_id}`, {
             headers: { Authorization: token },
           });
           Swal.fire("Deleted!", res.data.msg, "success");
@@ -134,14 +136,60 @@ const MachinesList = () => {
       alert(error.response.data.msg);
     }
   };
-  const machineTablefields = ["serialNumber", "brand"];
+
+  const distributeMachine = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await axios.post("/machine/distribute", {
+        ...machine,
+        machineId: distributingMachineId,
+      });
+      Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "success",
+        text: res.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: false,
+        // timer: 1500,
+      });
+      setShowMachineDistributeModal(!showMachineDistributeModal);
+      setCallback(!callback);
+    } catch (error) {
+      Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "error",
+        text: "Error:- " + error.response.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: false,
+        // timer: 1500,
+      });
+    }
+  };
+  const machineTablefields = [
+    "serialNumber",
+    "machineModel",
+    "brand",
+    "bussiness",
+    "salesStatus",
+    "Actions",
+  ];
   return (
     <>
       <CCard className=" shadow-sm">
         <CCardHeader className="d-flex justify-content-between">
-          <CLabel>Jupiter Branhcs</CLabel>
-          <CButton size="sm" variant="outline" color="success">
-            <CIcon name="cil-plus" /> Open branch
+          <CLabel>Jupiter all machine list</CLabel>
+          <CButton
+            size="sm"
+            color="dark"
+            onClick={() => {
+              setActivemachine("none");
+              setMachine({ machine, ...machineDetail });
+              setShowModal(!showModal);
+            }}
+          >
+            <CIcon name="cil-plus" /> Add Machine
           </CButton>
         </CCardHeader>
         <CCardBody>
@@ -149,36 +197,103 @@ const MachinesList = () => {
             items={machines}
             fields={machineTablefields}
             tableFilter
+            columnFilter
             itemsPerPageSelect
-            itemsPerPage={5}
+            itemsPerPage={10}
             hover
             cleaner
             sorter
             pagination
-            scopedSlots={{}}
+            scopedSlots={{
+              Actions: (machine) => (
+                <td className="d-flex justify-content-between">
+                  <CLink
+                    className="text-success"
+                    onClick={() => {
+                      setMachine({ machine, ...machine });
+                      setActivemachine(machine._id);
+                      setShowModal(!showModal);
+                    }}
+                  >
+                    <CTooltip
+                      content={`Edit the  - ${machine.serialNumber}- machine detail.`}
+                    >
+                      <CIcon name="cil-pencil" />
+                    </CTooltip>
+                  </CLink>
+
+                  {machine.salesStatus !== "sold" ? (
+                    <>
+                      <span className="text-muted">|</span>
+                      <CLink
+                        className="text-danger"
+                        onClick={() => deletemachine(machine._id)}
+                      >
+                        <CTooltip
+                          content={`Delete - ${machine.serialNumber}- machine.`}
+                        >
+                          <CIcon name="cil-trash" />
+                        </CTooltip>
+                      </CLink>
+                      <span className="text-muted">|</span>
+                      <CLink
+                        className="text-primary"
+                        onClick={() => {
+                          setDistributingMachineId(machine._id);
+                          setShowMachineDistributeModal(
+                            !showMachineDistributeModal
+                          );
+                        }}
+                      >
+                        <CTooltip
+                          content={`Distribut this - ${machine.serialNumber}- machine.`}
+                        >
+                          <CIcon name="cil-control" />
+                        </CTooltip>
+                      </CLink>
+                    </>
+                  ) : (
+                    ""
+                  )}
+                </td>
+              ),
+            }}
           />
         </CCardBody>
 
+        {/* Distribute machine modal */}
         <CModal
           size="lg"
-          static
           show={showModal}
           onClose={() => setShowModal(!showModal)}
         >
           <CModalHeader closeButton>
-            <CModalTitle>Open-New-Branch</CModalTitle>
+            <CModalTitle className="text-muted">Open-New-machine</CModalTitle>
           </CModalHeader>
-          <CForm onSubmit={onSubmitOpenBranch}>
+          <CForm onSubmit={onSubmitRegisterMachine}>
             <CModalBody>
               <CRow>
-                <CCol xs="12">
+                <CCol xs="12" md="6">
                   <CFormGroup>
-                    Branch Name
+                    Serial Number
                     <CInput
-                      id="branchName"
-                      name="branchName"
-                      placeholder="Enter branch unique name."
-                      value={branch.branchName}
+                      id="serialNumber"
+                      name="serialNumber"
+                      placeholder="Enter serial number."
+                      value={machine.serialNumber}
+                      onChange={onChangeInput}
+                      required
+                    />
+                  </CFormGroup>
+                </CCol>
+                <CCol xs="12" md="6">
+                  <CFormGroup>
+                    Model
+                    <CInput
+                      id="machineModel"
+                      name="machineModel"
+                      placeholder="Enter machine model."
+                      value={machine.machineModel}
                       onChange={onChangeInput}
                       required
                     />
@@ -187,12 +302,24 @@ const MachinesList = () => {
 
                 <CCol xs="12" md="4">
                   <CFormGroup>
-                    Address City
+                    Brand
                     <CInput
-                      id="city"
-                      name="city"
-                      placeholder="enter the branch city"
-                      value={branch.city}
+                      id="brand"
+                      name="brand"
+                      placeholder="Enter brand."
+                      value={machine.brand}
+                      onChange={onChangeInput}
+                    />
+                  </CFormGroup>
+                </CCol>
+                <CCol xs="12" md="4">
+                  <CFormGroup>
+                    Price
+                    <CInput
+                      id="price"
+                      name="price"
+                      placeholder="Enter price."
+                      value={machine.price}
                       onChange={onChangeInput}
                       required
                     />
@@ -200,101 +327,30 @@ const MachinesList = () => {
                 </CCol>
                 <CCol xs="12" md="4">
                   <CFormGroup>
-                    Sub city
-                    <CInput
-                      id="subCity"
-                      name="subCity"
-                      placeholder="Enter sub city."
-                      value={branch.subCity}
+                    Employee task
+                    <CSelect
+                      aria-label="Default select example"
+                      id="problemStatus"
+                      name="problemStatus"
                       onChange={onChangeInput}
+                      value={machine.problemStatus}
                       required
-                    />
-                  </CFormGroup>
-                </CCol>
-
-                <CCol xs="12" md="4">
-                  <CFormGroup>
-                    Kebele
-                    <CInput
-                      id="kebele"
-                      name="kebele"
-                      placeholder="Enter kebele."
-                      value={branch.kebele}
-                      onChange={onChangeInput}
-                    />
-                  </CFormGroup>
-                </CCol>
-                <CCol xs="12" md="4">
-                  <CFormGroup>
-                    Woreda
-                    <CInput
-                      id="woreda"
-                      name="woreda"
-                      placeholder="Enter woreda."
-                      value={branch.woreda}
-                      onChange={onChangeInput}
-                    />
-                  </CFormGroup>
-                </CCol>
-                <CCol xs="12" md="4">
-                  <CFormGroup>
-                    Building Name
-                    <CInput
-                      id="buildingName"
-                      name="buildingName"
-                      placeholder="Enter building name."
-                      value={branch.buildingName}
-                      onChange={onChangeInput}
-                    />
-                  </CFormGroup>
-                </CCol>
-                <CCol xs="12" md="4">
-                  <CFormGroup>
-                    Office Number
-                    <CInput
-                      id="officeNumber"
-                      name="officeNumber"
-                      placeholder="Enter office number"
-                      value={branch.officeNumber}
-                      onChange={onChangeInput}
-                    />
-                  </CFormGroup>
-                </CCol>
-                <CCol xs="12" md="6">
-                  <CFormGroup>
-                    Telephone
-                    <CInput
-                      id="telephone"
-                      name="telephone"
-                      placeholder="Enter branch telephone"
-                      value={branch.telephone}
-                      onChange={onChangeInput}
-                      required
-                    />
-                  </CFormGroup>
-                </CCol>
-                <CCol xs="12" md="6">
-                  <CFormGroup>
-                    Email
-                    <CInput
-                      type="email"
-                      id="email"
-                      name="email"
-                      placeholder="Enter branch email"
-                      value={branch.email}
-                      onChange={onChangeInput}
-                    />
+                    >
+                      <option value="">Select machine problem status...</option>
+                      <option value="fine">Fine</option>
+                      <option value="damaged">Damaged</option>
+                    </CSelect>
                   </CFormGroup>
                 </CCol>
               </CRow>
             </CModalBody>
             <CModalFooter>
-              {activeBranch === "none" ? (
-                <CButton type="submit" size="sm" color="success">
-                  <CIcon name="cil-save" /> Open Branch
+              {activemachine === "none" ? (
+                <CButton type="submit" size="sm" color="dark">
+                  <CIcon name="cil-save" /> Register machine
                 </CButton>
               ) : (
-                <CButton size="sm" color="dark" onClick={editBranchDetail}>
+                <CButton size="sm" color="dark" onClick={editmachineDetail}>
                   <CIcon name="cil-pencil" /> Save Changes
                 </CButton>
               )}
@@ -302,6 +358,85 @@ const MachinesList = () => {
                 size="sm"
                 color="danger"
                 onClick={() => setShowModal(!showModal)}
+              >
+                <CIcon name="cil-x" /> Close
+              </CButton>
+            </CModalFooter>
+          </CForm>
+        </CModal>
+
+        {/* Distribute machine modal */}
+        <CModal
+          show={showMachineDistributeModal}
+          onClose={() => setShowModal(!showMachineDistributeModal)}
+        >
+          <CModalHeader closeButton>
+            <CModalTitle className="text-muted">Distribute-machine</CModalTitle>
+          </CModalHeader>
+          <CForm onSubmit={distributeMachine}>
+            <CModalBody>
+              <CRow>
+                <CCol md="6">
+                  <CFormGroup>
+                    Machine Id
+                    <CSelect
+                      aria-label="Default select example"
+                      id="machineId"
+                      name="machineId"
+                      onChange={onChangeInput}
+                      required
+                    >
+                      <option value={distributingMachineId}>
+                        {distributingMachineId}
+                      </option>
+                    </CSelect>
+                  </CFormGroup>
+                </CCol>
+                <CCol md="6">
+                  <CFormGroup>
+                    To wich business
+                    <CSelect
+                      aria-label="Default select example"
+                      id="businessId"
+                      name="businessId"
+                      onChange={onChangeInput}
+                      value={machine.businessId}
+                      required
+                    >
+                      <option value="">Select business...</option>
+                      {businesses
+                        .filter(
+                          (bussiness) =>
+                            //bussiness.credentials === "Accepted" &&
+                            bussiness.machine === "unassigned"
+                        )
+                        .map((filteredBussiness) => (
+                          <option
+                            value={filteredBussiness._id}
+                            key={filteredBussiness._id}
+                          >
+                            {filteredBussiness.businessName}
+                          </option>
+                        ))}
+                    </CSelect>
+                    <small className="text-muted">
+                      If the business is not in the list it may be assigned a
+                      mchine or not registered yet!
+                    </small>
+                  </CFormGroup>
+                </CCol>
+              </CRow>
+            </CModalBody>
+            <CModalFooter>
+              <CButton type="submit" size="sm" color="dark">
+                <CIcon name="cil-fullscreen" /> Distribute
+              </CButton>
+              <CButton
+                size="sm"
+                color="danger"
+                onClick={() =>
+                  setShowMachineDistributeModal(!showMachineDistributeModal)
+                }
               >
                 <CIcon name="cil-x" /> Close
               </CButton>

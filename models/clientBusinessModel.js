@@ -1,81 +1,84 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const ObjectID = mongoose.Schema.Types.ObjectID;
 
-const clientBusinessSchema = new mongoose.Schema({
+const clientBusinessSchema = new mongoose.Schema(
+  {
     // business detail
-    ownerID:{
-        type: ObjectID,
-        required: true
+    ownerID: {
+      type: ObjectID,
+      required: true,
     },
-    TIN:{
-        type: String,
-        unique: true,
-        required: true
+    TIN: {
+      type: String,
+      unique: true,
+      required: true,
     },
-    businessName:{
-        type: String,
-        required: true
+    businessName: {
+      type: String,
+      required: true,
     },
-    companyName:{
-        type: String
+    companyName: {
+      type: String,
     },
-    TL_Image:{
-        type: String,
-        required: true
+    TL_Image: {
+      type: String,
+      required: true,
     },
     // Address
-    city:{
-        type: String
+    city: {
+      type: String,
     },
     subCity: {
-        type: String,
+      type: String,
     },
     kebele: {
-        type: String,
+      type: String,
     },
     woreda: {
-        type: String,
+      type: String,
     },
-    buildingName: { 
-        type: String,
+    buildingName: {
+      type: String,
     },
     officeNumber: {
-        type: String
-        },
+      type: String,
+    },
     // Contacts
     telephone: {
-        type: String
-        },
+      type: String,
+    },
     eamil: {
-        type: String
-        },
+      type: String,
+    },
     fax: {
-        type: String
-        },
+      type: String,
+    },
     // under which branch is this request
-    branch:{
-        type: ObjectID,
-        require: true
+    branch: {
+      type: ObjectID,
+      require: true,
     },
     // Machine assignment
     machine: {
-        type: String,
-        default: "unssigned" // requested, Assigned, unssigned
+      type: String,
+      default: "unassigned", // requested, Assigned, unssigned
     },
     // Technician assignment
     sw_Tech: {
-        type: ObjectID, // values:- unassigned / sw-technician id
-        default: null
+      type: ObjectID, // values:- unassigned / sw-technician id
+      default: null,
     },
     hw_Tech: {
-        type: ObjectID, // vales:- unassigned / hw-technician id
-        default: null
+      type: ObjectID, // vales:- unassigned / hw-technician id
+      default: null,
     },
     credentials: {
-        type: String,
-        default: "Pending"
-    }
-}, { timestamps: true })
+      type: String,
+      default: "Pending",
+    },
+  },
+  { timestamps: true }
+);
 
-module.exports = mongoose.model('clientBusinesses', clientBusinessSchema)
+module.exports = mongoose.model("clientBusinesses", clientBusinessSchema);
