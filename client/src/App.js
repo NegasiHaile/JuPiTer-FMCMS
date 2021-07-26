@@ -58,7 +58,7 @@ function App() {
         name="Login Page"
         render={(props) => <Login {...props} />}
       />
-    ); // for no authorized user
+    ); // for an authorized user
   }
 
   return (
