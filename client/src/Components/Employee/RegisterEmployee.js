@@ -252,7 +252,7 @@ const RegisterEmployee = (props) => {
                   >
                     <option value="">Select employee branch</option>
                     {branchs.map((branch) => (
-                      <option value={branch.branchName} key={branch._id}>
+                      <option value={branch._id} key={branch._id}>
                         {branch.branchName}
                       </option>
                     ))}

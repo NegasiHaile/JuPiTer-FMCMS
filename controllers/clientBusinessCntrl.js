@@ -18,18 +18,18 @@ const clientBusinessCntrl = {
         buildingName,
         officeNumber,
         telephone,
-        eamil,
+        email,
         fax,
+        branch,
+        sw_Tech,
       } = req.body;
 
       const business = await clientBusinesses.findOne({ TIN });
 
       if (business)
-        return res
-          .status(400)
-          .json({
-            msg: "There is a business with this TIN, please check the TIN!",
-          });
+        return res.status(400).json({
+          msg: "There is a business with this TIN, please check the TIN!",
+        });
 
       const newBusiness = new clientBusinesses({
         ownerID,
@@ -44,8 +44,10 @@ const clientBusinessCntrl = {
         buildingName,
         officeNumber,
         telephone,
-        eamil,
+        email,
         fax,
+        branch,
+        sw_Tech,
       });
 
       await newBusiness.save();
@@ -94,8 +96,10 @@ const clientBusinessCntrl = {
           buildingName,
           officeNumber,
           telephone,
-          eamil,
+          email,
           fax,
+          branch,
+          sw_Tech,
         } = req.body)
       );
       res.json({ msg: "Business datail has been edited successfuly!" });

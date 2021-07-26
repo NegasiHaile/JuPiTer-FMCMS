@@ -172,6 +172,7 @@ const MachinesList = () => {
     "machineModel",
     "brand",
     "bussiness",
+    "problemStatus",
     "salesStatus",
     "Actions",
   ];
@@ -327,7 +328,7 @@ const MachinesList = () => {
                 </CCol>
                 <CCol xs="12" md="4">
                   <CFormGroup>
-                    Employee task
+                    Machine status
                     <CSelect
                       aria-label="Default select example"
                       id="problemStatus"
@@ -336,7 +337,7 @@ const MachinesList = () => {
                       value={machine.problemStatus}
                       required
                     >
-                      <option value="">Select machine problem status...</option>
+                      <option value="">Select machine status...</option>
                       <option value="fine">Fine</option>
                       <option value="damaged">Damaged</option>
                     </CSelect>
@@ -407,8 +408,8 @@ const MachinesList = () => {
                       {businesses
                         .filter(
                           (bussiness) =>
-                            //bussiness.credentials === "Accepted" &&
-                            bussiness.machine === "unassigned"
+                            bussiness.machine === "unassigned" &&
+                            bussiness.credentials === "Accepted"
                         )
                         .map((filteredBussiness) => (
                           <option
