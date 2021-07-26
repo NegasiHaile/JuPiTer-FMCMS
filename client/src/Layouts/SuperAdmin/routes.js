@@ -27,6 +27,9 @@ const EmployeesList = lazy(() =>
 const RegisterClient = lazy(() =>
   import("../../Components/Client/RegisterClient")
 );
+const ClientDetail = lazy(() =>
+  import("../../Components/Client/ClientDetail")
+);
 
 // Client business frontend routing
 const BusinessRegistration = lazy(() =>
@@ -95,9 +98,15 @@ const routes = [
     name: "Register-Client",
     component: RegisterClient,
   },
+  {
+    path: "/client/detail/:id",
+    exact: true,
+    name: "Client-Detail",
+    component: ClientDetail,
+  },
   // Client bussiness
   {
-    path: "/business/register",
+    path: "/business/register/:clientid",
     exact: true,
     name: "Register-Business",
     component: BusinessRegistration,

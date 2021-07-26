@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 // import axios from "axios";
 import { GlobalState } from "../../GlobalState";
+import { useParams } from "react-router-dom";
 import {
   CForm,
   CRow,
@@ -24,8 +25,11 @@ import {
 import CIcon from "@coreui/icons-react";
 import Swal from "sweetalert2";
 
-const businessDetail = {
-  ownerID: "",
+
+const BusinessRegistration = () => {
+  // const params = useParams();
+  const businessDetail = {
+  ownerID: useParams().clientid,
   TIN: "",
   businessName: "",
   companyName: "",
@@ -42,7 +46,6 @@ const businessDetail = {
   branch: "",
   sw_Tech: "",
 };
-const BusinessRegistration = () => {
   const state = useContext(GlobalState);
   const [business, setBusiness] = useState(businessDetail);
   const [active, setActive] = useState(1);
@@ -149,7 +152,7 @@ const BusinessRegistration = () => {
                           <CInput
                             id="companyName"
                             name="companyName"
-                            placeholder="enter campany name"
+                            placeholder="Enter campany name"
                             value={business.companyName}
                             onChange={onChangeInput}
                             required
@@ -179,7 +182,7 @@ const BusinessRegistration = () => {
                           <CInput
                             id="subCity"
                             name="subCity"
-                            placeholder="Enter unique bussiness name."
+                            placeholder="Enter subcity."
                             value={business.subCity}
                             onChange={onChangeInput}
                             required
@@ -188,7 +191,7 @@ const BusinessRegistration = () => {
                       </CCol>
                       <CCol sm="12" md="4">
                         <CFormGroup>
-                          <CLabel> Woreda </CLabel>
+                          <CLabel> Kebele </CLabel>
                           <CInput
                             id="kebele"
                             name="kebele"
@@ -201,7 +204,7 @@ const BusinessRegistration = () => {
                       </CCol>
                       <CCol sm="12" md="4">
                         <CFormGroup>
-                          <CLabel> Kebele </CLabel>
+                          <CLabel> Woreda  </CLabel>
                           <CInput
                             id="woreda"
                             name="woreda"
@@ -301,7 +304,7 @@ const BusinessRegistration = () => {
                             <option value="">Select branch...</option>
                             {branchs.map((branch) => (
                               <option
-                                value={branch.branchName}
+                                value={branch._id}
                                 key={branch._id}
                               >
                                 {branch.branchName}

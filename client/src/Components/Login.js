@@ -16,6 +16,7 @@ import {
   CInputGroupText,
   CRow,
 } from "@coreui/react";
+import Swal from "sweetalert2";
 
 import CIcon from "@coreui/icons-react";
 
@@ -38,8 +39,15 @@ const Login = () => {
       localStorage.setItem("firstLogin", true);
 
       window.location.href = "/dashboard";
-    } catch (err) {
-      alert(err.response.data.msg);
+    } catch (err) {Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "error",
+        text: err.response.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: true,
+        // timer: 1500,
+      });
     }
   };
   return (

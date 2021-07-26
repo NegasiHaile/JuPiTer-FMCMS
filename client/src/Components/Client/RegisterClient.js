@@ -220,7 +220,7 @@ function RegisterClient() {
 
                   <span className="text-muted">|</span>
 
-                  <CLink className="text-primary" to={`/client/Detail`}>
+                  <CLink className="text-primary" to={`/client/detail/${client._id}`}>
                     <CTooltip
                       content={`See detail of - ${client.fName} ${client.mName}- client.`}
                     >

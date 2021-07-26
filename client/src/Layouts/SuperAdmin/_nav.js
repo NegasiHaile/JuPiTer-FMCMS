@@ -70,28 +70,16 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Allow Client",
+    name: "Client List",
     to: "/client/register",
     icon: "cil-contact",
   },
   {
-    _tag: "CSidebarNavDropdown",
-    name: "Client Business",
-    route: "/Business",
-    icon: "cil-building",
-    _children: [
-      {
-        _tag: "CSidebarNavItem",
-        name: "Register Business",
-        to: "/business/register",
-      },
-      {
         _tag: "CSidebarNavItem",
         name: "Business-List",
         to: "/business/list",
+    icon: "cil-building",
       },
-    ],
-  },
   {
     _tag: "CSidebarNavTitle",
     _children: ["Others"],
