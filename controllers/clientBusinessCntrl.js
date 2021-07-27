@@ -68,14 +68,18 @@ const clientBusinessCntrl = {
     // delete a business only if it is not assigned a machine yet
     try {
       const bsnss = await clientBusinesses.findById(req.params.busineId);
-      if (bsnss.machine != "Unassigned")
-        return res.json(
-          "This business have assigned a machine, so you can't delete it!"
-        );
-      await clientBusinesses.findByIdAndDelete(req.params.busineId);
-      res.json({ msg: "Business detail has been deleted succesfully!" });
+      if (bsnss.machine === "assigned") {
+        return res.status(400).json({
+          msg: "This business have assigned a machine, It holds a neccesary data, so you can't delete it!",
+        });
+      } else {
+        await clientBusinesses.findByIdAndDelete(req.params.busineId);
+        return res.json({
+          msg: "Business detail has been deleted succesfully!",
+        });
+      }
     } catch (error) {
-      res.status(500).json({ msg: error.message });
+      return res.status(500).json({ msg: error.message });
     }
   },
   eidtBusinesDetail: async (req, res) => {

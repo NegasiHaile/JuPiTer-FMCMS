@@ -133,7 +133,15 @@ const MachinesList = () => {
         }
       });
     } catch (error) {
-      alert(error.response.data.msg);
+      Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: "error",
+        text: error.response.data.msg,
+        confirmButtonColor: "#1E263C",
+        showConfirmButton: false,
+        // timer: 1500,
+      });
     }
   };
 
@@ -160,7 +168,7 @@ const MachinesList = () => {
         position: "center",
         background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
         icon: "error",
-        text: "Error:- " + error.response.data.msg,
+        text: error.response.data.msg,
         confirmButtonColor: "#1E263C",
         showConfirmButton: false,
         // timer: 1500,
