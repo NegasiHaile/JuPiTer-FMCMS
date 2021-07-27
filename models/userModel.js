@@ -54,8 +54,8 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    roleID: {
-      type: ObjectID,
+    userRole: {
+      type: String,
       required: true,
     },
     status: {

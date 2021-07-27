@@ -19,6 +19,7 @@ const EmployeeList = () => {
   const state = useContext(GlobalState);
   const [token] = state.token;
   const [employees] = state.UsersAPI.users;
+  const [branchs] = state.branchAPI.branchs;
   const [callback, setCallback] = state.UsersAPI.callback;
 
   const deleteEmloyee = async (_id, fName, mName) => {
@@ -67,7 +68,7 @@ const EmployeeList = () => {
     "email",
     "phoneNumber",
     "branch",
-    "roleID",
+    "userRole",
     "status",
     "Actions",
   ];
@@ -89,11 +90,12 @@ const EmployeeList = () => {
           <CDataTable
             items={employees.filter(
               (user) =>
-                user.roleID === "60df1e5178ff9871852370f9" ||
-                user.roleID === "60e004d012f47733a9b2c04c"
+                user.userRole === "branch-admin" ||
+                user.userRole === "technician"
             )}
             fields={employeeTableFields}
             tableFilter
+            columnFilter
             itemsPerPageSelect
             itemsPerPage={10}
             hover
@@ -102,6 +104,11 @@ const EmployeeList = () => {
             sorter
             pagination
             scopedSlots={{
+              branch: (employee) => (
+                <td>
+                {branchs.filter((brnc) => brnc._id === employee.branch).map((filteredBranch) => (filteredBranch.branchName))}
+                  </td>
+                ),
               Actions: (employee) => (
                 <td className="d-flex justify-content-between">
                   <CLink

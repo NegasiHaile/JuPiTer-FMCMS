@@ -33,7 +33,7 @@ const clientDetail = {
   photo: "/public/images/ng.png",
   phoneNumber: "",
   email: "",
-  roleID: "60df1e6978ff9871852370fa",
+  userRole: "client",
 };
 
 const branchTableFields = [
@@ -174,7 +174,7 @@ function RegisterClient() {
         <CCardBody>
           <CDataTable
             items={users.filter(
-              (user) => user.roleID === "60df1e6978ff9871852370fa"
+              (user) => user.userRole === "client"
             )}
             fields={branchTableFields}
             tableFilter

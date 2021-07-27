@@ -21,7 +21,7 @@ const userCntrl = {
         woreda,
         phoneNumber,
         email,
-        roleID,
+        userRole,
       } = req.body;
 
       const newpassword = generatePassword();
@@ -50,7 +50,7 @@ const userCntrl = {
         phoneNumber,
         email,
         password: passwordHash,
-        roleID,
+        userRole,
       });
 
       await newUser.save();
@@ -108,7 +108,7 @@ const userCntrl = {
           woreda,
           phoneNumber,
           email,
-          roleID,
+          userRole,
         } = req.body)
       );
       res.json({ msg: "User datail edited successfuly!" });
@@ -132,13 +132,13 @@ const userCntrl = {
       //   // fech branch-admin and technician
       //   var usersInCategory = await Users.find({
       //     $or: [
-      //       { roleID: "60df1e5178ff9871852370f9" },
-      //       { roleID: "60e004d012f47733a9b2c04c" },
+      //       { userRole: "60df1e5178ff9871852370f9" },
+      //       { userRole: "60e004d012f47733a9b2c04c" },
       //     ],
       //   }).select("-password");
       // } else {
       //   var usersInCategory = await Users.find({
-      //     roleID: req.params.role,
+      //     userRole: req.params.role,
       //   }).select("-password");
       // }
       res.json(await Users.find());

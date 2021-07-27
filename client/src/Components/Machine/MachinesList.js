@@ -270,7 +270,7 @@ const MachinesList = () => {
           />
         </CCardBody>
 
-        {/* Distribute machine modal */}
+        {/* register machine modal */}
         <CModal
           size="lg"
           show={showModal}

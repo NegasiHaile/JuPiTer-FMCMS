@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { GlobalState } from "../../GlobalState";
 import { useParams } from "react-router-dom";
@@ -32,23 +32,31 @@ const userAttributes = {
   woreda: "",
   phoneNumber: "",
   email: "",
-  roleID: "",
+  userRole: "",
 };
 const RegisterEmployee = (props) => {
   const params = useParams();
   const state = useContext(GlobalState);
   const [branchs] = state.branchAPI.branchs;
   const [callback, setCallback] = state.UsersAPI.callback;
+  const [users] = state.UsersAPI.users;
   const [user, setUser] = useState(userAttributes);
 
   // if (params.id) console.log(props.location.state);
+  useEffect(() => {
+    if (params.id) {
+      const employee = users.filter((user) => user._id === params.id)
+      setUser(...employee)
+      console.log(user)
+    }
+  })
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const onSubmitRegisterUser = async (e) => {
+  const onSubmitRegisterUser = async (e) => { 
     e.preventDefault();
     try {
       const res = await axios.post("/user/register", { ...user });
@@ -224,18 +232,18 @@ const RegisterEmployee = (props) => {
                   Employee task
                   <CSelect
                     aria-label="Default select example"
-                    id="roleID"
-                    name="roleID"
+                    id="userRole"
+                    name="userRole"
                     onChange={onChangeInput}
-                    value={user.roleID}
+                    value={user.userRole}
                     required
                   >
                     <option value="">Select employe task</option>
-                    <option value="60e004d012f47733a9b2c04c">Technician</option>
-                    <option value="60df1e5178ff9871852370f9">
+                    <option value="technician">Technician</option>
+                    <option value="branch-admin">
                       Branch Admin
                     </option>
-                    <option value="60df1e3878ff9871852370f8">
+                    <option value="super-admin">
                       Super Admin
                     </option>
                   </CSelect>

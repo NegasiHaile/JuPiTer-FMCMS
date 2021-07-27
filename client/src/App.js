@@ -27,8 +27,9 @@ function App() {
 
   // user athorization
   // setTimeout(() => {}, 5000)
+  
   let userLayout;
-  if (isLogged && user.roleID === "60df1e5178ff9871852370f9") {
+  if (isLogged && user.userRole === "branch-admin") {
     userLayout = (
       <Route
         path="/"
@@ -36,7 +37,7 @@ function App() {
         render={(props) => <BranchAdminLayout {...props} />}
       />
     ); // Branch Admin Layout
-  } else if (isLogged && user.roleID === "60df1e3878ff9871852370f8") {
+  } else if (isLogged && user.userRole === "super-admin") {
     userLayout = (
       <Route
         path="/"
@@ -44,7 +45,7 @@ function App() {
         render={(props) => <SuperAdminLayout {...props} />}
       />
     ); // super admin Layout
-  } else if (isLogged && user.roleID === "60df1e6978ff9871852370fa") {
+  } else if (isLogged && user.userRole === "client") {
     userLayout = (
       <Route
         path="/"
