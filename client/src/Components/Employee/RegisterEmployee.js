@@ -37,50 +37,88 @@ const userAttributes = {
 const RegisterEmployee = (props) => {
   const params = useParams();
   const state = useContext(GlobalState);
+  const [token] = state.token;
   const [branchs] = state.branchAPI.branchs;
   const [callback, setCallback] = state.UsersAPI.callback;
   const [users] = state.UsersAPI.users;
   const [user, setUser] = useState(userAttributes);
+  const [onEdit, setOnEdit] = useState(false);
 
   // if (params.id) console.log(props.location.state);
+  // useEffect(() => {
+  //   if (params.id) {
+  //     const employee = users.filter((user) => user._id === params.id);
+  //     setUser(...employee);
+  //     console.log(user);
+  //   } else {
+  //     setOnEdit(false);
+  //     setUser(userAttributes);
+  //   }
+  // }, [params.id, users])
+
   useEffect(() => {
     if (params.id) {
-      const employee = users.filter((user) => user._id === params.id)
-      setUser(...employee)
-      console.log(user)
+      setOnEdit(true);
+      users.forEach((employee) => {
+        if (employee._id === params.id) {
+          setUser(employee);
+        }
+      });
+    } else {
+      setOnEdit(false);
+      setUser(userAttributes);
     }
-  })
+  }, [params.id, users]);
 
+  const successSwal = (text) => {
+    Swal.fire({
+      position: "center",
+      background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+      icon: "success",
+      text: text,
+      confirmButtonColor: "#1E263C",
+      showConfirmButton: false,
+      // timer: 1500,
+    });
+  };
+
+  const errorSwal = (text) => {
+    Swal.fire({
+      position: "center",
+      background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+      icon: "error",
+      text: text,
+      confirmButtonColor: "#1E263C",
+      showConfirmButton: false,
+      // timer: 1500,
+    });
+  };
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setUser({ ...user, [name]: value });
   };
 
-  const onSubmitRegisterUser = async (e) => { 
+  const onSubmitRegisterUser = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/user/register", { ...user });
-      setCallback(!callback);
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "success",
-        text: res.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      if (onEdit) {
+        const res = await axios.put(
+          `/user/edit/${params.id}`,
+          { ...user },
+          {
+            headers: { Authorization: token },
+          }
+        );
+        setCallback(!callback);
+        successSwal(res.data.msg);
+      } else {
+        const res = await axios.post("/user/register", { ...user });
+        setCallback(!callback);
+        successSwal(res.data.msg);
+      }
       // console.log(user);
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      errorSwal(error.response.data.msg);
     }
   };
 
@@ -240,12 +278,8 @@ const RegisterEmployee = (props) => {
                   >
                     <option value="">Select employe task</option>
                     <option value="technician">Technician</option>
-                    <option value="branch-admin">
-                      Branch Admin
-                    </option>
-                    <option value="super-admin">
-                      Super Admin
-                    </option>
+                    <option value="branch-admin">Branch Admin</option>
+                    <option value="super-admin">Super Admin</option>
                   </CSelect>
                 </CFormGroup>
               </CCol>
