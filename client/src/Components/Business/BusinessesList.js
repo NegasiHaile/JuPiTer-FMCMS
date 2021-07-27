@@ -83,7 +83,10 @@ const BusinessesList = () => {
                 <td className="d-flex justify-content-between">
                   <CLink
                     className="text-success"
-                    to={{ pathname: "/business/register", state: business }}
+                    to={{
+                      pathname: `/business/edit/${business._id}`,
+                      state: business,
+                    }}
                   >
                     <CTooltip
                       content={`Edit the  - ${business.TIN}- business detail.`}

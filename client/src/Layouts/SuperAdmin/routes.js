@@ -116,6 +116,13 @@ const routes = [
     component: BusinessRegistration,
   },
   {
+    path: "/business/edit/:businessId",
+    exact: true,
+    name: "Update-Business",
+    component: BusinessRegistration,
+  },
+
+  {
     path: "/business/list",
     exact: true,
     name: "Business-List",

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 // import axios from "axios";
 import { GlobalState } from "../../GlobalState";
@@ -25,34 +25,49 @@ import {
 import CIcon from "@coreui/icons-react";
 import Swal from "sweetalert2";
 
-
 const BusinessRegistration = () => {
-  // const params = useParams();
+  const params = useParams();
+
   const businessDetail = {
-  ownerID: useParams().clientid,
-  TIN: "",
-  businessName: "",
-  companyName: "",
-  TL_Image: "/Public/images",
-  city: "",
-  subCity: "",
-  kebele: "",
-  woreda: "",
-  buildingName: "",
-  officeNumber: "",
-  telephone: "",
-  email: "",
-  fax: "",
-  branch: "",
-  sw_Tech: "",
-};
+    ownerID: params.clientid,
+    TIN: "",
+    businessName: "",
+    companyName: "",
+    TL_Image: "/Public/images",
+    city: "",
+    subCity: "",
+    kebele: "",
+    woreda: "",
+    buildingName: "",
+    officeNumber: "",
+    telephone: "",
+    email: "",
+    fax: "",
+    branch: "",
+    sw_Tech: "",
+  };
   const state = useContext(GlobalState);
+  const [businesses] = state.BusinessAPI.businesses;
   const [business, setBusiness] = useState(businessDetail);
   const [active, setActive] = useState(1);
   const [branchs] = state.branchAPI.branchs;
   const [employees] = state.UsersAPI.users;
   const [callback, setCallback] = state.BusinessAPI.callback;
+  const [onEdit, setOnEdit] = useState(false);
 
+  useEffect(() => {
+    if (params.businessId) {
+      setOnEdit(true);
+      businesses.forEach((business) => {
+        if (business._id === params.businessId) {
+          setBusiness(business);
+        }
+      });
+    } else {
+      setOnEdit(false);
+      setBusiness(businessDetail);
+    }
+  }, [params.clientid, params.businessId, businesses]);
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setBusiness({ ...business, [name]: value });
@@ -204,7 +219,7 @@ const BusinessRegistration = () => {
                       </CCol>
                       <CCol sm="12" md="4">
                         <CFormGroup>
-                          <CLabel> Woreda  </CLabel>
+                          <CLabel> Woreda </CLabel>
                           <CInput
                             id="woreda"
                             name="woreda"
@@ -303,10 +318,7 @@ const BusinessRegistration = () => {
                           >
                             <option value="">Select branch...</option>
                             {branchs.map((branch) => (
-                              <option
-                                value={branch._id}
-                                key={branch._id}
-                              >
+                              <option value={branch._id} key={branch._id}>
                                 {branch.branchName}
                               </option>
                             ))}
