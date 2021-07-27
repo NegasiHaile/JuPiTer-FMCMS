@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
 import { GlobalState } from "../../GlobalState";
+import { useParams } from "react-router-dom";
 import {
   CButton,
   CCard,
@@ -34,12 +35,13 @@ const userAttributes = {
   roleID: "",
 };
 const RegisterEmployee = (props) => {
+  const params = useParams();
   const state = useContext(GlobalState);
   const [branchs] = state.branchAPI.branchs;
   const [callback, setCallback] = state.UsersAPI.callback;
   const [user, setUser] = useState(userAttributes);
 
-  console.log(props.location.state);
+  // if (params.id) console.log(props.location.state);
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;

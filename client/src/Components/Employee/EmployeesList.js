@@ -106,7 +106,10 @@ const EmployeeList = () => {
                 <td className="d-flex justify-content-between">
                   <CLink
                     className="text-success"
-                    to={{ pathname: "/employee/register", state: employee }}
+                    to={{
+                      pathname: `/Employee/Edit/${employee._id}`,
+                      state: employee,
+                    }}
                   >
                     <CTooltip
                       content={`Edit the  - ${employee.fName} ${employee.mName}- employee detail.`}

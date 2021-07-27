@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import axios from "axios";
+import Swal from "sweetalert2";
 
 function UserAPI(token) {
   const [isLogged, setIsLogged] = useState(false);
@@ -17,8 +18,16 @@ function UserAPI(token) {
           setIsLogged(true);
           // res.data.role === "super-admin" ? setUser(true) : setUser(false)
           // console.log(res.data)
-        } catch (err) {
-          alert(err.response.data.msg);
+        } catch (error) {
+          Swal.fire({
+            position: "center",
+            background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+            icon: "error",
+            text: error.response.data.msg,
+            confirmButtonColor: "#1E263C",
+            showConfirmButton: false,
+            // timer: 1500,
+          });
         }
       };
 

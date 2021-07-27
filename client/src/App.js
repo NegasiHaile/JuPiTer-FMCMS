@@ -26,6 +26,7 @@ function App() {
   console.log({ user: user, isLogged: isLogged });
 
   // user athorization
+  // setTimeout(() => {}, 5000)
   let userLayout;
   if (isLogged && user.roleID === "60df1e5178ff9871852370f9") {
     userLayout = (
