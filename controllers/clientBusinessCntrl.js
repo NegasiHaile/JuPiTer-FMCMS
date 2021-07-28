@@ -21,6 +21,7 @@ const clientBusinessCntrl = {
         email,
         fax,
         branch,
+        credentials,
         sw_Tech,
       } = req.body;
 
@@ -47,6 +48,7 @@ const clientBusinessCntrl = {
         email,
         fax,
         branch,
+        credentials,
         sw_Tech,
       });
 

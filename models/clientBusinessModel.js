@@ -67,16 +67,16 @@ const clientBusinessSchema = new mongoose.Schema(
     },
     // Technician assignment
     sw_Tech: {
-      type: ObjectID, // values:- unassigned / sw-technician id
-      default: null,
+      type: String, // ObjectID, // values:- unassigned / sw-technician id
+      default: "",
     },
     hw_Tech: {
-      type: ObjectID, // vales:- unassigned / hw-technician id
-      default: null,
+      type: String, // ObjectID, // vales:- unassigned / hw-technician id
+      default: "",
     },
     credentials: {
       type: String,
-      default: "Pending",
+      // default: "Pending",
     },
   },
   { timestamps: true }

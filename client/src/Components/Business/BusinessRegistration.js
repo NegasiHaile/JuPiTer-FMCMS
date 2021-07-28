@@ -28,7 +28,10 @@ const BusinessRegistration = () => {
   const state = useContext(GlobalState);
   const params = useParams();
   const [user] = state.UserAPI.User;
+  const [credentials, setCredentials] = useState("")
 
+  
+  
   const businessDetail = {
     ownerID: params.clientid,
     TIN: "",
@@ -45,6 +48,7 @@ const BusinessRegistration = () => {
     email: "",
     fax: "",
     branch: "",
+    credentials: credentials,
     sw_Tech: "",
   };
   const [businesses] = state.BusinessAPI.businesses;
@@ -55,6 +59,18 @@ const BusinessRegistration = () => {
   const [callback, setCallback] = state.BusinessAPI.callback;
   const [onEdit, setOnEdit] = useState(false);
 
+  useEffect(() => {
+    if (user.userRole === "client") {
+      businessDetail.credentials = "Pending"
+      // setCredentials("Pending")
+      setBusiness(businessDetail)
+    } else {
+      // setCredentials("Accepted")
+      businessDetail.credentials = "Accepted"
+      setBusiness(businessDetail)
+    }
+  }, [user]);
+  
   useEffect(() => {
     if (params.businessId) {
       setOnEdit(true);
@@ -70,8 +86,8 @@ const BusinessRegistration = () => {
   }, [params.clientid, params.businessId, businesses]);
 
   const onChangeInput = (e) => {
-    const { name, value } = e.target;
-    setBusiness({ ...business, [name]: value });
+    try{const { name, value } = e.target;
+    setBusiness({ ...business, [name]: value });}catch{}
   };
 
   const SweetAlert = (type, text) => {
@@ -99,7 +115,7 @@ const BusinessRegistration = () => {
       setCallback(!callback);
       }
     } catch (error) {
-      SweetAlert("succerroress", error.response.data.msg);
+      SweetAlert("error", error.response.data.msg);
     }
   };
 
