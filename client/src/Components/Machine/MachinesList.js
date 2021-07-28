@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import axios from "axios";
 import { GlobalState } from "../../GlobalState";
 import {
@@ -25,23 +25,16 @@ import {
 import CIcon from "@coreui/icons-react";
 import Swal from "sweetalert2";
 
-const machineDetail = {
-  serialNumber: "",
-  machineModel: "",
-  brand: "",
-  price: "",
-  branch: "60e004d012f47733a9b2c04c",
-  problemStatus: "",
-  // for distributing
-  businessId: "",
-};
+
 
 const MachinesList = () => {
   const state = useContext(GlobalState);
+  const [user] = state.UserAPI.User;
   const [token] = state.token;
-  const [machine, setMachine] = useState(machineDetail);
-  const [machines] = state.MachineAPI.machines;
+  const [allMachines] = state.MachineAPI.machines; 
+  const [machines, setMachines] = useState(allMachines); 
   const [callback, setCallback] = state.MachineAPI.callback;
+  const [callbackBusiness, setCallbackBusiness] = state.BusinessAPI.callback;
   const [activemachine, setActivemachine] = useState("none");
   const [showModal, setShowModal] = useState(false);
   const [machineStatus, setMachineStatus] = useState("fine");
@@ -49,6 +42,27 @@ const MachinesList = () => {
   const [showMachineDistributeModal, setShowMachineDistributeModal] =
     useState(false);
   const [businesses] = state.BusinessAPI.businesses;
+
+  const machineDetail = {
+  serialNumber: "",
+  machineModel: "",
+  brand: "",
+  price: "",
+  branch: user.branch,
+  problemStatus: "",
+  // for distributing
+  businessId: "",
+  };
+  
+  const [machine, setMachine] = useState(machineDetail);
+
+    useEffect(() => {
+      if (user.userRole === "branch-admin") {
+          setMachines(allMachines.filter((filteredMachine) => filteredMachine.branch == user.branch))
+    } else {
+      setMachines(allMachines)
+    }
+  }, [user, allMachines]);
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -132,6 +146,7 @@ const MachinesList = () => {
       sweetAlert("success", res.data.msg)
       setShowMachineDistributeModal(!showMachineDistributeModal);
       setCallback(!callback);
+      setCallbackBusiness(!callback)
     } catch (error) {
       sweetAlert("error", error.response.data.msg)
     }
@@ -152,7 +167,7 @@ const MachinesList = () => {
       <CCard className=" shadow-sm">
         <CCardHeader className="d-flex justify-content-between">
           <CLabel>Jupiter all machine list</CLabel>
-          <CButton
+          {user.userRole === "branch-admin" && <CButton
             size="sm"
             color="dark"
             onClick={() => {
@@ -162,7 +177,7 @@ const MachinesList = () => {
             }}
           >
             <CIcon name="cil-plus" /> Add Machine
-          </CButton>
+          </CButton>}
         </CCardHeader>
         <CCardBody>
           <CDataTable

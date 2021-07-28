@@ -47,6 +47,12 @@ const _nav = [
     icon: "cil-print",
   },
   {
+        _tag: "CSidebarNavItem",
+        name: "General Sales",
+        to: "/sales/alerts",
+    icon: "cil-money",
+      },
+  {
     _tag: "CSidebarNavDropdown",
     name: "Maintenance",
     route: "/maintenance",
@@ -83,24 +89,6 @@ const _nav = [
   {
     _tag: "CSidebarNavTitle",
     _children: ["Others"],
-  },
-  {
-    _tag: "CSidebarNavDropdown",
-    name: "Sales",
-    route: "/sales",
-    icon: "cil-money",
-    _children: [
-      {
-        _tag: "CSidebarNavItem",
-        name: "General Sales",
-        to: "/sales/alerts",
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Branch Sales",
-        to: "/notifications/badges",
-      },
-    ],
   },
 
   {

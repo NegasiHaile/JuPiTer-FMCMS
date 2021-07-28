@@ -17,6 +17,7 @@ import CIcon from "@coreui/icons-react";
 
 const EmployeeList = () => {
   const state = useContext(GlobalState);
+  const [user] = state.UserAPI.User;
   const [token] = state.token;
   const [employees] = state.UsersAPI.users;
   const [branchs] = state.branchAPI.branchs;
@@ -75,7 +76,7 @@ const EmployeeList = () => {
   return (
     <>
       <CCard className=" shadow-sm">
-        <CCardHeader className="d-flex justify-content-between">
+        {user.userRole === "super-admin" && <CCardHeader className="d-flex justify-content-between">
           <CLabel>List of employees</CLabel>
           <CButton
             to="/Employee/register"
@@ -85,7 +86,7 @@ const EmployeeList = () => {
           >
             <CIcon name="cil-plus" /> Add Employee
           </CButton>
-        </CCardHeader>
+        </CCardHeader>}
         <CCardBody>
           <CDataTable
             items={employees.filter(
@@ -111,6 +112,7 @@ const EmployeeList = () => {
                 ),
               Actions: (employee) => (
                 <td className="d-flex justify-content-between">
+                  {user.userRole === "super-admin" && <>
                   <CLink
                     className="text-success"
                     to={{
@@ -144,7 +146,8 @@ const EmployeeList = () => {
                     </CTooltip>
                   </CLink>
 
-                  <span className="text-muted">|</span>
+                  <span className="text-muted">|</span></>}
+                  
 
                   <CLink className="text-primary" to={`/user/profile/${employee._id}`}>
                     <CTooltip

@@ -38,6 +38,7 @@ const branchDetail = {
 
 const BranchList = () => {
   const state = useContext(GlobalState);
+  const [user] = state.UserAPI.User;
   const [token] = state.token;
   const [branch, setBranch] = useState(branchDetail);
   const [branchs] = state.branchAPI.branchs;
@@ -132,7 +133,7 @@ const BranchList = () => {
       <CCard className=" shadow-sm">
         <CCardHeader className="d-flex justify-content-between">
           <CLabel>Jupiter Branhcs</CLabel>
-          <CButton
+          {user.userRole === "super-admin" && <CButton
             size="sm"
             color="secondary"
             onClick={() => {
@@ -142,7 +143,7 @@ const BranchList = () => {
             }}
           >
             <CIcon name="cil-plus" /> Open branch
-          </CButton>
+          </CButton>}
         </CCardHeader>
         <CCardBody>
           <CDataTable
@@ -158,7 +159,7 @@ const BranchList = () => {
             scopedSlots={{
               Actions: (branch) => (
                 <td className="d-flex justify-content-between">
-                  <CLink
+                  { user.userRole === "super-admin" && <> <CLink
                     className="text-success"
                     onClick={() => {
                       setBranch({ branch, ...branch });
@@ -186,7 +187,7 @@ const BranchList = () => {
                     </CTooltip>
                   </CLink>
 
-                  <span className="text-muted">|</span>
+                  <span className="text-muted">|</span> </>}
 
                   <CLink
                     className="text-primary"

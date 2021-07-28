@@ -53,7 +53,7 @@ const MaintenanceAnnual = lazy(() =>
 );
 
 const routes = [
-  { path: "/", exact: true, name: "S-A" },
+  { path: "/", exact: true, name: "Branch" },
   {
     path: "/dashboard",
     exact: true,
@@ -64,7 +64,7 @@ const routes = [
   {
     path: "/Branch/List",
     exact: true,
-    name: "Open-New-Branch",
+    name: "Jupter-Trading-Branchs",
     component: OpenNewBranch,
   },
   {
@@ -156,7 +156,7 @@ const routes = [
   {
     path: "/user/profile/:id",
     exact: true,
-    name: "Open-New-Branch",
+    name: "User-Profile",
     component: UserProfile,
   },
   {
