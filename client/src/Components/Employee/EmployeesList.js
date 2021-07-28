@@ -95,7 +95,7 @@ const EmployeeList = () => {
             )}
             fields={employeeTableFields}
             tableFilter
-            columnFilter
+            // columnFilter
             itemsPerPageSelect
             itemsPerPage={10}
             hover
@@ -146,7 +146,7 @@ const EmployeeList = () => {
 
                   <span className="text-muted">|</span>
 
-                  <CLink className="text-primary" to={`/employee/Detail`}>
+                  <CLink className="text-primary" to={`/user/profile/${employee._id}`}>
                     <CTooltip
                       content={`See detail of - ${employee.fName} ${employee.mName}- employee.`}
                     >

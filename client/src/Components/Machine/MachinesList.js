@@ -54,33 +54,31 @@ const MachinesList = () => {
     const { name, value } = e.target;
     setMachine({ ...machine, [name]: value });
   };
+
+  const sweetAlert = (type, text) => {
+    Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: type,
+        text: text,
+        confirmButtonColor: "#3C4B64",
+        showConfirmButton: true,
+        // timer: 1500,
+      });
+  }
+
   const onSubmitRegisterMachine = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/machine/register", { ...machine });
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "success",
-        text: res.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("success", res.data.msg)
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
+  
   const editmachineDetail = async (e) => {
     e.preventDefault();
     try {
@@ -91,27 +89,14 @@ const MachinesList = () => {
           headers: { Authorization: token },
         }
       );
-      Swal.fire({
-        position: "top-center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "success",
-        text: res.data.msg,
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("success", res.data.msg)
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      Swal.fire({
-        position: "top-center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
+
   const deletemachine = async (_id, serialNumber) => {
     // e.preventDefault();
     try {
@@ -120,7 +105,7 @@ const MachinesList = () => {
         text: "You won't be able to revert this!",
         icon: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#1E263C",
+        confirmButtonColor: "#3C4B64",
         cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!",
       }).then(async (result) => {
@@ -133,15 +118,7 @@ const MachinesList = () => {
         }
       });
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
 
@@ -152,29 +129,14 @@ const MachinesList = () => {
         ...machine,
         machineId: distributingMachineId,
       });
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "success",
-        text: res.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("success", res.data.msg)
       setShowMachineDistributeModal(!showMachineDistributeModal);
       setCallback(!callback);
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
+
   const machineTablefields = [
     "serialNumber",
     "machineModel",
@@ -184,6 +146,7 @@ const MachinesList = () => {
     "salesStatus",
     "Actions",
   ];
+
   return (
     <>
       <CCard className=" shadow-sm">

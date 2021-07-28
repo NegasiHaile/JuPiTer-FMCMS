@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-// import axios from "axios";
 import { GlobalState } from "../../GlobalState";
 import { useParams } from "react-router-dom";
 import {
@@ -26,7 +25,9 @@ import CIcon from "@coreui/icons-react";
 import Swal from "sweetalert2";
 
 const BusinessRegistration = () => {
+  const state = useContext(GlobalState);
   const params = useParams();
+  const [user] = state.UserAPI.User;
 
   const businessDetail = {
     ownerID: params.clientid,
@@ -46,7 +47,6 @@ const BusinessRegistration = () => {
     branch: "",
     sw_Tech: "",
   };
-  const state = useContext(GlobalState);
   const [businesses] = state.BusinessAPI.businesses;
   const [business, setBusiness] = useState(businessDetail);
   const [active, setActive] = useState(1);
@@ -68,34 +68,38 @@ const BusinessRegistration = () => {
       setBusiness(businessDetail);
     }
   }, [params.clientid, params.businessId, businesses]);
+
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setBusiness({ ...business, [name]: value });
   };
+
+  const SweetAlert = (type, text) => {
+    Swal.fire({
+      position: "center",
+      background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+      icon: type,
+      text: text,
+      confirmButtonColor: "#1E263C",
+      showConfirmButton: false,
+      // timer: 1500,
+    });
+  };
+
   const onSubmitSaveBusinessDetail = async (e) => {
     e.preventDefault();
     try {
-      const res = await axios.post("/business/register", { ...business });
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "success",
-        text: res.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      if (onEdit) {
+      const res = await axios.put(`/business/edit/${params.businessId}`, { ...business });
+      SweetAlert("success", res.data.msg);
       setCallback(!callback);
+      } else {
+      const res = await axios.post("/business/register", { ...business });
+      SweetAlert("success", res.data.msg);
+      setCallback(!callback);
+      }
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      SweetAlert("succerroress", error.response.data.msg);
     }
   };
 
@@ -336,14 +340,14 @@ const BusinessRegistration = () => {
                             name="sw_Tech"
                             onChange={onChangeInput}
                             value={business.sw_Tech}
-                            required
+                            // required
                           >
                             <option value="">Select technician...</option>
                             {employees
                               .filter(
                                 (employee) =>
                                   // employee.branch === "60f92d0bb529a5128419de93" &&
-                                  employee.roleID === "60e004d012f47733a9b2c04c"
+                                  employee.userRole === "technician"
                               )
                               .map((filteredEmployee) => (
                                 <option
@@ -378,14 +382,14 @@ const BusinessRegistration = () => {
                         >
                           <CIcon name="cil-save" /> Save Detail
                         </CButton>
-                        <CButton
+                        {!onEdit && <CButton
                           size="sm"
                           className="px-4"
                           color="danger"
                           onClick={() => setBusiness(businessDetail)}
                         >
                           <CIcon name="cil-x" /> Clear All
-                        </CButton>
+                        </CButton>}
                       </CCol>
                     </CRow>
                   </CTabPane>

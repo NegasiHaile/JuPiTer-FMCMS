@@ -60,6 +60,19 @@ function RegisterClient() {
     const { name, value } = e.target;
     setClient({ ...client, [name]: value });
   };
+
+  const sweetAlert = (type, text) => {
+    Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: type,
+        text: text,
+        confirmButtonColor: "#3C4B64",
+        showConfirmButton: true,
+        // timer: 1500,
+      });
+  }
+  
   const onSubmitRegisterClient = async (e) => {
     e.preventDefault();
     try {
@@ -70,29 +83,14 @@ function RegisterClient() {
           headers: { Authorization: token },
         }
       );
+      sweetAlert("success", res.data.msg)
       setShowModal(!showModal);
       setCallback(!callback);
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF",
-        icon: "success",
-        text: res.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
+
   const editClientDetail = async (e) => {
     e.preventDefault();
     try {
@@ -103,26 +101,14 @@ function RegisterClient() {
           headers: { Authorization: token },
         }
       );
-      Swal.fire({
-        position: "top-center",
-        background: "#EBEDEF",
-        icon: "success",
-        text: res.data.msg,
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("success", res.data.msg)
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      Swal.fire({
-        position: "top-center",
-        background: "#EBEDEF",
-        icon: "error",
-        text: error.response.data.msg,
-        showConfirmButton: false,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
+
   const deleteClient = async (_id, fName, mName) => {
     try {
       Swal.fire({
@@ -143,15 +129,7 @@ function RegisterClient() {
         }
       });
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF",
-        icon: "error",
-        text: error.response.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        timer: 3000,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
   return (

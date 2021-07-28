@@ -45,39 +45,35 @@ const BranchList = () => {
   const [activeBranch, setActiveBranch] = useState("none");
   const [showModal, setShowModal] = useState(false);
 
-  // console.log(Branchs);
-
   const onChangeInput = (e) => {
     const { name, value } = e.target;
     setBranch({ ...branch, [name]: value });
   };
+
+  const sweetAlert = (type, text) => {
+    Swal.fire({
+        position: "center",
+        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+        icon: type,
+        text: text,
+        confirmButtonColor: "#3C4B64",
+        showConfirmButton: true,
+        // timer: 1500,
+      });
+  }
+
   const onSubmitOpenBranch = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/branch/open_new", { ...branch });
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "success",
-        text: res.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("success", res.data.msg)
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        confirmButtonColor: "#1E263C",
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
+
   const editBranchDetail = async (e) => {
     e.preventDefault();
     try {
@@ -88,29 +84,15 @@ const BranchList = () => {
           headers: { Authorization: token },
         }
       );
-      Swal.fire({
-        position: "top-center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "success",
-        text: res.data.msg,
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("success", res.data.msg)
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      Swal.fire({
-        position: "top-center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: "error",
-        text: error.response.data.msg,
-        showConfirmButton: false,
-        // timer: 1500,
-      });
+      sweetAlert("error", error.response.data.msg)
     }
   };
+
   const deleteBranch = async (_id, branchName) => {
-    // e.preventDefault();
     try {
       Swal.fire({
         title: "Delete?",
@@ -130,9 +112,10 @@ const BranchList = () => {
         }
       });
     } catch (error) {
-      alert(error.response.data.msg);
+      sweetAlert("error", error.response.data.msg)
     }
   };
+
   const branchTableFields = [
     "branchName",
     "city",

@@ -44,18 +44,6 @@ const RegisterEmployee = (props) => {
   const [user, setUser] = useState(userAttributes);
   const [onEdit, setOnEdit] = useState(false);
 
-  // if (params.id) console.log(props.location.state);
-  // useEffect(() => {
-  //   if (params.id) {
-  //     const employee = users.filter((user) => user._id === params.id);
-  //     setUser(...employee);
-  //     console.log(user);
-  //   } else {
-  //     setOnEdit(false);
-  //     setUser(userAttributes);
-  //   }
-  // }, [params.id, users])
-
   useEffect(() => {
     if (params.id) {
       setOnEdit(true);
@@ -70,23 +58,11 @@ const RegisterEmployee = (props) => {
     }
   }, [params.id, users]);
 
-  const successSwal = (text) => {
+  const sweetAlert = (type, text) => {
     Swal.fire({
       position: "center",
       background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-      icon: "success",
-      text: text,
-      confirmButtonColor: "#1E263C",
-      showConfirmButton: false,
-      // timer: 1500,
-    });
-  };
-
-  const errorSwal = (text) => {
-    Swal.fire({
-      position: "center",
-      background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-      icon: "error",
+      icon: type,
       text: text,
       confirmButtonColor: "#1E263C",
       showConfirmButton: false,
@@ -110,15 +86,15 @@ const RegisterEmployee = (props) => {
           }
         );
         setCallback(!callback);
-        successSwal(res.data.msg);
+        sweetAlert("success", res.data.msg);
       } else {
         const res = await axios.post("/user/register", { ...user });
         setCallback(!callback);
-        successSwal(res.data.msg);
+        sweetAlert("success", res.data.msg);
       }
       // console.log(user);
     } catch (error) {
-      errorSwal(error.response.data.msg);
+        sweetAlert("error", error.response.data.msg);
     }
   };
 
@@ -315,14 +291,14 @@ const RegisterEmployee = (props) => {
                 >
                   <CIcon name="cil-save" /> Save Detail
                 </CButton>
-                <CButton
+                {!onEdit && <CButton
                   size="sm"
                   className="px-4"
                   color="danger"
                   onClick={clearAllFields}
                 >
                   <CIcon name="cil-x" /> Clear All
-                </CButton>
+                </CButton>}
               </CCol>
             </CRow>
           </CForm>

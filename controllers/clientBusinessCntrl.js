@@ -106,7 +106,7 @@ const clientBusinessCntrl = {
           sw_Tech,
         } = req.body)
       );
-      res.json({ msg: "Business datail has been edited successfuly!" });
+      return res.json({ msg: "Business datail has been edited successfuly!" });
     } catch (error) {
       res.status(500).json({ msg: error.message });
     }
