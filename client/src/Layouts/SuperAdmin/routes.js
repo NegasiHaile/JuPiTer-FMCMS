@@ -11,7 +11,7 @@ const OpenNewBranch = lazy(() => import("../../Components/Branch/BranchList"));
 const BranchDetail = lazy(() => import("../../Components/Branch/BranchDetail"));
 
 // Dashboards
-const BranchAdminDashBoard = lazy(() =>
+const jupiterDashboard = lazy(() =>
   import("../../Components/Dashboard/Dashboard")
 );
 
@@ -61,7 +61,7 @@ const routes = [
     path: "/dashboard",
     exact: true,
     name: "Dashboard",
-    component: BranchAdminDashBoard,
+    component: jupiterDashboard,
   },
   // Branchs
   {

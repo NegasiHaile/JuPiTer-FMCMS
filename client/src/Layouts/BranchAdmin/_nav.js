@@ -6,13 +6,19 @@ const NEW = "10";
 const _nav = [
   {
     _tag: "CSidebarNavItem",
-    name: "Dashboard",
+    name: "Branch Dashboard",
     to: "/dashboard",
     icon: <CIcon name="cil-speedometer" customClasses="c-sidebar-nav-icon" />,
     badge: {
-      color: "info",
+      color: "success",
       text: NEW,
     },
+  },
+  {
+    _tag: "CSidebarNavItem",
+    name: "Branch Employees",
+    to: "/Employee/List",
+    icon: "cil-group",
   },
   {
     _tag: "CSidebarNavTitle",
@@ -20,15 +26,10 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavDropdown",
-    name: "Controlling",
+    name: "Machine Controlling",
     route: "/Machine",
-    icon: "cil-puzzle",
+    icon: "cil-print",
     _children: [
-      {
-        _tag: "CSidebarNavItem",
-        name: "Register Machine",
-        to: "/machine/register",
-      },
       {
         _tag: "CSidebarNavItem",
         name: "Distribute Machine",
@@ -45,7 +46,7 @@ const _nav = [
     _tag: "CSidebarNavDropdown",
     name: "Maintenance",
     route: "/maintenance",
-    icon: "cil-star",
+    icon: "cil-memory",
     _children: [
       {
         _tag: "CSidebarNavItem",
@@ -60,90 +61,49 @@ const _nav = [
     ],
   },
   {
-    _tag: "CSidebarNavDropdown",
-    name: "Sales",
-    route: "/sales",
-    icon: "cil-bell",
-    _children: [
-      {
         _tag: "CSidebarNavItem",
-        name: "Alerts",
+        name: "Machine Sales",
         to: "/sales/alerts",
+    icon: "cil-star",
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Badges",
-        to: "/notifications/badges",
-      },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Modal",
-        to: "/notifications/modals",
-      },
-    ],
-  },
   {
     _tag: "CSidebarNavTitle",
     _children: ["Client-Managment"],
   },
   {
-    _tag: "CSidebarNavDropdown",
-    name: "Client Account",
-    route: "/Client",
-    icon: "cil-puzzle",
-    _children: [
-      {
-        _tag: "CSidebarNavItem",
-        name: "Allow Client",
-        to: "/client/register",
-      },
-      {
         _tag: "CSidebarNavItem",
         name: "Clients List",
-        to: "/clients/list",
+        to: "/client/register",
+    icon: "cil-contact",
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Machines List",
-        to: "/machines/list",
-      },
-    ],
-  },
   {
-    _tag: "CSidebarNavDropdown",
-    name: "Client Business",
-    route: "/Business",
-    icon: "cil-star",
-    _children: [
-      {
         _tag: "CSidebarNavItem",
-        name: "Register Business",
-        to: "/business/register",
+        name: "Business-List",
+        to: "/business/list",
+    icon: "cil-building",
       },
-      {
-        _tag: "CSidebarNavItem",
-        name: "Business",
-        to: "/businesses/list",
-      },
-    ],
-  },
   {
     _tag: "CSidebarNavTitle",
     _children: ["Others"],
   },
-
-  {
+{
     _tag: "CSidebarNavItem",
-    name: "Add Employee",
+    name: "Jupiter Branchs",
+    to: "/Branch/List",
+    icon: "cil-bank",
+  },
+   {
+    _tag: "CSidebarNavItem",
+    name: "Feedbacks",
     to: "/Employee/Register",
-    icon: "cil-drop",
+    icon: "cil-speech",
   },
   {
     _tag: "CSidebarNavItem",
-    name: "Get Employees",
+    name: "Inventory",
     to: "/Employee/List",
-    icon: "cil-pencil",
-  },
+    icon: "cil-shield-alt",
+  }
 ];
 
 export default _nav;

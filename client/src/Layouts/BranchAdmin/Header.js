@@ -63,7 +63,7 @@ const SuperAdminHeader = () => {
           <CHeaderNavLink to="/machines/list">Machines</CHeaderNavLink>
         </CHeaderNavItem>
         <CHeaderNavItem className="px-3">
-          <CHeaderNavLink to="/clients/list">Clients</CHeaderNavLink>
+          <CHeaderNavLink to="/client/register">Clients</CHeaderNavLink>
         </CHeaderNavItem>
       </CHeaderNav>
 
@@ -88,11 +88,11 @@ const SuperAdminHeader = () => {
             to="/dashboard"
           >
             <CIcon name="cil-graph" alt="Dashboard" />
-            &nbsp;Dashboard
+            &nbsp;Inventory
           </CLink>
-          <CLink className="c-subheader-nav-link" href="#">
-            <CIcon name="cil-settings" alt="Settings" />
-            &nbsp;Settings
+          <CLink className="c-subheader-nav-link" to="/Branch/List">
+            <CIcon name="cil-Building" alt="Branchs" />
+            &nbsp;Jupiter-Branchs
           </CLink>
         </div>
       </CSubheader>

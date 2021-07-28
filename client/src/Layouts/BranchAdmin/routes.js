@@ -1,24 +1,46 @@
-import React, { lazy } from "react";
+import { lazy } from "react";
 
-// Auth
+// User Account
+const UserProfile = lazy(() => import("../../Components/UserAccount/Profile"));
 const ChangePassword = lazy(() =>
-  import("../../Components/UserAccount/ChangePassword.js")
+  import("../../Components/UserAccount/ChangePassword")
 );
+
+// Jupiter branchs
+const OpenNewBranch = lazy(() => import("../../Components/Branch/BranchList"));
+const BranchDetail = lazy(() => import("../../Components/Branch/BranchDetail"));
 
 // Dashboards
-const BranchAdminDashBoard = lazy(() =>
-  import("../../Components/Dashboard/Dashboard.js")
+const branchDashboard = lazy(() =>
+  import("../../Components/Dashboard/Dashboard")
 );
+
+// Employee frontend routing
 const RgisterEmployee = lazy(() =>
   import("../../Components/Employee/RegisterEmployee")
 );
 const EmployeesList = lazy(() =>
   import("../../Components/Employee/EmployeesList")
 );
-// Importing of machine related pages
-const MachineRegister = lazy(() =>
-  import("../../Components/Machine/MachineRegister")
+
+// Client routes
+const RegisterClient = lazy(() =>
+  import("../../Components/Client/RegisterClient")
 );
+const ClientDetail = lazy(() => import("../../Components/Client/ClientDetail"));
+
+// Client business frontend routing
+const BusinessRegistration = lazy(() =>
+  import("../../Components/Business/BusinessRegistration")
+);
+const BusinessesList = lazy(() =>
+  import("../../Components/Business/BusinessesList")
+);
+const BusinessDetail = lazy(() =>
+  import("../../Components/Business/BusinessDetail")
+);
+
+// Importing of machine related pages
 const MachineDistribute = lazy(() =>
   import("../../Components/Machine/MachineDistribute")
 );
@@ -29,14 +51,27 @@ const MachinesList = lazy(() =>
 const MaintenanceAnnual = lazy(() =>
   import("../../Components/Maintenance/MaintenanceAnnual")
 );
-const aa = 3
+
 const routes = [
-  { path: "/", exact: true, name: "B-A" },
+  { path: "/", exact: true, name: "S-A" },
   {
     path: "/dashboard",
     exact: true,
     name: "Dashboard",
-    component: BranchAdminDashBoard,
+    component: branchDashboard,
+  },
+  // Branchs
+  {
+    path: "/Branch/List",
+    exact: true,
+    name: "Open-New-Branch",
+    component: OpenNewBranch,
+  },
+  {
+    path: "/Branch/Detail/:id",
+    exact: true,
+    name: "Branch-Detail",
+    component: BranchDetail,
   },
   // Employee
   // {
@@ -45,19 +80,58 @@ const routes = [
   //   name: "Employee-Registration",
   //   component: RgisterEmployee,
   // },
+  // {
+  //   path: "/Employee/Edit/:id",
+  //   exact: true,
+  //   name: "Edit-Employee-Detail",
+  //   component: RgisterEmployee,
+  // },
   {
     path: "/Employee/List",
     exact: true,
     name: "Employee-List",
     component: EmployeesList,
   },
-  // Machine
+  // Client
   {
-    path: "/machine/register",
+    path: "/client/register",
     exact: true,
-    name: "Register-Machine",
-    component: MachineRegister,
+    name: "Register-Client",
+    component: RegisterClient,
   },
+  {
+    path: "/client/detail/:id",
+    exact: true,
+    name: "Client-Detail",
+    component: ClientDetail,
+  },
+  // Client bussiness
+  {
+    path: "/business/register/:clientid",
+    exact: true,
+    name: "Register-Business",
+    component: BusinessRegistration,
+  },
+  {
+    path: "/business/edit/:businessId",
+    exact: true,
+    name: "Update-Business",
+    component: BusinessRegistration,
+  },
+
+  {
+    path: "/business/list",
+    exact: true,
+    name: "Business-List",
+    component: BusinessesList,
+  },
+  {
+    path: "/business/detail",
+    exact: true,
+    name: "Register-Business",
+    component: BusinessDetail,
+  },
+  // Machine
   {
     path: "/machine/distribute",
     exact: true,
@@ -78,7 +152,13 @@ const routes = [
     component: MaintenanceAnnual,
   },
 
-  // Auth
+  // User Accont
+  {
+    path: "/user/profile/:id",
+    exact: true,
+    name: "Open-New-Branch",
+    component: UserProfile,
+  },
   {
     path: "/change_password",
     exact: true,

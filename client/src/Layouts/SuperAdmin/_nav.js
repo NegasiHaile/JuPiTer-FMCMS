@@ -111,6 +111,12 @@ const _nav = [
   },
   {
     _tag: "CSidebarNavItem",
+    name: "Inventory",
+    to: "/Employee/List",
+    icon: "cil-shield-alt",
+  },
+  {
+    _tag: "CSidebarNavItem",
     name: "System Backup",
     to: "/Employee/List",
     icon: "cil-shield-alt",
