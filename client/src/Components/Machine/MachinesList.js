@@ -25,14 +25,12 @@ import {
 import CIcon from "@coreui/icons-react";
 import Swal from "sweetalert2";
 
-
-
 const MachinesList = () => {
   const state = useContext(GlobalState);
   const [user] = state.UserAPI.User;
   const [token] = state.token;
-  const [allMachines] = state.MachineAPI.machines; 
-  const [machines, setMachines] = useState(allMachines); 
+  const [allMachines] = state.MachineAPI.machines;
+  const [machines, setMachines] = useState(allMachines);
   const [callback, setCallback] = state.MachineAPI.callback;
   const [callbackBusiness, setCallbackBusiness] = state.BusinessAPI.callback;
   const [activemachine, setActivemachine] = useState("none");
@@ -44,23 +42,27 @@ const MachinesList = () => {
   const [businesses] = state.BusinessAPI.businesses;
 
   const machineDetail = {
-  serialNumber: "",
-  machineModel: "",
-  brand: "",
-  price: "",
-  branch: user.branch,
-  problemStatus: "",
-  // for distributing
-  businessId: "",
+    serialNumber: "",
+    machineModel: "",
+    brand: "",
+    price: "",
+    branch: user.branch,
+    problemStatus: "",
+    // for distributing
+    businessId: "",
   };
-  
+
   const [machine, setMachine] = useState(machineDetail);
 
-    useEffect(() => {
-      if (user.userRole === "branch-admin") {
-          setMachines(allMachines.filter((filteredMachine) => filteredMachine.branch == user.branch))
+  useEffect(() => {
+    if (user.userRole === "branch-admin") {
+      setMachines(
+        allMachines.filter(
+          (filteredMachine) => filteredMachine.branch == user.branch
+        )
+      );
     } else {
-      setMachines(allMachines)
+      setMachines(allMachines);
     }
   }, [user, allMachines]);
 
@@ -71,28 +73,28 @@ const MachinesList = () => {
 
   const sweetAlert = (type, text) => {
     Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: type,
-        text: text,
-        confirmButtonColor: "#3C4B64",
-        showConfirmButton: true,
-        // timer: 1500,
-      });
-  }
+      position: "center",
+      background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+      icon: type,
+      text: text,
+      confirmButtonColor: "#3C4B64",
+      showConfirmButton: true,
+      // timer: 1500,
+    });
+  };
 
   const onSubmitRegisterMachine = async (e) => {
     e.preventDefault();
     try {
       const res = await axios.post("/machine/register", { ...machine });
-      sweetAlert("success", res.data.msg)
+      sweetAlert("success", res.data.msg);
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      sweetAlert("error", error.response.data.msg)
+      sweetAlert("error", error.response.data.msg);
     }
   };
-  
+
   const editmachineDetail = async (e) => {
     e.preventDefault();
     try {
@@ -103,11 +105,11 @@ const MachinesList = () => {
           headers: { Authorization: token },
         }
       );
-      sweetAlert("success", res.data.msg)
+      sweetAlert("success", res.data.msg);
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      sweetAlert("error", error.response.data.msg)
+      sweetAlert("error", error.response.data.msg);
     }
   };
 
@@ -132,7 +134,7 @@ const MachinesList = () => {
         }
       });
     } catch (error) {
-      sweetAlert("error", error.response.data.msg)
+      sweetAlert("error", error.response.data.msg);
     }
   };
 
@@ -143,12 +145,12 @@ const MachinesList = () => {
         ...machine,
         machineId: distributingMachineId,
       });
-      sweetAlert("success", res.data.msg)
+      sweetAlert("success", res.data.msg);
       setShowMachineDistributeModal(!showMachineDistributeModal);
       setCallback(!callback);
-      setCallbackBusiness(!callback)
+      setCallbackBusiness(!callbackBusiness);
     } catch (error) {
-      sweetAlert("error", error.response.data.msg)
+      sweetAlert("error", error.response.data.msg);
     }
   };
 
@@ -167,17 +169,19 @@ const MachinesList = () => {
       <CCard className=" shadow-sm">
         <CCardHeader className="d-flex justify-content-between">
           <CLabel>Jupiter all machine list</CLabel>
-          {user.userRole === "branch-admin" && <CButton
-            size="sm"
-            color="dark"
-            onClick={() => {
-              setActivemachine("none");
-              setMachine({ machine, ...machineDetail });
-              setShowModal(!showModal);
-            }}
-          >
-            <CIcon name="cil-plus" /> Add Machine
-          </CButton>}
+          {user.userRole === "branch-admin" && (
+            <CButton
+              size="sm"
+              color="dark"
+              onClick={() => {
+                setActivemachine("none");
+                setMachine({ machine, ...machineDetail });
+                setShowModal(!showModal);
+              }}
+            >
+              <CIcon name="cil-plus" /> Add Machine
+            </CButton>
+          )}
         </CCardHeader>
         <CCardBody>
           <CDataTable

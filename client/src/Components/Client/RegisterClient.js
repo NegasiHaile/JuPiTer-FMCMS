@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import { GlobalState } from "../../GlobalState";
 
@@ -25,16 +25,6 @@ import {
   CLink,
   CTooltip,
 } from "@coreui/react";
-const clientDetail = {
-  fName: "",
-  mName: "",
-  lName: "",
-  gender: "",
-  photo: "/public/images/ng.png",
-  phoneNumber: "",
-  email: "",
-  userRole: "client",
-};
 
 const branchTableFields = [
   "fName",
@@ -50,11 +40,38 @@ const branchTableFields = [
 function RegisterClient() {
   const state = useContext(GlobalState);
   const [token] = state.token;
+  const [user] = state.UserAPI.User;
   const [users, setUsers] = state.UsersAPI.users;
-  const [client, setClient] = useState(clientDetail);
+  const [clients, setClients] = useState(users);
   const [callback, setCallback] = state.UsersAPI.callback;
   const [showModal, setShowModal] = useState(false);
   const [activeClientID, setActiveClientID] = useState("none");
+  const clientDetail = {
+    fName: "",
+    mName: "",
+    lName: "",
+    gender: "",
+    photo: "/public/images/ng.png",
+    branch: user.branch,
+    phoneNumber: "",
+    email: "",
+    userRole: "client",
+  };
+  const [client, setClient] = useState(clientDetail);
+
+  useEffect(() => {
+    if (user.userRole === "branch-admin") {
+      setClients(
+        users.filter(
+          (filteredClient) =>
+            filteredClient.userRole === "client" &&
+            filteredClient.branch === user.branch
+        )
+      );
+    } else {
+      setClients(users);
+    }
+  }, [user, users]);
 
   const onChangeInput = (e) => {
     const { name, value } = e.target;
@@ -63,16 +80,16 @@ function RegisterClient() {
 
   const sweetAlert = (type, text) => {
     Swal.fire({
-        position: "center",
-        background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
-        icon: type,
-        text: text,
-        confirmButtonColor: "#3C4B64",
-        showConfirmButton: true,
-        // timer: 1500,
-      });
-  }
-  
+      position: "center",
+      background: "#EBEDEF", // 2EB85C success // E55353 danger // 1E263C sidebar
+      icon: type,
+      text: text,
+      confirmButtonColor: "#3C4B64",
+      showConfirmButton: true,
+      // timer: 1500,
+    });
+  };
+
   const onSubmitRegisterClient = async (e) => {
     e.preventDefault();
     try {
@@ -83,11 +100,11 @@ function RegisterClient() {
           headers: { Authorization: token },
         }
       );
-      sweetAlert("success", res.data.msg)
+      sweetAlert("success", res.data.msg);
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      sweetAlert("error", error.response.data.msg)
+      sweetAlert("error", error.response.data.msg);
     }
   };
 
@@ -101,11 +118,11 @@ function RegisterClient() {
           headers: { Authorization: token },
         }
       );
-      sweetAlert("success", res.data.msg)
+      sweetAlert("success", res.data.msg);
       setShowModal(!showModal);
       setCallback(!callback);
     } catch (error) {
-      sweetAlert("error", error.response.data.msg)
+      sweetAlert("error", error.response.data.msg);
     }
   };
 
@@ -129,7 +146,7 @@ function RegisterClient() {
         }
       });
     } catch (error) {
-      sweetAlert("error", error.response.data.msg)
+      sweetAlert("error", error.response.data.msg);
     }
   };
   return (
@@ -137,26 +154,26 @@ function RegisterClient() {
       <CCard className=" shadow-sm">
         <CCardHeader className="d-flex justify-content-between">
           <CLabel className="text-muted">Jupiter clients account</CLabel>
-          <CButton
-            size="sm"
-            color="secondary"
-            onClick={() => {
-              setClient({ client, ...clientDetail });
-              setActiveClientID("none");
-              setShowModal(!showModal);
-            }}
-          >
-            <CIcon name="cil-plus" /> Register Client
-          </CButton>
+          {user.userRole === "branch-admin" && (
+            <CButton
+              size="sm"
+              color="secondary"
+              onClick={() => {
+                setClient({ client, ...clientDetail });
+                setActiveClientID("none");
+                setShowModal(!showModal);
+              }}
+            >
+              <CIcon name="cil-plus" /> Register Client
+            </CButton>
+          )}
         </CCardHeader>
         <CCardBody>
           <CDataTable
-            items={users.filter(
-              (user) => user.userRole === "client"
-            )}
+            items={clients}
             fields={branchTableFields}
             tableFilter
-            // columnFilter
+            columnFilter
             itemsPerPageSelect
             itemsPerPage={10}
             hover
@@ -198,7 +215,10 @@ function RegisterClient() {
 
                   <span className="text-muted">|</span>
 
-                  <CLink className="text-primary" to={`/client/detail/${client._id}`}>
+                  <CLink
+                    className="text-primary"
+                    to={`/client/detail/${client._id}`}
+                  >
                     <CTooltip
                       content={`See detail of - ${client.fName} ${client.mName}- client.`}
                     >

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -19,9 +19,23 @@ const EmployeeList = () => {
   const state = useContext(GlobalState);
   const [user] = state.UserAPI.User;
   const [token] = state.token;
-  const [employees] = state.UsersAPI.users;
+  const [allUsers] = state.UsersAPI.users;
+  const [employees, setEmployees] = useState(allUsers);
+
   const [branchs] = state.branchAPI.branchs;
   const [callback, setCallback] = state.UsersAPI.callback;
+
+  useEffect(() => {
+    if (user.userRole === "branch-admin") {
+      setEmployees(
+        allUsers.filter(
+          (filteredEmployee) => filteredEmployee.branch == user.branch
+        )
+      );
+    } else {
+      setEmployees(allUsers);
+    }
+  }, [user, allUsers]);
 
   const deleteEmloyee = async (_id, fName, mName) => {
     // e.preventDefault();
@@ -76,17 +90,19 @@ const EmployeeList = () => {
   return (
     <>
       <CCard className=" shadow-sm">
-        {user.userRole === "super-admin" && <CCardHeader className="d-flex justify-content-between">
-          <CLabel>List of employees</CLabel>
-          <CButton
-            to="/Employee/register"
-            size="sm"
-            variant="outline"
-            color="dark"
-          >
-            <CIcon name="cil-plus" /> Add Employee
-          </CButton>
-        </CCardHeader>}
+        {user.userRole === "super-admin" && (
+          <CCardHeader className="d-flex justify-content-between">
+            <CLabel>List of employees</CLabel>
+            <CButton
+              to="/Employee/register"
+              size="sm"
+              variant="outline"
+              color="dark"
+            >
+              <CIcon name="cil-plus" /> Add Employee
+            </CButton>
+          </CCardHeader>
+        )}
         <CCardBody>
           <CDataTable
             items={employees.filter(
@@ -107,49 +123,56 @@ const EmployeeList = () => {
             scopedSlots={{
               branch: (employee) => (
                 <td>
-                {branchs.filter((brnc) => brnc._id === employee.branch).map((filteredBranch) => (filteredBranch.branchName))}
-                  </td>
-                ),
+                  {branchs
+                    .filter((brnc) => brnc._id === employee.branch)
+                    .map((filteredBranch) => filteredBranch.branchName)}
+                </td>
+              ),
               Actions: (employee) => (
                 <td className="d-flex justify-content-between">
-                  {user.userRole === "super-admin" && <>
+                  {user.userRole === "super-admin" && (
+                    <>
+                      <CLink
+                        className="text-success"
+                        to={{
+                          pathname: `/Employee/Edit/${employee._id}`,
+                          state: employee,
+                        }}
+                      >
+                        <CTooltip
+                          content={`Edit the  - ${employee.fName} ${employee.mName}- employee detail.`}
+                        >
+                          <CIcon name="cil-pencil" />
+                        </CTooltip>
+                      </CLink>
+
+                      <span className="text-muted">|</span>
+
+                      <CLink
+                        className="text-danger"
+                        onClick={() =>
+                          deleteEmloyee(
+                            employee._id,
+                            employee.fName,
+                            employee.mName
+                          )
+                        }
+                      >
+                        <CTooltip
+                          content={`Delete - ${employee.fName} ${employee.mName}- employee.`}
+                        >
+                          <CIcon name="cil-trash" />
+                        </CTooltip>
+                      </CLink>
+
+                      <span className="text-muted">|</span>
+                    </>
+                  )}
+
                   <CLink
-                    className="text-success"
-                    to={{
-                      pathname: `/Employee/Edit/${employee._id}`,
-                      state: employee,
-                    }}
+                    className="text-primary"
+                    to={`/user/profile/${employee._id}`}
                   >
-                    <CTooltip
-                      content={`Edit the  - ${employee.fName} ${employee.mName}- employee detail.`}
-                    >
-                      <CIcon name="cil-pencil" />
-                    </CTooltip>
-                  </CLink>
-
-                  <span className="text-muted">|</span>
-
-                  <CLink
-                    className="text-danger"
-                    onClick={() =>
-                      deleteEmloyee(
-                        employee._id,
-                        employee.fName,
-                        employee.mName
-                      )
-                    }
-                  >
-                    <CTooltip
-                      content={`Delete - ${employee.fName} ${employee.mName}- employee.`}
-                    >
-                      <CIcon name="cil-trash" />
-                    </CTooltip>
-                  </CLink>
-
-                  <span className="text-muted">|</span></>}
-                  
-
-                  <CLink className="text-primary" to={`/user/profile/${employee._id}`}>
                     <CTooltip
                       content={`See detail of - ${employee.fName} ${employee.mName}- employee.`}
                     >
