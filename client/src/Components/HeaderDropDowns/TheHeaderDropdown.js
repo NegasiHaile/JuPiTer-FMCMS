@@ -10,8 +10,6 @@ import {
   CImg,
 } from "@coreui/react";
 import CIcon from "@coreui/icons-react";
-// routes config
-// import routes from "../../routes";
 
 const TheHeaderDropdown = () => {
   const state = useContext(GlobalState);
@@ -29,9 +27,9 @@ const TheHeaderDropdown = () => {
       <CDropdownToggle className="c-header-nav-link" caret={false}>
         <div className="c-avatar">
           <CImg
-            src={"avatars/admin.jpg"}
+            src={"/avatars/admin.jpg"}
             className="c-avatar-img"
-            alt="BranchAdmin"
+            alt={`${user.userRole}: ${user.fName}-${user.fName}`}
           />
         </div>
       </CDropdownToggle>
@@ -41,24 +39,21 @@ const TheHeaderDropdown = () => {
         </CDropdownItem>
         <CDropdownItem to="/dashboard">
           <CIcon name="cil-task" className="mfe-2" />
-          Work History
-          <CBadge color="danger" className="mfs-auto">
-            42
-          </CBadge>
+          {user.branch}
         </CDropdownItem>
-        <CDropdownItem>
+        {/* <CDropdownItem>
           <CIcon name="cil-comment-square" className="mfe-2" />
           Comments
           <CBadge color="warning" className="mfs-auto">
             42
           </CBadge>
-        </CDropdownItem>
+        </CDropdownItem> */}
         <CDropdownItem header tag="div" color="light" className="text-center">
           <strong>Settings</strong>
         </CDropdownItem>
         <CDropdownItem to={`/user/profile/${user._id}`}>
           <CIcon name="cil-user" className="mfe-2" />
-          Profile
+          {user.fName + " " + user.mName}
         </CDropdownItem>
         <CDropdownItem to="/change_password">
           <CIcon name="cil-settings" className="mfe-2" />

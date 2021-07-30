@@ -109,12 +109,12 @@ const routes = [
     component: ClientDetail,
   },
   // Client bussiness
-  {
-    path: "/business/register/:clientid",
-    exact: true,
-    name: "Register-Business",
-    component: BusinessRegistration,
-  },
+  // {
+  //   path: "/business/register/:clientid",
+  //   exact: true,
+  //   name: "Register-Business",
+  //   component: BusinessRegistration,
+  // },
   {
     path: "/business/edit/:businessId",
     exact: true,

@@ -72,9 +72,9 @@ const machineCntrl = {
     try {
       const { machineId, businessId, status } = req.body;
 
-      const busibess = await clientBusinesses.findOne({ _id: businessId });
+      const business = await clientBusinesses.findOne({ _id: businessId });
 
-      if (busibess.credentials === "Pending")
+      if (business.credentials === "Pending")
         return res.status(400).json({
           msg: "The credentials of this document is not accepted yet!",
         });
@@ -128,6 +128,30 @@ const machineCntrl = {
 
         res.json({ msg: "Machine has been distributed successfully!" });
       }
+    } catch (err) {
+      return res.status(500).json({ msg: err.message });
+    }
+  },
+
+  undistributMachine: async (req, res) => {
+    try {
+      const sale = await Sales.findOne({ machineId: req.params.machineId });
+
+      await Machines.findOneAndUpdate(
+        { _id: req.params.machineId },
+        {
+          salesStatus: "unsold",
+        }
+      );
+
+      await clientBusinesses.findOneAndUpdate(
+        { _id: sale.businessId },
+        {
+          machine: "unassigned",
+        }
+      );
+
+      res.json({ msg: "Machine undistributed successfully!" });
     } catch (err) {
       return res.status(500).json({ msg: err.message });
     }

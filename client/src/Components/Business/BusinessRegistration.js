@@ -28,12 +28,10 @@ const BusinessRegistration = () => {
   const state = useContext(GlobalState);
   const params = useParams();
   const [user] = state.UserAPI.User;
-  const [credentials, setCredentials] = useState("")
+  const [credentials, setCredentials] = useState("");
 
-  
-  
   const businessDetail = {
-    ownerID: params.clientid,
+    ownerID: null,
     TIN: "",
     businessName: "",
     companyName: "",
@@ -61,16 +59,16 @@ const BusinessRegistration = () => {
 
   useEffect(() => {
     if (user.userRole === "client") {
-      businessDetail.credentials = "Pending"
-      // setCredentials("Pending")
-      setBusiness(businessDetail)
+      businessDetail.ownerID = user._id;
+      businessDetail.credentials = "Pending";
+      setBusiness(businessDetail);
     } else {
-      // setCredentials("Accepted")
-      businessDetail.credentials = "Accepted"
-      setBusiness(businessDetail)
+      businessDetail.ownerID = params.id;
+      businessDetail.credentials = "Accepted";
+      setBusiness(businessDetail);
     }
   }, [user]);
-  
+
   useEffect(() => {
     if (params.businessId) {
       setOnEdit(true);
@@ -86,8 +84,10 @@ const BusinessRegistration = () => {
   }, [params.clientid, params.businessId, businesses]);
 
   const onChangeInput = (e) => {
-    try{const { name, value } = e.target;
-    setBusiness({ ...business, [name]: value });}catch{}
+    try {
+      const { name, value } = e.target;
+      setBusiness({ ...business, [name]: value });
+    } catch {}
   };
 
   const SweetAlert = (type, text) => {
@@ -106,13 +106,15 @@ const BusinessRegistration = () => {
     e.preventDefault();
     try {
       if (onEdit) {
-      const res = await axios.put(`/business/edit/${params.businessId}`, { ...business });
-      SweetAlert("success", res.data.msg);
-      setCallback(!callback);
+        const res = await axios.put(`/business/edit/${params.businessId}`, {
+          ...business,
+        });
+        SweetAlert("success", res.data.msg);
+        setCallback(!callback);
       } else {
-      const res = await axios.post("/business/register", { ...business });
-      SweetAlert("success", res.data.msg);
-      setCallback(!callback);
+        const res = await axios.post("/business/register", { ...business });
+        SweetAlert("success", res.data.msg);
+        setCallback(!callback);
       }
     } catch (error) {
       SweetAlert("error", error.response.data.msg);
@@ -398,14 +400,16 @@ const BusinessRegistration = () => {
                         >
                           <CIcon name="cil-save" /> Save Detail
                         </CButton>
-                        {!onEdit && <CButton
-                          size="sm"
-                          className="px-4"
-                          color="danger"
-                          onClick={() => setBusiness(businessDetail)}
-                        >
-                          <CIcon name="cil-x" /> Clear All
-                        </CButton>}
+                        {!onEdit && (
+                          <CButton
+                            size="sm"
+                            className="px-4"
+                            color="danger"
+                            onClick={() => setBusiness(businessDetail)}
+                          >
+                            <CIcon name="cil-x" /> Clear All
+                          </CButton>
+                        )}
                       </CCol>
                     </CRow>
                   </CTabPane>

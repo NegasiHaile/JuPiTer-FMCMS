@@ -13,6 +13,7 @@ router.put("/edit/:id", machineCntrl.editMachine); // if it's not distributed ye
 router.delete("/delete/:id", machineCntrl.deleteMachine); // if it's not distributed yet
 
 router.post("/distribute", machineCntrl.distributMachine);
+router.put("/undistribute/:machineId", machineCntrl.undistributMachine);
 
 router.get("/inRequest_machines", machineCntrl.allMachinesInRequest);
 router.get("/sold_machines", machineCntrl.allSoldMachines);

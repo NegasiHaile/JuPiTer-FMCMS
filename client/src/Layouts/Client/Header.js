@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState, useContext } from "react";
+import { GlobalState } from "../../GlobalState";
 import { useSelector, useDispatch } from "react-redux";
 import {
   CHeader,
@@ -18,10 +19,12 @@ import CIcon from "@coreui/icons-react";
 import routes from "./routes";
 
 import TheHeaderDropdown from "../../Components/HeaderDropDowns/TheHeaderDropdown";
-import TheHeaderDropdownMssg from "../../Components/HeaderDropDowns/TheHeaderDropdownMssg";
 import TheHeaderDropdownNotif from "../../Components/HeaderDropDowns/TheHeaderDropdownNotif";
 
 const BranchAdminHeader = () => {
+  const state = useContext(GlobalState);
+  const [user] = state.UserAPI.User;
+
   const dispatch = useDispatch();
   const sidebarShow = useSelector((state) => state.sidebarShow);
 
@@ -66,7 +69,6 @@ const BranchAdminHeader = () => {
 
       <CHeaderNav className="px-3">
         <TheHeaderDropdownNotif />
-        <TheHeaderDropdownMssg />
         <TheHeaderDropdown />
       </CHeaderNav>
 
@@ -86,10 +88,6 @@ const BranchAdminHeader = () => {
           >
             <CIcon name="cil-graph" alt="Dashboard" />
             &nbsp;Inventory
-          </CLink>
-          <CLink className="c-subheader-nav-link" href="#">
-            <CIcon name="cil-settings" alt="Settings" />
-            &nbsp;Settings
           </CLink>
         </div>
       </CSubheader>

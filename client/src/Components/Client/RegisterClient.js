@@ -183,37 +183,38 @@ function RegisterClient() {
             scopedSlots={{
               Actions: (client) => (
                 <td className="d-flex justify-content-between">
-                  <CLink
-                    className="text-success"
-                    onClick={() => {
-                      setActiveClientID(client._id);
-                      setClient({ client, ...client });
-                      setShowModal(!showModal);
-                    }}
-                  >
-                    <CTooltip
-                      content={`Edit the  - ${client.fName} ${client.mName}- client detail.`}
-                    >
-                      <CIcon name="cil-pencil" />
-                    </CTooltip>
-                  </CLink>
-
-                  <span className="text-muted">|</span>
-
-                  <CLink
-                    className="text-danger"
-                    onClick={() =>
-                      deleteClient(client._id, client.fName, client.mName)
-                    }
-                  >
-                    <CTooltip
-                      content={`Delete - ${client.fName} ${client.mName}- client.`}
-                    >
-                      <CIcon name="cil-trash" />
-                    </CTooltip>
-                  </CLink>
-
-                  <span className="text-muted">|</span>
+                  {user.userRole === "branch-admin" && (
+                    <>
+                      <CLink
+                        className="text-success"
+                        onClick={() => {
+                          setActiveClientID(client._id);
+                          setClient({ client, ...client });
+                          setShowModal(!showModal);
+                        }}
+                      >
+                        <CTooltip
+                          content={`Edit the  - ${client.fName} ${client.mName}- client detail.`}
+                        >
+                          <CIcon name="cil-pencil" />
+                        </CTooltip>
+                      </CLink>
+                      <span className="text-muted">|</span>
+                      <CLink
+                        className="text-danger"
+                        onClick={() =>
+                          deleteClient(client._id, client.fName, client.mName)
+                        }
+                      >
+                        <CTooltip
+                          content={`Delete - ${client.fName} ${client.mName}- client.`}
+                        >
+                          <CIcon name="cil-trash" />
+                        </CTooltip>
+                      </CLink>
+                      <span className="text-muted">|</span>{" "}
+                    </>
+                  )}
 
                   <CLink
                     className="text-primary"

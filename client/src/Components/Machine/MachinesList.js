@@ -35,7 +35,6 @@ const MachinesList = () => {
   const [callbackBusiness, setCallbackBusiness] = state.BusinessAPI.callback;
   const [activemachine, setActivemachine] = useState("none");
   const [showModal, setShowModal] = useState(false);
-  const [machineStatus, setMachineStatus] = useState("fine");
   const [distributingMachineId, setDistributingMachineId] = useState("none");
   const [showMachineDistributeModal, setShowMachineDistributeModal] =
     useState(false);
@@ -154,14 +153,46 @@ const MachinesList = () => {
     }
   };
 
+  const revertMachine = async (id) => {
+    try {
+      Swal.fire({
+        title: "Undistribute Machine?",
+        text: "You are about to undstribute machine from a busines!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3C4B64",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, Undistribute it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          const res = await axios.put(`/machine/undistribute/${id}`, {
+            headers: { Authorization: token },
+          });
+          Swal.fire("Undistributed!", res.data.msg, "success");
+
+          setCallback(!callback);
+          setCallbackBusiness(!callbackBusiness);
+        }
+      });
+    } catch (error) {
+      sweetAlert("error", error.response.data.msg);
+    }
+  };
+
   const machineTablefields = [
     "serialNumber",
     "machineModel",
     "brand",
-    "bussiness",
-    "problemStatus",
+    "price",
     "salesStatus",
-    "Actions",
+    "problemStatus",
+    {
+      key: "Actions",
+      label: "Actions",
+      // _style: { width: "1%" },
+      sorter: false,
+      filter: false,
+    },
   ];
 
   return (
@@ -196,56 +227,101 @@ const MachinesList = () => {
             sorter
             pagination
             scopedSlots={{
+              salesStatus: (machine) => (
+                <td className="d-flex justify-content-between">
+                  {machine.salesStatus}
+                  {user.userRole === "branch-admin" && (
+                    <>
+                      {machine.salesStatus === "sold" ? (
+                        <CLink
+                          className="text-success"
+                          onClick={() => {
+                            setDistributingMachineId(machine._id);
+                            revertMachine(machine._id);
+                          }}
+                        >
+                          <CTooltip
+                            content={`Revert - ${machine.serialNumber}- machine.`}
+                          >
+                            <CIcon name="cil-loop" />
+                          </CTooltip>
+                        </CLink>
+                      ) : (
+                        <CLink
+                          className="text-primary"
+                          onClick={() => {
+                            setDistributingMachineId(machine._id);
+                            setShowMachineDistributeModal(
+                              !showMachineDistributeModal
+                            );
+                          }}
+                        >
+                          <CTooltip
+                            content={`Distribut - ${machine.serialNumber}- machine.`}
+                          >
+                            <CIcon name="cil-control" />
+                          </CTooltip>
+                        </CLink>
+                      )}
+                    </>
+                  )}
+                </td>
+              ),
               Actions: (machine) => (
                 <td className="d-flex justify-content-between">
-                  <CLink
-                    className="text-success"
-                    onClick={() => {
-                      setMachine({ machine, ...machine });
-                      setActivemachine(machine._id);
-                      setShowModal(!showModal);
-                    }}
-                  >
-                    <CTooltip
-                      content={`Edit the  - ${machine.serialNumber}- machine detail.`}
-                    >
-                      <CIcon name="cil-pencil" />
-                    </CTooltip>
-                  </CLink>
-
-                  {machine.salesStatus !== "sold" ? (
+                  {user.userRole === "branch-admin" && (
                     <>
-                      <span className="text-muted">|</span>
                       <CLink
-                        className="text-danger"
-                        onClick={() => deletemachine(machine._id)}
-                      >
-                        <CTooltip
-                          content={`Delete - ${machine.serialNumber}- machine.`}
-                        >
-                          <CIcon name="cil-trash" />
-                        </CTooltip>
-                      </CLink>
-                      <span className="text-muted">|</span>
-                      <CLink
-                        className="text-primary"
+                        className="text-success"
                         onClick={() => {
-                          setDistributingMachineId(machine._id);
-                          setShowMachineDistributeModal(
-                            !showMachineDistributeModal
-                          );
+                          setMachine({ machine, ...machine });
+                          setActivemachine(machine._id);
+                          setShowModal(!showModal);
                         }}
                       >
                         <CTooltip
-                          content={`Distribut this - ${machine.serialNumber}- machine.`}
+                          content={`Edit the  - ${machine.serialNumber}- machine detail.`}
                         >
-                          <CIcon name="cil-control" />
+                          <CIcon name="cil-pencil" />
+                        </CTooltip>
+                      </CLink>
+                      {machine.salesStatus !== "sold" && (
+                        <>
+                          <span className="text-muted">|</span>
+                          <CLink
+                            className="text-danger"
+                            onClick={() => deletemachine(machine._id)}
+                          >
+                            <CTooltip
+                              content={`Delete - ${machine.serialNumber}- machine.`}
+                            >
+                              <CIcon name="cil-trash" />
+                            </CTooltip>
+                          </CLink>
+                        </>
+                      )}
+                      <span className="text-muted">|</span>
+                    </>
+                  )}
+
+                  {
+                    <>
+                      <CLink
+                        className="text-info"
+                        onClick={() => {
+                          setMachine({ machine, ...machine });
+                          setActivemachine(machine._id);
+                          setShowModal(!showModal);
+                        }}
+                      >
+                        <CTooltip
+                          content={`See detail of  - ${machine.serialNumber}- machine.`}
+                        >
+                          <CIcon name="cil-align-center" />
                         </CTooltip>
                       </CLink>
                     </>
-                  ) : (
-                    ""
-                  )}
+                  }
                 </td>
               ),
             }}
@@ -399,7 +475,8 @@ const MachinesList = () => {
                         .filter(
                           (bussiness) =>
                             bussiness.machine === "unassigned" &&
-                            bussiness.credentials === "Accepted"
+                            bussiness.credentials === "Accepted" &&
+                            bussiness.branch == user.branch
                         )
                         .map((filteredBussiness) => (
                           <option
@@ -420,7 +497,7 @@ const MachinesList = () => {
             </CModalBody>
             <CModalFooter>
               <CButton type="submit" size="sm" color="dark">
-                <CIcon name="cil-fullscreen" /> Distribute
+                <CIcon name="cil-control" /> Distribute
               </CButton>
               <CButton
                 size="sm"
