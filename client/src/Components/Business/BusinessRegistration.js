@@ -148,7 +148,7 @@ const BusinessRegistration = () => {
                 </CNavItem>
                 <CNavItem>
                   <CNavLink>
-                    <CIcon name="cil-applications"></CIcon>Detail
+                    <CIcon name="cil-applications"></CIcon>Overview
                   </CNavLink>
                 </CNavItem>
               </CNav>
@@ -384,6 +384,14 @@ const BusinessRegistration = () => {
                       <CCol xs="12">
                         Business trade license in image format
                         <hr />
+                      </CCol>
+                      <CCol sm="12" md="6">
+                        <CFormGroup>
+                          <CLabel htmlFor="formFile">
+                            Upload trade licens of the business
+                          </CLabel>
+                          <CInput type="file" id="formFile" required />
+                        </CFormGroup>
                       </CCol>
                     </CRow>
                     <CRow className="d-flex justify-content-center">
