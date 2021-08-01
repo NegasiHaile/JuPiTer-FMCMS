@@ -1,8 +1,32 @@
 const router = require("express").Router();
 const userCntrl = require("../controllers/userCntrl");
 const auth = require("../middleware/auth");
+const multer = require("multer");
+let path = require("path");
+let User = require("../models/user.modal");
 
-router.post("/register", userCntrl.register);
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, "./public/images");
+  },
+  filename: function (req, file, cb) {
+    cb(null, "-" + Date.now() + path.extname(file.originalname));
+  },
+});
+
+const fileFilter = (req, file, cb) => {
+  const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
+  if (allowedFileTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(null, false);
+  }
+};
+
+let upload = multer({ storage, fileFilter });
+router.post("/register", upload.single("file"), userCntrl.register);
+
+// router.post("/register", userCntrl.register);
 
 router.get("/detail/:id", auth, userCntrl.getuserDetail);
 
@@ -31,5 +55,24 @@ router.put("/forgot_Password", userCntrl.forgotPassword);
 router.post("/block_account/:id", auth, userCntrl.blockAccount);
 
 router.post("/activate_account/:id", auth, userCntrl.activateAccount);
+
+router.route("/addfile").post(upload.single("photo"), (req, res) => {
+  const name = req.body.name;
+  const birthdate = req.body.birthdate;
+  const photo = req.file.filename;
+
+  const newUserData = {
+    name,
+    birthdate,
+    photo,
+  };
+
+  const newUser = new User(newUserData);
+
+  newUser
+    .save()
+    .then(() => res.json("User Added"))
+    .catch((err) => res.status(400).json("Error: " + err));
+});
 
 module.exports = router;

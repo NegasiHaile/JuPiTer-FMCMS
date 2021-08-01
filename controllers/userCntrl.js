@@ -41,7 +41,7 @@ const userCntrl = {
         mName,
         lName,
         gender,
-        photo,
+        photo: req.file,
         branch,
         city,
         subCity,

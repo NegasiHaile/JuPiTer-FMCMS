@@ -33,6 +33,7 @@ const BusinessRegistration = () => {
   const businessDetail = {
     ownerID: null,
     TIN: "",
+    VAT: "",
     businessName: "",
     companyName: "",
     TL_Image: "/Public/images",
@@ -67,7 +68,7 @@ const BusinessRegistration = () => {
       businessDetail.credentials = "Accepted";
       setBusiness(businessDetail);
     }
-  }, [user]);
+  }, [user, params.id]);
 
   useEffect(() => {
     if (params.businessId) {
@@ -156,7 +157,7 @@ const BusinessRegistration = () => {
                 <CTabContent className="my-3">
                   <CTabPane>
                     <CRow>
-                      <CCol sm="12">
+                      <CCol sm="12" md="6">
                         <CFormGroup>
                           <CLabel> Bussiness TIN </CLabel>
                           <CInput
@@ -164,6 +165,19 @@ const BusinessRegistration = () => {
                             name="TIN"
                             placeholder="Enter bussiness TIN."
                             value={business.TIN}
+                            onChange={onChangeInput}
+                            required
+                          />
+                        </CFormGroup>
+                      </CCol>
+                      <CCol sm="12" md="6">
+                        <CFormGroup>
+                          <CLabel> Bussiness VAT </CLabel>
+                          <CInput
+                            id="VAT"
+                            name="VAT"
+                            placeholder="Enter bussiness VAT."
+                            value={business.VAT}
                             onChange={onChangeInput}
                             required
                           />
