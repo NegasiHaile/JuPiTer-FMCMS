@@ -1,8 +1,32 @@
 const router = require("express").Router();
 const userCntrl = require("../controllers/userCntrl");
 const auth = require("../middleware/auth");
+const multer = require("multer");
 
-router.post("/register", userCntrl.register);
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "./public/images");
+  },
+  filename: (req, file, cb) => {
+    console.log(file);
+    var filetype = "";
+    if (file.mimetype === "image/gif") {
+      filetype = "gif";
+    }
+    if (file.mimetype === "image/png") {
+      filetype = "png";
+    }
+    if (file.mimetype === "image/jpeg") {
+      filetype = "jpg";
+    }
+    cb(null, "image-" + Date.now() + "." + filetype);
+  },
+});
+
+const upload = multer({ storage: storage });
+router.post("/register", upload.single("file"), userCntrl.register);
+
+// router.post("/register", userCntrl.register);
 
 router.get("/detail/:id", auth, userCntrl.getuserDetail);
 
