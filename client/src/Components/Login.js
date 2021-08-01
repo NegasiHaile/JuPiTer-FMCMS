@@ -117,7 +117,7 @@ const Login = () => {
                     <h2>Sign up</h2>
                     <p>
                       This is the JuPiTeR Fiscal Mchine Controlling and
-                      Managment System (FMCMS) web application. To use the this
+                      Managment System (FMCMS). To use the this
                       service let you have an account and get a fiscal machine.
                     </p>
                     <Link to="/register">
