@@ -1,14 +1,14 @@
 'use strict';
 const multer = require("multer");
-let path = require("path");
-
+const path = require("path");
+const {v4: uuidv4} = require('uuid')
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, "./client/public/uploads");
   },
   filename: function (req, file, cb) {
-    cb(null, "-" + Date.now() + path.extname(file.originalname));
+    cb(null, uuidv4() + "-" + Date.now() + path.extname(file.originalname));
   },
 });
 
@@ -21,6 +21,6 @@ const fileFilter = (req, file, cb) => {
   }
 };
 
-let upload = multer({ storage, fileFilter });
+const upload = multer({ storage, fileFilter });
 
 module.exports = upload

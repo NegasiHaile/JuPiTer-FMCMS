@@ -40,6 +40,7 @@ router.post("/activate_account/:id", auth, userCntrl.activateAccount);
 router.post("/addfile", userDataFormValidation, upload.single("photo"), (req, res) => {
   const name = req.body.name;
   const birthdate = req.body.birthdate;
+  
   const photo = "/uploads/" + req.file.filename;
 
   const newUserData = {

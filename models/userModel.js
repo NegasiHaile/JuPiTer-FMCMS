@@ -5,15 +5,15 @@ const userSchema = new mongoose.Schema(
   {
     fName: {
       type: String,
-      // required: true,
+      required: true,
     },
     mName: {
       type: String,
-      // required: true,
+      required: true,
     },
     lName: {
       type: String,
-      // required: true,
+      required: true,
     },
     gender: {
       type: String,
@@ -41,22 +41,22 @@ const userSchema = new mongoose.Schema(
 
     phoneNumber: {
       type: String,
-    //  required: true,
+      required: true,
       trim: true,
     },
     email: {
       type: String,
-     // required: true,
+      required: true,
       // unique : true,
       trim: true,
     },
     password: {
       type: String,
-     // required: true,
+      required: true,
     },
     userRole: {
       type: String,
-      // required: true,
+      required: true,
     },
     status: {
       type: String,

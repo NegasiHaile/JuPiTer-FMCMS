@@ -4,7 +4,12 @@ const express = require("express");
 const path = require("path");
 const cors = require("cors");
 const cookieParser = require("cookie-parser");
+// var bodyParser = require('body-parser')
 
+// parse application/x-www-form-urlencoded
+
+
+// parse application/json
 const app = express();
 app.use(express.json());
 app.use(cookieParser());

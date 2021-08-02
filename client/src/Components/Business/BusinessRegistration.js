@@ -31,12 +31,12 @@ const BusinessRegistration = () => {
   const [credentials, setCredentials] = useState("");
 
   const businessDetail = {
-    ownerID: null,
+    ownerID:  null,
     TIN: "",
     VAT: "",
     businessName: "",
     companyName: "",
-    TL_Image: "/Public/images",
+    TL_Image: "",
     city: "",
     subCity: "",
     kebele: "",
@@ -90,6 +90,9 @@ const BusinessRegistration = () => {
       setBusiness({ ...business, [name]: value });
     } catch {}
   };
+  const onChangeFileInput = (e) => {
+    setBusiness({ ...business, TL_Image: e.target.files[0] });
+  };
 
   const SweetAlert = (type, text) => {
     Swal.fire({
@@ -105,6 +108,27 @@ const BusinessRegistration = () => {
 
   const onSubmitSaveBusinessDetail = async (e) => {
     e.preventDefault();
+    // const formData = new FormData();
+    // formData.append("ownerID", business.ownerID);
+    // formData.append("TIN", business.TIN);
+    // formData.append("VAT", business.VAT);
+    // formData.append("businessName", business.businessName);
+    // formData.append("companyName", business.companyName);
+    // formData.append("TL_Image", business.TL_Image);
+    // formData.append("city", business.city);
+    // formData.append("subCity", business.subCity);
+    // formData.append("kebele", business.kebele);
+    // formData.append("woreda", business.woreda);
+    // formData.append("buildingName", business.buildingName);
+    // formData.append("officeNumber", business.officeNumber);
+    // formData.append("officeNumber", business.officeNumber);
+    // formData.append("telephone", business.telephone);
+    // formData.append("email", business.email);
+    // formData.append("fax", business.fax);
+    // formData.append("branch", business.branch);
+    // formData.append("credentials", business.credentials);
+    // formData.append("sw_Tech", business.sw_Tech);
+
     try {
       if (onEdit) {
         const res = await axios.put(`/business/edit/${params.businessId}`, {
@@ -113,7 +137,7 @@ const BusinessRegistration = () => {
         SweetAlert("success", res.data.msg);
         setCallback(!callback);
       } else {
-        const res = await axios.post("/business/register", { ...business });
+        const res = await axios.post("/business/register",  business );
         SweetAlert("success", res.data.msg);
         setCallback(!callback);
       }
@@ -153,7 +177,7 @@ const BusinessRegistration = () => {
                   </CNavLink>
                 </CNavItem>
               </CNav>
-              <CForm onSubmit={onSubmitSaveBusinessDetail}>
+              <CForm onSubmit={onSubmitSaveBusinessDetail} action='POST'  encType="multipart/form-data">
                 <CTabContent className="my-3">
                   <CTabPane>
                     <CRow>
@@ -196,7 +220,6 @@ const BusinessRegistration = () => {
                           />
                         </CFormGroup>
                       </CCol>
-
                       <CCol sm="12" md="6">
                         <CFormGroup>
                           <CLabel> Company Name </CLabel>
@@ -212,6 +235,7 @@ const BusinessRegistration = () => {
                       </CCol>
                     </CRow>
                   </CTabPane>
+
                   <CTabPane>
                     <CRow>
                       <CCol sm="12" md="4">
@@ -223,7 +247,6 @@ const BusinessRegistration = () => {
                             placeholder="Enter city where the business is located."
                             value={business.city}
                             onChange={onChangeInput}
-                            required
                           />
                         </CFormGroup>
                       </CCol>
@@ -236,7 +259,6 @@ const BusinessRegistration = () => {
                             placeholder="Enter subcity."
                             value={business.subCity}
                             onChange={onChangeInput}
-                            required
                           />
                         </CFormGroup>
                       </CCol>
@@ -249,7 +271,6 @@ const BusinessRegistration = () => {
                             placeholder="Enter kebele"
                             value={business.kebele}
                             onChange={onChangeInput}
-                            required
                           />
                         </CFormGroup>
                       </CCol>
@@ -262,7 +283,6 @@ const BusinessRegistration = () => {
                             placeholder="Enter woreda."
                             value={business.woreda}
                             onChange={onChangeInput}
-                            required
                           />
                         </CFormGroup>
                       </CCol>
@@ -275,7 +295,6 @@ const BusinessRegistration = () => {
                             placeholder="Enter building name."
                             value={business.buildingName}
                             onChange={onChangeInput}
-                            required
                           />
                         </CFormGroup>
                       </CCol>
@@ -288,7 +307,6 @@ const BusinessRegistration = () => {
                             placeholder="Enter office  number."
                             value={business.officeNumber}
                             onChange={onChangeInput}
-                            required
                           />
                         </CFormGroup>
                       </CCol>
@@ -333,13 +351,13 @@ const BusinessRegistration = () => {
                             placeholder="enter fax."
                             value={business.fax}
                             onChange={onChangeInput}
-                            required
                           />
                         </CFormGroup>
                       </CCol>
                     </CRow>
                   </CTabPane>
                   <CTabPane>
+
                     <CRow>
                       <CCol xs="12" md="6">
                         <CFormGroup>
@@ -404,7 +422,13 @@ const BusinessRegistration = () => {
                           <CLabel htmlFor="formFile">
                             Upload trade licens of the business
                           </CLabel>
-                          <CInput type="file" id="formFile" required />
+                          <CInput
+                            id="TL_Image"
+                            type="file"
+                            accept=".png, .jpg, .jpeg"
+                            name="TL_Image"
+                            onChange={onChangeFileInput}
+                            required />
                         </CFormGroup>
                       </CCol>
                     </CRow>
