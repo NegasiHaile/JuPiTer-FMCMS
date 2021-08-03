@@ -1,6 +1,7 @@
 const clientBusinesses = require("../models/clientBusinessModel");
 const Machines = require("../models/machineModel");
 const Sales = require("../models/salesModel");
+const path = require('path');
 
 const clientBusinessCntrl = {
   register: async (req, res) => {
@@ -37,7 +38,7 @@ const clientBusinessCntrl = {
         TIN,
         businessName,
         companyName,
-        TL_Image: "mmmm",
+        TL_Image: "/uploads/"+ req.file.filename,
         city,
         subCity,
         kebele,

@@ -1,9 +1,11 @@
 const router = require("express").Router();
 const userCntrl = require("../controllers/userCntrl");
 const auth = require("../middleware/auth");
+const path = require('path');
 const upload = require("../middleware/imageUpload");
 let User = require("../models/user.modal");
 const {userDataFormValidation} = require('../middleware/formDataValidation');
+
 
 // router.post("/register", upload.single("file"), userCntrl.register);
 

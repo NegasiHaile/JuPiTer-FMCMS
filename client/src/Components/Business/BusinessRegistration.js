@@ -108,26 +108,25 @@ const BusinessRegistration = () => {
 
   const onSubmitSaveBusinessDetail = async (e) => {
     e.preventDefault();
-    // const formData = new FormData();
-    // formData.append("ownerID", business.ownerID);
-    // formData.append("TIN", business.TIN);
-    // formData.append("VAT", business.VAT);
-    // formData.append("businessName", business.businessName);
-    // formData.append("companyName", business.companyName);
-    // formData.append("TL_Image", business.TL_Image);
-    // formData.append("city", business.city);
-    // formData.append("subCity", business.subCity);
-    // formData.append("kebele", business.kebele);
-    // formData.append("woreda", business.woreda);
-    // formData.append("buildingName", business.buildingName);
-    // formData.append("officeNumber", business.officeNumber);
-    // formData.append("officeNumber", business.officeNumber);
-    // formData.append("telephone", business.telephone);
-    // formData.append("email", business.email);
-    // formData.append("fax", business.fax);
-    // formData.append("branch", business.branch);
-    // formData.append("credentials", business.credentials);
-    // formData.append("sw_Tech", business.sw_Tech);
+    const formData = new FormData();
+    formData.append("ownerID", business.ownerID);
+    formData.append("TIN", business.TIN);
+    formData.append("VAT", business.VAT);
+    formData.append("businessName", business.businessName);
+    formData.append("companyName", business.companyName);
+    formData.append("TL_Image", business.TL_Image);
+    formData.append("city", business.city);
+    formData.append("subCity", business.subCity);
+    formData.append("kebele", business.kebele);
+    formData.append("woreda", business.woreda);
+    formData.append("buildingName", business.buildingName);
+    formData.append("officeNumber", business.officeNumber);
+    formData.append("telephone", business.telephone);
+    formData.append("email", business.email);
+    formData.append("fax", business.fax);
+    formData.append("branch", business.branch);
+    formData.append("credentials", business.credentials);
+    formData.append("sw_Tech", business.sw_Tech);
 
     try {
       if (onEdit) {
@@ -137,7 +136,7 @@ const BusinessRegistration = () => {
         SweetAlert("success", res.data.msg);
         setCallback(!callback);
       } else {
-        const res = await axios.post("/business/register",  business );
+        const res = await axios.post("/business/register",  formData );
         SweetAlert("success", res.data.msg);
         setCallback(!callback);
       }

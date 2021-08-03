@@ -1,10 +1,11 @@
 const router = require('express').Router();
-// const upload = require("../middleware/imageUpload");
+const upload = require("../middleware/imageUpload");
 const clientBusinessCntrl = require('../controllers/clientBusinessCntrl');
+const formDataValidation = require('../middleware/formDataValidation');
 
 
-// router.post('/register', upload.single("TL_Image"), clientBusinessCntrl.register)
-router.post('/register', clientBusinessCntrl.register)
+router.post('/register', formDataValidation.clientBusiness, upload.single("TL_Image"), clientBusinessCntrl.register)
+// router.post('/register', clientBusinessCntrl.register)
 
 router.get('/list', clientBusinessCntrl.getAllBusinesses)
 

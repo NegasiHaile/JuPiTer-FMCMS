@@ -60,7 +60,7 @@ const MachineDistribute = () => {
 
       <input type="submit" />
       <div className="container">
-        <img  src="/uploads/-1627880993818.jpg" alt="..."/>
+        <img  src="\uploads\93b5950e-0794-457f-86ac-50a964f031ce-1627968722810.jpg" alt="..."/>
       </div>
     </form>
   );
