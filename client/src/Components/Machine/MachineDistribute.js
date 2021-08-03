@@ -24,9 +24,10 @@ const MachineDistribute = () => {
         console.log(err);
       });
   };
-
   const handleChange = (e) => {
-    setNewUser({ ...newUser, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setNewUser({ ...newUser, [name]: value });
+    // setNewUser({ ...newUser, [e.target.name]: e.target.value });
   };
 
   const handlePhoto = (e) => {
@@ -58,6 +59,9 @@ const MachineDistribute = () => {
       />
 
       <input type="submit" />
+      <div className="container">
+        <img  src="\uploads\93b5950e-0794-457f-86ac-50a964f031ce-1627968722810.jpg" alt="..."/>
+      </div>
     </form>
   );
 };

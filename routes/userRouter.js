@@ -1,32 +1,15 @@
 const router = require("express").Router();
 const userCntrl = require("../controllers/userCntrl");
 const auth = require("../middleware/auth");
-const multer = require("multer");
-let path = require("path");
+const path = require('path');
+const upload = require("../middleware/imageUpload");
 let User = require("../models/user.modal");
+const {userDataFormValidation} = require('../middleware/formDataValidation');
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "./public/images");
-  },
-  filename: function (req, file, cb) {
-    cb(null, "-" + Date.now() + path.extname(file.originalname));
-  },
-});
 
-const fileFilter = (req, file, cb) => {
-  const allowedFileTypes = ["image/jpeg", "image/jpg", "image/png"];
-  if (allowedFileTypes.includes(file.mimetype)) {
-    cb(null, true);
-  } else {
-    cb(null, false);
-  }
-};
+// router.post("/register", upload.single("file"), userCntrl.register);
 
-let upload = multer({ storage, fileFilter });
-router.post("/register", upload.single("file"), userCntrl.register);
-
-// router.post("/register", userCntrl.register);
+router.post("/register", userCntrl.register);
 
 router.get("/detail/:id", auth, userCntrl.getuserDetail);
 
@@ -56,10 +39,11 @@ router.post("/block_account/:id", auth, userCntrl.blockAccount);
 
 router.post("/activate_account/:id", auth, userCntrl.activateAccount);
 
-router.route("/addfile").post(upload.single("photo"), (req, res) => {
+router.post("/addfile", userDataFormValidation, upload.single("photo"), (req, res) => {
   const name = req.body.name;
   const birthdate = req.body.birthdate;
-  const photo = req.file.filename;
+  
+  const photo = "/uploads/" + req.file.filename;
 
   const newUserData = {
     name,
