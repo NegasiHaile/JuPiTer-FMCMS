@@ -5,7 +5,6 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const path = require("path");
 
-// parse application/json
 const app = express();
 app.use(express.json());
 app.use(cookieParser());
