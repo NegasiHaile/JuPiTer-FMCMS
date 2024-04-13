@@ -84,8 +84,6 @@ C. Withdrawal
       4, Make the email openable from any app
       3, Close the reCAPTCHA system
 
-## NB: Now email is ready to send emails to users during reset password and registration.
-
 # Users Privileges
 
 1. Super Admin
